@@ -1,0 +1,20 @@
+<form id="theme_select_form">
+	<label for="theme_select">Theme</label>
+	<select id="theme_select">
+		<option value="theme_machine">Grey machine</option>
+		<option value="theme_ghost">Walker's ghost</option>
+		<option value="theme_monodark">mono dark</option>
+		<option value="theme_monobright">mono bright</option>
+		<option value="theme_secret">secret</option>
+		<option value="theme_paperclip">paperclip</option>
+		<option value="theme_latex">Latex</option>
+		<option value="theme_egg">Egg</option>
+		<option value="theme_green">Green</option>
+	</select>
+</form>
+<script 
+	type="text/javascript" 
+	src="{{ url_for(
+		'persephone.static',
+		filename='scripts/theme_select.js',
+	) }}"></script>

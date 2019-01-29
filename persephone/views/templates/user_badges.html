@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %}{{ user.identifier }}'s badges{% endblock %}
+{% block content %}
+	<h1>{{ user.identifier }}'s badges</h1>
+	<nav>
+		<a href="{{ url_for('persephone.user_profile', user_identifier=user.identifier) }}">Return</a>
+	</nav>
+	<div class="badges">
+		{% for badge in badges %}
+			<p class="user_profile_badge" data-badge="{{ badge['name'] }}" title="{{ badge['title'] }}">
+				{{ badge['display'] }}
+			</p>
+		{% endfor %}
+	</div>
+{% endblock %}

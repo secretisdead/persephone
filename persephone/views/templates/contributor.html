@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block title %}Contributor{% endblock %}
+{% block content %}
+	<h1>Contributor</h1>
+	<div class="dashboard_collection">
+		<nav class="dashboard" id="contributor_media">
+			<a 
+				href="{{ url_for('persephone.upload') }}" 
+				title="Upload media">
+				Upload
+			</a>
+			<a 
+				href="{{ url_for(
+					'persephone.search_user_media',
+					user_identifier=g.accounts.current_user.identifier,
+				) }}" 
+				title="Your media">
+				Your media
+			</a>
+		</nav>
+	</div>
+{% endblock %}

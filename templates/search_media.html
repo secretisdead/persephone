@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block title %}Search media{% endblock %}
+{% block content %}
+	{% if header %}
+		{{ header|safe }}
+	{% endif %}
+	{% include 'search_media_form.html' %}
+	{% include 'search_media_navigation.html' %}
+	{% include 'media_preferences_form.html' %}
+	{% include 'tags_this_page.html' %}
+	<script 
+		type="module" 
+		src="{{ url_for('persephone.static', filename='scripts/search_media.js') }}"></script>
+	<div id="media_search">
+		{% if not results %}
+			<h2>No results</h2>
+		{% else %}
+			{% set _ = g.persephone['populate_media_comment_counts'](results) %}
+			{% set _ = g.persephone['populate_media_sticker_counts'](results) %}
+			{% include 'search_media_results.html' %}
+			{% include 'media_management.html' %}
+			<script 
+				type="module" 
+				src="{{ url_for('persephone.static', filename='scripts/search_media_results.js') }}"></script>
+		{% endif %}
+	</div>
+{% endblock %}
+{% block meta %}
+	{{ super() }}
+	{% if search_field or management_mode %}
+		{% include 'tag_suggestions_list_meta.html' %}
+	{% endif %}
+{% endblock %}

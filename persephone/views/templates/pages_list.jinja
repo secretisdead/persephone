@@ -1,0 +1,60 @@
+{# list of pages
+	0-indexed
+	total_pages = page count, not the page to end on
+	last numbered page is total_pages - 1
+#}
+{% macro pages_list(total_pages=1, url='PAGE', current_page=0, adjacent_pages=3) %}
+	{% set total_pages = total_pages|int %}
+	{% if 1 < total_pages %}
+		{% set current_page = current_page|int %}
+		{% set adjacent_pages = adjacent_pages|int %}
+		{% set last_page = total_pages - 1 %}
+
+		{% if current_page - adjacent_pages < 0 %}
+			{% set start_page = 0 %}
+		{% else %}
+			{% set start_page = current_page - adjacent_pages %}
+		{% endif %}
+
+		{% if current_page + adjacent_pages >= total_pages %}
+			{% set end_page = total_pages - 1 %}
+		{% else %}
+			{% set end_page = current_page + adjacent_pages %}
+		{% endif %}
+
+		<nav id="pages">
+			{% if current_page > 0 %}
+				<a 
+					href="{{ url.replace('PAGE', '{}').format(current_page - 1) }}" 
+					id="prev_page" 
+					class="prev">Prev</a>
+			{% endif %}
+			{% if start_page > 0 %}
+				<a href="{{ url.replace('PAGE', '{}').format(0) }}" class="page">0</a>
+				{% if start_page > 1 %}
+				<span class="omitted">...</span>
+				{% endif %}
+			{% endif %}
+			{#% for page in range(start_page, end_page) %#}
+			{% for page in range(start_page, end_page + 1) %}
+				{% if page == current_page %}
+					<strong class="page">{{ page }}</strong>
+				{% else %}
+					<a href="{{ url.replace('PAGE', '{}').format(page) }}" class="page">{{ page }}</a>
+				{% endif %}
+			{% endfor %}
+			{% if end_page < last_page %}
+				{% if end_page < last_page - 1 %}
+				<span class="omitted">...</span>
+				{% endif %}
+				<a href="{{ url.replace('PAGE', '{}').format(last_page) }}" class="page">{{ last_page }}</a>
+			{% endif %}
+			{% if current_page < total_pages - 1 %}
+				<a 
+					href="{{ url.replace('PAGE', '{}').format(current_page + 1) }}" 
+					id="next_page" 
+					class="next">Next</a>
+			{% endif %}
+		</nav>
+	{% endif %}
+{% endmacro %}

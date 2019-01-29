@@ -1,0 +1,33 @@
+<form id="media_preferences">
+	<legend>Preferences</legend>
+	<label for="media_preference_blacklisted_tags">Hide media with these tags (&#x23; separated)</label>
+	<textarea id="media_preference_blacklisted_tags"></textarea>
+	<br>
+	{#TODO auto slideshow
+	<label for="media_preference_slideshow_delay">Slideshow delay (in sec)</label>
+	<input 
+		id="media_preference_slideshow_delay" 
+		type="text">
+	<br>
+	#}
+	<input 
+		id="media_preference_fit_media_vertically" 
+		name="media_preference_fit_media_vertically" 
+		type="checkbox">
+	<label for="media_preference_fit_media_vertically">Fit media vertically</label>
+	<br>
+	<input 
+		id="media_preference_show_unlike_button" 
+		name="media_preference_show_unlike_button" 
+		type="checkbox">
+	<label for="media_preference_show_unlike_button">Show unlike button</label>
+	<br>
+	<br>
+	<input 
+		id="media_preference_hide_stickers" 
+		name="media_preference_hide_stickers" 
+		type="checkbox">
+	<label for="media_preference_hide_stickers">Hide stickers</label>
+	<br>
+	<input type="submit" value="Save changes">
+</form>

@@ -1,0 +1,116 @@
+{% extends 'layout.html' %}
+{% block title %}Takeout{% endblock %}
+{% macro package_download_table(package_download_endpoint, packages) %}
+		<thead>
+			<tr>
+				<td>Date requested</td>
+				<td>Download link</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% for package in packages %}
+				<tr>
+					<td data-timestamp="{{ package['time'] }}">
+						{{ package['datetime'].strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+					</td>
+					<td>
+						<a 
+							href="{#{ url_for(package_download_endpoint, package_id=package['id']) }#}" 
+							title="Download this package">
+							{{ package['id'] }}
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+{% endmacro %}
+{% block content %}
+	<div class="takeout">
+		<h1>Takeout</h1>
+		<p>Download a copy of information associated with your account</p>
+
+		<form method="post">
+			<input id="account" name="account" type="checkbox" checked>
+			<label for="account" data-type="checkbox">Account</label>
+			<br>
+			<input id="invites" name="invites" type="checkbox" checked>
+			<label for="invites" data-type="checkbox">Invites</label>
+			<br>
+			<input id="sessions" name="sessions" type="checkbox" checked>
+			<label for="sessions" data-type="checkbox">Sessions</label>
+			<br>
+			<input 
+				id="collected_stickers" 
+				name="collected_stickers" 
+				type="checkbox" 
+				checked>
+			<label for="collected_stickers" data-type="checkbox">
+				Collected Stickers
+			</label>
+			<br>
+			<input 
+				id="sticker_placements" 
+				name="sticker_placements" 
+				type="checkbox" 
+				checked>
+			<label for="sticker_placements" data-type="checkbox">
+				Sticker placements
+			</label>
+			<br>
+			<input id="comments" name="comments" type="checkbox" checked>
+			<label for="comments" data-type="checkbox">Comments</label>
+			<br>
+			<input id="likes" name="likes" type="checkbox" checked>
+			<label for="likes" data-type="checkbox">Media likes</label>
+			<br>
+			<input type="submit" value="Download">
+		</form>
+
+		<p>There are plans to add automatic tegaki and media packaging and export, but they currently aren't implemented.</p>
+		<p>Contact staff if you'd like to have your tegaki or media packaged and provided to you.</p>
+
+		{#
+		<p>
+			Because packaged downloads are much larger than account data 
+			downloads, requests may take a considerable amount of time to complete 
+			and may only be requested once a month (every 28 days).
+		</p>
+
+		{% if not request_tegaki_cooldown %}
+			<form method="get">
+				<input 
+					name="request_tegaki" 
+					type="submit" 
+					value="Request your packaged tegaki">
+			</form>
+		{% endif %}
+		{% if not tegaki_packages %}
+			<p>No past tegaki package requests</p>
+		{% else %}
+			<table>
+				<caption>Past tegaki package requests</caption>
+				{{ package_download_table('download_tegaki_package', tegaki_packages) }}
+			</table>
+		{% endif %}
+
+		{% if g.accounts.current_user.has_permission(group_names='contributor') %}
+			{% if not request_media_cooldown %}
+				<form method="get">
+					<input 
+						name="request_media" 
+						type="submit" 
+						value="Request your packaged media">
+				</form>
+			{% endif %}
+			{% if not media_packages %}
+				<p>No past media package requests</p>
+			{% else %}
+				<table>
+					<caption>Past media package requests</caption>
+					{{ package_download_table('download_media_package', media_packages) }}
+				</table>
+			{% endif %}
+		{% endif %}
+		#}
+	</div>
+{% endblock %}

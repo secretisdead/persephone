@@ -1,0 +1,123 @@
+@charset "utf-8";
+:root {
+	--table_border: var(--card_border);
+	--table_header_background: var(--header_background);
+	--table_header_foreground: var(--header_foreground);
+	--table_header_link: var(--header_link);
+	--table_cell_background: var(--card_background);
+	--table_cell_foreground: var(--card_foreground);
+	--table_cell_link: var(--card_link);
+}
+table {
+	border-collapse: separate;
+	border-spacing: 1px 1px;
+	width: 100%;
+	max-width: 100%;
+	margin: 0 auto -1px auto;
+	box-sizing: border-box;
+}
+td, th {
+	border: 1px solid var(--table_border);
+	padding: 0.25em 0.5em;
+	vertical-align: top;
+}
+/*thead*/
+thead td,
+th {
+	background-color: var(--table_header_background);
+	color: var(--table_header_foreground);
+	white-space: nowrap;
+	font-weight: normal;
+	text-align: center;
+}
+thead td .order,
+th .order {
+	text-decoration: none;
+}
+th a,
+thead td a {
+	color: var(--table_header_link);
+}
+/*tbody*/
+tbody td {
+	background-color: var(--table_cell_background);
+	color: var(--table_cell_foreground);
+	text-align: left;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 0.8em;
+}
+td a,
+tbody td a {
+	color: var(--table_cell_link);
+}
+/*table caption*/
+caption {
+	text-align: left;
+	padding: 0.25em 0.5em;
+	background-color: var(--table_header_background);
+	color: var(--table_header_foreground);
+	font-size: 1.5em;
+	border: 1px solid var(--table_border);
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
+	box-sizing: border-box;
+	width: calc(100% - 2px);
+	margin-left: 1px;
+}
+/*cursor*/
+td, caption {
+	cursor: default;
+}
+/*border radius*/
+caption:first-child {
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
+}
+caption:last-child {
+	border-bottom-left-radius: 0.5rem;
+	border-bottom-right-radius: 0.5rem;
+}
+thead:first-child tr:first-child td:first-child,
+tbody:first-child tr:first-child td:first-child {
+	border-top-left-radius: 0.5rem;
+}
+thead:first-child tr:first-child td:last-child,
+tbody:first-child tr:first-child td:last-child {
+	border-top-right-radius: 0.5rem;
+}
+thead:first-child tr + tr td:first-child,
+thead:first-child tr + tr td:last-child {
+	border-radius: 0;
+}
+caption + thead td:first-child,
+caption + thead td:last-child {
+	border-radius: 0;
+}
+tbody:last-child tr:last-child td:first-child {
+	border-bottom-left-radius: 0.5rem;
+}
+tbody:last-child tr:last-child td:last-child {
+	border-bottom-right-radius: 0.5rem;
+}
+/*items preceeding tables*/
+table + table,
+form + table,
+h1 + table,
+h2 + table,
+h3 + table,
+h4 + table,
+h5 + table,
+h6 + table {
+	margin-top: 1rem;
+}
+/*items following tables*/
+table + nav,
+table + h1,
+table + h2,
+table + h3,
+table + h4,
+table + h5,
+table + h6 {
+	margin-top: 1rem;
+}

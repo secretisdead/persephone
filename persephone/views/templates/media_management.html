@@ -1,0 +1,71 @@
+{% if management_mode %}
+	<form method="post" id="manage_media_form"
+		data-action-edit="{{ url_for('media_api.api_edit_medium') }}" 
+		data-action-remove="{{ url_for('media_api.api_remove_medium') }}" 
+		data-action-generate-summaries="{{ url_for('media_api.api_generate_medium_summaries') }}" 
+		data-action-generate-set="{{ url_for('media_api.api_generate_media_set') }}" 
+		data-action-add-tags="{{ url_for('media_api.api_tags', mode='add') }}" 
+		data-action-remove-tags="{{ url_for('media_api.api_tags', mode='remove') }}" 
+		data-action-build-tag-suggestions="{{ url_for('media_api.api_build_tag_suggestions') }}" 
+		data-confirm-remove="This will permanently remove selected media, are you sure?" 
+		data-confirm-generate-set="This will generate a random set tag and apply it to all selected media, are you sure?" 
+		data-confirm-sync-sets="Some of the media you selected are already part of one or more sets. Would you like to sync sets on all selected media?" 
+		data-tag-editor-placeholder="Enter a tag to add, click a tag to remove" 
+		data-no-tags="No tags to copy" {% include 'tag_editor_attributes.html' %}>
+	</form>
+	<div id="manage_media_panels">
+		{% set fields = {} %}
+		<div class="manage_media_panel" id="manage_media_panel_owner">
+			{% include 'medium_owner_form.html' %}
+			<input type="submit" value="Change Owner">
+		</div>
+		<div class="manage_media_panel" id="manage_media_panel_creation">
+			{% include 'medium_creation_date_form.html' %}
+			<input type="submit" value="Change Creation Date">
+		</div>
+		<div class="manage_media_panel" id="manage_media_panel_groups">
+			{% include 'medium_groups_form.html' %}
+			<input type="submit" value="Change Groups">
+		</div>
+		<div class="manage_media_panel" id="manage_media_panel_searchability">
+			{% include 'medium_searchability_form.html' %}
+			<input type="submit" value="Change Searchability">
+		</div>
+		<div class="manage_media_panel" id="manage_media_panel_protection">
+			{% include 'medium_protection_form.html' %}
+			<input type="submit" value="Change Protection">
+		</div>
+		<div class="manage_media_panel" id="manage_media_panel_add_tags">
+			<input type="hidden" name="tags">
+			<input type="submit" value="Add Tags">
+		</div>
+		<div class="manage_media_panel" id="manage_media_panel_remove_tags">
+			<input type="hidden" name="tags">
+			<input type="submit" value="Remove Tags">
+		</div>
+	</div>
+	<div id="manage_media_drawer">
+		<span id="manage_media_actions">
+			<a id="manage_media_owner" title="Change owner">Owner</a>
+			<a id="manage_media_creation" title="Change creation date">Creation</a>
+			<a id="manage_media_generate_summaries" title="Generate summaries">Generate summaries</a>
+			<a id="manage_media_remove" title="Remove">Remove</a>
+			<a id="manage_media_groups" title="Change groups">Groups</a>
+			<a id="manage_media_searchability" title="Change searchability">Searchability</a>
+			<a id="manage_media_protection" title="Change protection">Protection</a>
+			<a id="manage_media_generate_set" title="Add selected media to a set (or synchronize media sets)">Set</a>
+			<a id="manage_media_copy_tags" title="Copy tags">Copy tags</a>
+			<a id="manage_media_add_tags" title="Add tags">Add tags</a>
+			<a id="manage_media_remove_tags" title="Remove tags">Remove tags</a>
+			<a id="manage_media_select_all" title="Select all">Select all</a>
+			<a id="manage_media_select_none" title="Select none">Select none</a>
+		</span>
+		<span id="selected_media_total" data-all="All">0</span>
+	</div>
+	<script 
+		type="module" 
+		src="{{ url_for(
+			'persephone.static',
+			filename='scripts/media_management.js',
+		) }}"></script>
+{% endif %}

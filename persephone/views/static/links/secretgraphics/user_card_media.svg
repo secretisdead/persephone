@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<svg width="50" height="50" viewBox="0 0 50 50" version="1.1" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<mask id="mask" x="0" y="0" width="50" height="50">
+			<rect x="0" y="0" width="50" height="50" fill="black" />
+			<rect rx="4" ry="4" x="10" y="8" width="15" height="15" fill="white" />
+			<circle cx="29" cy="27" r="8" stroke="white" stroke-width="3" fill="black" />
+			<polyline stroke-linejoin="round"
+				points="31,30 36,40 26,40 31,30 36,40" 
+				stroke-width="6" stroke="white" 
+				fill="white" />
+		</mask>
+	</defs>
+	<rect x="0" y="0" width="50" height="50" fill="white" mask="url(#mask)" />
+</svg>

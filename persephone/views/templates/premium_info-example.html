@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block title %}Premium{% endblock %}
+{% block content %}
+	{% if 'your-premium-group-name' == campaign %}
+		<h2>Your premium group header</h2>
+		<p>Some information about your premium group and how to acquire it.</p>
+	{% elif 'your-second-premium-group-name' == campaign %}
+		<h2>Your second premium group header</h2>
+		<p>Some information about your second premium group and how to acquire it.</p>
+	{% endif %}
+{% endblock %}

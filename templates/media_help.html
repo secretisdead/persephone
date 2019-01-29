@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block title %}Media help{% endblock %}
+{% block content %}
+	<h1>Media help</h1>
+	{% include 'media_help_search_javascript.html' %}
+	{% include 'media_help_features.html' %}
+	{% include 'media_help_basic.html' %}
+	{% include 'media_help_pagination.html' %}
+	{% include 'media_help_advanced.html' %}
+	{% if g.media.accounts.current_user %}
+		{% if (
+			g.media.accounts.current_user.has_permission(group_names='manager')
+			or g.media.accounts.current_user.has_permission(group_names='contributor')
+		) %}
+			{% include 'media_help_properties.html' %}
+			{% include 'media_help_management_mode.html' %}
+			{% include 'media_help_contributor.html' %}
+		{% endif %}
+		{% include 'media_help_management.html' %}
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+<h1>Liked media</h1>
+<nav>
+	<a 
+		href="{{ url_for(
+			'persephone.user_liked_media_list',
+			user_identifier=user_identifier,
+		) }}" 
+		title="Manage individual likes">
+		Manage individual likes
+	</a>
+</nav>

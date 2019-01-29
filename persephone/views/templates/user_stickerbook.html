@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% from 'users.jinja' import user_display %}
+{% block title %}{{ '{}\'s stickerbook'.format(user_display(user)) }}{% endblock %}
+{% block content %}
+	<h1>{{ '{}\'s stickerbook'.format(user_display(user)) }}</h1>
+	{% set admin_or_self = False %}
+	{% if g.stickers.accounts.current_user %}
+		{% if g.stickers.accounts.current_user.id == user.id %}
+			{% set admin_or_self = True %}
+		{% endif %}
+		{% if g.stickers.accounts.current_user.has_permission(group_names='admin') %}
+			{% set admin_or_self = True %}
+			<nav>
+				<a 
+					href="{{ url_for(
+						'stickers_admin.collected_stickers_list',
+						user_id=user.id,
+					) }}">Manage user stickers</a>
+			</nav>
+		{% endif %}
+	{% endif %}
+	{% from 'stickers.jinja' import sticker_category_display, sticker_image %}
+	<div class="stickerbook">
+		<p>{{ total_collected_stickers }} / {{ total_potential_stickers }}</p>
+		{% for category, stickers in stickers_by_category.items() %}
+			<h2>{{ sticker_category_display(category) }}</h2>
+			<p class="sticker_category" data-category="{{ category }}">
+				{% for sticker in stickers %}
+					{% if sticker.collected %}
+						{% if not admin_or_self %}
+							{{ sticker_image(sticker) }}
+						{% else %}
+							{% if not sticker.unique_placements_count %}
+								{{ sticker_image(sticker) }}
+							{% else %}
+								<a 
+									href="{{ url_for(
+										'persephone.user_sticker_placements',
+										user_identifier=user.identifier,
+										sticker_id=sticker.id,
+									) }}">
+									{{ sticker_image(sticker) }}
+									<span 
+										class="unique_placements_count" 
+										title="{{ 'Placed this sticker on {} media'.format(sticker.unique_placements_count) }}">
+										{{ sticker.unique_placements_count }}
+									</span>
+								</a>
+							{% endif %}
+						{% endif %}
+					{% else %}
+						<span class="not_collected">{{ sticker_image(sticker) }}</span>
+					{% endif %}
+				{% endfor %}
+			</p>
+		{% endfor %}
+	</div>
+{% endblock %}

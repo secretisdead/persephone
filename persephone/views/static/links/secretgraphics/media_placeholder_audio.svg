@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="50" height="50" viewBox="0 0 50 50" version="1.1" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<polyline stroke-linejoin="round"
+		points="12,23 22,23 32,11 32,39 22,28 12,28" 
+		stroke-width="5" stroke="white" 
+		fill="white" />
+</svg>

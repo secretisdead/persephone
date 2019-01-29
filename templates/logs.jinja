@@ -1,0 +1,84 @@
+{% set log_scopes = {
+	'closed_session': 'Remove closed session',
+	'expired_session': 'Remove expired session',
+	'session_remote_origin_mismatch': 'Session remote origin mismatch',
+	'session_useragent_mismatch': 'Session useragent mismatch',
+	'create_invite': 'Create invite',
+	'redeem_invite': 'Redeem invite',
+	'delete_invite': 'Delete invite',
+	'activate_user': 'Activate user',
+	'sign_in': 'Sign in',
+	'problem_during_create_authentication': 'Problem creating authentication',
+	'super_user': 'Super user',
+	'register': 'Register',
+	'create_authentication': 'Create authentication',
+	'authentication_collision': 'Authentication collision',
+	'sign_in_attempt': 'Sign in attempt',
+	'sign_in_failure_account_name_not_found': 'Sign in failure (account name not found)',
+	'sign_in_failure_incorrect_pass': 'Sign in failure (incorrect pass)',
+	'sign_out': 'Sign out',
+	'close_session': 'Close session',
+	'close_all_sessions': 'Close all sesssions',
+	'edit_user_permissions': 'Edit user permissions',
+	'edit_user_settings_self': 'Edit self',
+	'edit_user_settings': 'Edit user settings',
+	'upload_avatar': 'Upload avatar',
+	'remove_authentication': 'Remove authentication',
+	'deactivate_user_self': 'Deactivate self',
+	'deactivate_user': 'Deactivate user',
+	'create_auto_permission': 'Create auto permission',
+	'sync_auto_permissions': 'Sync auto permissions',
+	'redeem_auto_permission': 'Redeem auto permission',
+	'delete_auto_permission': 'Delete auto permission',
+
+	'create_ban': 'Create ban',
+	'edit_ban': 'Edit ban',
+	'delete_ban': 'Delete ban',
+	'prune_bans': 'Prune bans',
+
+	'create_comment': 'Create comment',
+	'edit_comment': 'Edit comment',
+	'delete_comment': 'Delete comment',
+	'sent_forbidden_phrase': 'Sent forbidden phrase',
+	'remove_comments_by_user': 'Remove user comments',
+	'remove_comments_by_remote_origin': 'Remove remote origin comments',
+
+	'create_sticker': 'Create sticker',
+	'update_sticker': 'Update sticker',
+	'delete_sticker': 'Delete sticker',
+	'receive_sticker': 'Receive sticker',
+	'grant_sticker': 'Grant sticker',
+	'revoke_sticker': 'Revoke sticker',
+	'place_sticker': 'Place sticker',
+	'unplace_sticker': 'Unplace sticker',
+	'admin_unplace_sticker': 'Admin unplace sticker',
+	'unplace_stickers_by_user': 'Unplace user stickers',
+
+	'create_patreon_client': 'Create patreon client',
+	'update_patreon_client': 'Update patreon client',
+	'refresh_patreon_client': 'Refresh patreon client',
+	'delete_patreon_client': 'Delete patreon client',
+
+	'edit_patreon_tier': 'Edit patreon tier',
+	'grant_patreon_client_permissions': 'Grant patreon client permissions',
+	'receive_patreon_tier_permission': 'Receive patreon tier permission',
+
+	'upload_medium_file': 'Upload medium file',
+	'update_medium': 'Update medium',
+	'generate_medium_summaries': 'Generate medium summaries',
+	'delete_medium_summaries': 'Delete medium summaries',
+	'delete_medium_file': 'Delete medium file',
+	'remove_medium': 'Remove medium',
+
+	'mass_remove_tag': 'Mass remove tag',
+	'mass_accompany_tag': 'Mass accompany tag',
+	'mass_replace_tag': 'Mass replace tag',
+} %}
+
+{% macro log_scope_display(log_scope) %}
+	{% if log_scope in log_scopes %}
+		{{ log_scopes[log_scope] }}
+	{% else %}
+		{{ log_scope }}
+	{% endif %}
+{% endmacro %}

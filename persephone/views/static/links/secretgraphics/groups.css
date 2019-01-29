@@ -1,0 +1,13 @@
+/*basic group media summaries and tiles*/
+[data-group-admin] .summary.protected::before,
+.group_tile[data-group="admin"] {
+	background-image: url(group_admin.svg);
+}
+[data-group-manager] .summary.protected::before,
+.group_tile[data-group="manager"] {
+	background-image: url(group_manager.svg);
+}
+[data-group-contributor] .summary.protected::before,
+.group_tile[data-group="contributor"] {
+	background-image: url(group_contributor.svg);
+}

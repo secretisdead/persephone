@@ -1,0 +1,142 @@
+{% macro tabular_list(
+		columns,
+		endpoint,
+		results,
+		total_results,
+		render_result,
+		total_pages,
+		pagination,
+		search,
+		additional_search_fields=None
+	) %}
+	{% set searchable_columns = [] %}
+	{% for column in columns %}
+		{% if column['searchable'] %}
+			{% set _temp = searchable_columns.append(column['name']) %}
+		{% endif %}
+	{% endfor %}
+	{% if searchable_columns %}
+		<form method="get">
+			{% for column in columns %}
+				{% if column['searchable'] %}
+					{% if 'text' == column['type'] %}
+						<label for="{{ column['name'] }}">{{ column['label'] }}</label>
+						<input 
+							id="{{ column['name'] }}" 
+							name="{{ column['name'] }}" 
+							type="text" 
+							value="{{ search[column['name']] }}"{% if column['placeholder']%} placeholder="{{ column['placeholder']}}"{% endif %}>
+						<br>
+					{% elif 'amount' == column['type'] %}
+						<label for="{{ column['less_than_name'] }}">{{ column['less_than_label'] }}</label>
+						<input 
+							id="{{ column['less_than_name'] }}" 
+							name="{{ column['less_than_name'] }}" 
+							type="text" 
+							value="{{ search[column['less_than_name']] }}"{% if column['less_than_placeholder']%} placeholder="{{ column['less_than_placeholder']}}"{% endif %}>
+						<br>
+						<label for="{{ column['greater_than_name'] }}">{{ column['greater_than_label'] }}</label>
+						<input 
+							id="{{ column['greater_than_name'] }}" 
+							name="{{ column['greater_than_name'] }}" 
+							type="text" 
+							value="{{ search[column['greater_than_name']] }}"{% if column['greater_than_placeholder']%} placeholder="{{ column['greater_than_placeholder']}}"{% endif %}>
+						<br>
+					{% elif 'select' == column['type'] %}
+						<label for="{{ column['name'] }}">{{ column['label'] }}</label>
+						<select id="{{ column['name'] }}" name="{{ column['name'] }}">
+							{% for option_name, option_display in column['options'].items() %}
+								<option 
+									value="{{ option_name }}"{% if option_name == search[column['name']] %} selected{% endif %}>
+									{{ option_display }}
+								</option>
+							{% endfor %}
+						</select>
+						<br>
+					{% elif 'checkbox' == column['type'] %}
+						<input 
+							id="{{ column['name'] }}" 
+							name="{{ column['name'] }}" 
+							type="checkbox"{% if search[column['name']] %} checked{% endif %}>
+						<label for="{{ column['name'] }}">{{ column['label'] }}</label>
+						<br>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+			{% if additional_search_fields %}
+				{{ additional_search_fields() }}
+			{% endif %}
+			<input type="hidden" name="sort" value="{{ pagination['sort'] }}">
+			<input type="hidden" name="order" value="{{ pagination['order'] }}">
+			<input type="hidden" name="perpage" value="{{ pagination['perpage'] }}">
+			<input type="submit" value="Search">
+		</form>
+	{% endif %}
+	{% if not total_results %}
+		<h2>No results</h2>
+	{% else %}
+		{% set pip = '▲' %}
+		{% set reverse_order = 'desc' %}
+		{% if 'desc' == pagination['order'] %}
+			{% set pip = '▼' %}
+			{% set reverse_order = 'asc' %}
+		{% endif %}
+		{% if results|length %}
+			<table>
+				<caption>{{ '{} results'.format(total_results) }}</caption>
+				<thead>
+					<tr>
+						{% for column in columns %}
+							<td>
+								{% if column['sortable'] %}
+									<a href="{{ url_for(
+											endpoint,
+											sort=column['name'],
+											order=pagination['order'],
+											perpage=pagination['perpage'],
+											**search
+										) }}">
+										{{ column['label'] }}
+									</a>
+									{% if column['name'] == pagination['sort'] %}
+										<a 
+											class="order" 
+											href="{{ url_for(
+												endpoint,
+												sort=pagination['sort'],
+												order=reverse_order,
+												perpage=pagination['perpage'],
+												**search
+											) }}">
+											{{ pip }}
+										</a>
+									{% endif %}
+								{% else %}
+									{{ column['label'] }}
+								{% endif %}
+							</td>
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for result in results.values() %}
+						{{ render_result(result) }}
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+		{% from 'pages_list.jinja' import pages_list %}
+		{{ pages_list(
+			total_pages=total_pages,
+			url=url_for(
+				endpoint,
+				sort=pagination['sort'],
+				order=pagination['order'],
+				perpage=pagination['perpage'],
+				page='PAGE',
+				**search
+			).replace('page=PAGE', 'page={}'),
+			current_page=pagination['page'],
+		) }}
+	{% endif %}
+{% endmacro %}

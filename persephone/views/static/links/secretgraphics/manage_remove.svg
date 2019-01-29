@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<svg width="50" height="50" viewBox="0 0 50 50" version="1.1" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<mask id="mask" x="0" y="0" width="50" height="50">
+			<rect x="0" y="0" width="50" height="50" fill="black" />
+			<line x1="15" y1="15" x2="35" y2="35" stroke-width="8" stroke="white" />
+			<line x1="35" y1="15" x2="15" y2="35" stroke-width="8" stroke="white" />
+		</mask>
+	</defs>
+	<rect x="0" y="0" width="50" height="50" fill="white" mask="url(#mask)" />
+</svg>

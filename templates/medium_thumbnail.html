@@ -1,0 +1,104 @@
+{% if 200 != medium.current_user_response_code %}
+	<div 
+		class="thumbnail" 
+		data-id="{{ medium.id }}"{% for group in medium.groups %} 
+		data-group-{{ group }}="1"{% endfor %}>
+		{#TODO maybe allow link to go through to view page here? so that protected/premium info can be given at least #}
+		<div class="summary thumb nofile protected">Protected medium</div>
+		{% if tiles %}
+			{% include 'medium_group_tiles.html' %}
+		{% endif %}
+	</div>
+{% else %}
+	{% if no_thumbnail_link %}
+		{% set thumbnail_link_uri = '' %}
+	{% else %}
+		{% set thumbnail_link_endpoint = request.endpoint %}
+		{% if override_endpoint %}
+			{% set thumbnail_link_endpoint = override_endpoint %}
+		{% endif %}
+		{% set thumbnail_link_uri = url_for(
+			thumbnail_link_endpoint,
+			medium_id=medium.id,
+			tags=tags_query,
+			**kwargs,
+		) %}
+	{% endif %}
+	{% set thumb_medium = medium %}
+	{% if medium.cover %}
+		{% set thumb_medium = medium.cover %}
+	{% endif %}
+	<div 
+		class="thumbnail" 
+		title="{% if medium.tags %}#{% endif %}{{ ' #'.join(medium.tags) }}" 
+		data-id="{{ medium.id }}" 
+		{% if thumb_medium.uris['reencoded']['clip'] %}
+			data-preview="{{ thumb_medium.uris['reencoded']['clip'] }}" 
+		{% elif thumb_medium.uris['reencoded'][256] %}
+			data-preview="{{ thumb_medium.uris['reencoded'][256] }}" 
+		{% endif %}
+		data-category="{{ medium.category }}" 
+		data-searchability="{{ medium.searchability|string|lower }}" 
+		data-protection="{{ medium.protection|string|lower }}" 
+		data-mime="{{ medium.mime }}" 
+		data-data1="{{ medium.data1 }}" 
+		data-data2="{{ medium.data2 }}" 
+		data-data3="{{ medium.data3 }}" 
+		data-data4="{{ medium.data4 }}" 
+		data-data5="{{ medium.data5 }}" 
+		data-data6="{{ medium.data6 }}"{% include 'medium_rgb.html' %}>
+		{% if thumb_medium.uris['static'][256] and thumb_medium.uris['fallback'][256] %}
+			{% from 'media.jinja' import image_thumbnail_focus %}
+			<div class="summary"{{ image_thumbnail_focus(thumb_medium) }}>
+				<a href="{{ thumbnail_link_uri }}">
+					<picture>
+						<source srcset="{{ thumb_medium.uris['static'][256] }}" type="image/webp">
+						<source srcset="{{ thumb_medium.uris['fallback'][256] }}" type="image/png">
+						<img src="{{ thumb_medium.uris['fallback'][256] }}" alt="">
+					</picture>
+				</a>
+			</div>
+		{% elif 'image/svg+xml' == thumb_medium.mime %}
+			{% from 'media.jinja' import image_thumbnail_focus %}
+			<div class="summary"{{ image_thumbnail_focus(thumb_medium) }}>
+				<a href="{{ thumbnail_link_uri }}">
+					<picture>
+						<source srcset="{{ thumb_medium.uris['original'] }}" type="image/svg+xml">
+						<img src="{{ thumb_medium.uris['original'] }}" alt="">
+					</picture>
+				</a>
+			</div>
+		{% else %}
+			<div class="summary nofile">
+				<a href="{{ thumbnail_link_uri }}">
+					View medium
+				</a>
+			</div>
+		{% endif %}
+		{% if tiles %}
+			{% if medium.sticker_count %}
+				<p 
+					class="sticker_count" 
+					title="{{ '{} stickers'.format(medium.sticker_count) }}">
+					{{ medium.sticker_count }}
+				</p>
+			{% endif %}
+			{% if medium.comment_count %}
+				<p 
+					class="comment_count" 
+					title="{{ '{} comments'.format(medium.comment_count) }}">
+					{{ medium.comment_count }}
+				</p>
+			{% endif %}
+			{% if medium.like_count and not g.media.config['hide_total_like_counts'] %}
+				<p 
+					class="like_count" 
+					title="{{ '{} likes'.format(medium.like_count) }}">
+					{{ medium.like_count }}
+				</p>
+			{% endif %}
+			{% include 'medium_set_tiles.html' %}
+			{% include 'medium_group_tiles.html' %}
+		{% endif %}
+	</div>
+{% endif %}

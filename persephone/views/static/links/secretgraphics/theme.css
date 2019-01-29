@@ -1,0 +1,203 @@
+@charset "utf-8";
+/*Walker's ghost*/
+:root,
+:root.theme_ghost {
+	--background: #a0a0a0;
+	--foreground: #ffffff;
+	--link: #004080;
+
+	--header_background: #606060;
+	--header_foreground: #ffffff;
+	--header_link: #00c0ff;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #a0a0a0;
+	--topmenu_border: #ffffff;
+	--topmenu_inner_border: #a0a0a0;
+
+	--card_background: #ffffff;
+	--card_foreground: #000000;
+	--card_link: #00c0ff;
+	--card_border: #ffffff;
+	--card_inner_border: #a0a0a0;
+}
+/*Grey machine*/
+:root.theme_machine {
+	--background: #383838;
+	--foreground: #c0c0c0;
+	--link: #ffbe80;
+
+	--header_background: #c0c0c0;
+	--header_foreground: #000000;
+	--header_link: #ff4000;
+	--header_border: #000000;
+
+	--topmenu_background: #c0c0c0;
+	--topmenu_foreground: #000000;
+	--topmenu_border: #000000;
+	--topmenu_inner_border: #606060;
+
+	--card_background: #000000;
+	--card_foreground: #ffffff;
+	--card_link: #ff4000;
+	--card_border: #000000;
+	--card_inner_border: #606060;
+}
+/*mono dark*/
+:root.theme_monodark {
+	--background: #000000;
+	--foreground: #ffffff;
+	--link: #00c0ff;
+
+	--header_background: #000000;
+	--header_foreground: #ffffff;
+	--header_link: #00c0ff;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #000000;
+	--topmenu_border: #ffffff;
+	--topmenu_inner_border: #000000;
+
+	--card_background: #000000;
+	--card_foreground: #ffffff;
+	--card_link: #00c0ff;
+	--card_border: #ffffff;
+	--card_inner_border: #ffffff;
+}
+/*mono bright*/
+:root.theme_monobright {
+	--background: #ffffff;
+	--foreground: #000000;
+	--link: #00c0ff;
+
+	--header_background: #ffffff;
+	--header_foreground: #000000;
+	--header_link: #00c0ff;
+	--header_border: #000000;
+
+	--topmenu_background: #000000;
+	--topmenu_foreground: #ffffff;
+	--topmenu_border: #000000;
+	--topmenu_inner_border: #ffffff;
+
+	--card_background: #ffffff;
+	--card_foreground: #000000;
+	--card_link: #00c0ff;
+	--card_border: #000000;
+	--card_inner_border: #000000;
+}
+/*secret*/
+:root.theme_secret {
+	--background: #00c0ff;
+	--foreground: #ffffff;
+	--link: #004080;
+
+	--header_background: #004080;
+	--header_foreground: #ffffff;
+	--header_link: #40d0ff;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #00c0ff;
+	--topmenu_border: #ffffff;
+	--topmenu_inner_border: #00c0ff;
+
+	--card_background: #ffffff;
+	--card_foreground: #000000;
+	--card_link: #00c0ff;
+	--card_border: #ffffff;
+	--card_inner_border: #00c0ff;
+}
+/*paperclip*/
+:root.theme_paperclip {
+	--background: #d04030;
+	--foreground: #ffffff;
+	--link: #200000;
+
+	--header_background: #c02000;
+	--header_foreground: #ffffff;
+	--header_link: #ffa080;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #d04030;
+	--topmenu_border: #ffffff;
+	--topmenu_inner_border: #d04030;
+
+	--card_background: #ffffff;
+	--card_foreground: #000000;
+	--card_link: #d04030;
+	--card_border: #ffffff;
+	--card_inner_border: #d04030;
+}
+/*Latex*/
+:root.theme_latex {
+	--background: #282828;
+	--foreground: #80bdff;
+	--link: #80bdff;
+
+	--header_background: #404040;
+	--header_foreground: #80bdff;
+	--header_link: #80bdff;
+	--header_border: #80bdff;
+
+	--topmenu_background: #80bdff;
+	--topmenu_foreground: #282828;
+	--topmenu_border: #80bdff;
+	--topmenu_inner_border: #282828;
+
+	--card_background: #80bdff;
+	--card_foreground: #404040;
+	--card_link: #404040;
+	--card_border: #80bdff;
+	--card_inner_border: #282828;
+}
+/*Egg*/
+:root.theme_egg {
+	--background: #ffcc00;
+	--foreground: #827272;
+	--link: #004080;
+
+	--header_background: #827272;
+	--header_foreground: #ffffff;
+	--header_link: #ffffff;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #827272;
+	--topmenu_border: #423232;
+	--topmenu_inner_border: #423232;
+
+	--card_background: #ffffff;
+	--card_foreground: #202020;
+	--card_link: #2080ff;
+	--card_border: #423232;
+	--card_inner_border: #423232;
+}
+/*Green*/
+:root.theme_green {
+	--background: #0a420c;
+	--foreground: #ffffff;
+	--link: #ffffff;
+
+	--header_background: #0d720d;
+	--header_foreground: #ffffff;
+	--header_link: #ffffff;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #0a420c;
+	--topmenu_border: #ffffff;
+	--topmenu_inner_border: #0a420c;
+
+	--card_background: #ffffff;
+	--card_foreground: #202020;
+	--card_link: #2080ff;
+	--card_border: #ffffff;
+	--card_inner_border: #0a420c;
+}
+
+/*futaba red*/
+/*buri blue*/

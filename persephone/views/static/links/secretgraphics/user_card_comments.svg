@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<svg width="50" height="50" viewBox="0 0 50 50" version="1.1" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<mask id="mask" x="0" y="0" width="50" height="50">
+			<ellipse cx="25" cy="22" rx="16" ry="13"
+				stroke-width="1" stroke="white" fill="white" />
+			<polyline stroke-linejoin="round" 
+				points="25,32 25,42 32,32" 
+				stroke-width="2"
+				stroke="white" 
+				fill="white" />
+		</mask>
+	</defs>
+	<rect x="0" y="0" width="50" height="50" fill="white" mask="url(#mask)" />
+</svg>

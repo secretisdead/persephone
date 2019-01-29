@@ -1,0 +1,14 @@
+<div class="announcement">
+	{% if 'title' in announcement_medium.semantic_tags %}
+		<h1>{{ announcement_medium.semantic_tags['title'] }}</h1>
+	{% endif %}
+	{% from 'users.jinja' import user_display, user_avatar %}
+	<p>
+		<span data-timestamp="{{ announcement_medium.creation_time }}">
+			{{ announcement_medium.creation_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+		</span> 
+		by {{ user_display(announcement_medium.owner) }}
+	</p>
+	{{ user_avatar(announcement_medium.owner) }}
+	<div>{{ announcement_medium.contents|safe }}</div>
+</div>

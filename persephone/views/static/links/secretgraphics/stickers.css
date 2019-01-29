@@ -1,0 +1,169 @@
+:root {
+	--sticker_unique_placements_count_background: var(--background);
+	--sticker_unique_placements_count_foreground: var(--foreground);
+}
+/*stickers*/
+.sticker {
+	display: inline-block;
+	font-size: 0;
+	width: 64px;
+	height: 64px;
+	overflow: hidden;
+	position: relative;
+}
+.sticker picture,
+.sticker picture img {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center center;
+}
+/*gachapon*/
+#use_gachapon {
+	position: relative;
+	display: inline-block;
+	font-size: 0;
+	width: 220px;
+	height: 480px;
+}
+#use_gachapon::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	width: 220px;
+	height: 480px;
+	background-image: url(gachapon.png);
+	cursor: pointer;
+	z-index: 10;
+}
+#use_gachapon::after {
+	content: "";
+	position: absolute;
+	display: inline-block;
+	top: 70px;
+	left: 34px;
+	width: 156px;
+	height: 156px;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: var(--header_background);
+	z-index: -1;
+	background-image: url(gachapon_insert.png);
+}
+#gachapon {
+	position: relative;
+}
+#gachapon .sticker {
+	position: absolute;
+	top: 360px;
+	left: 37px;
+	z-index: 100;
+}
+.gachapon_success {
+	border-radius: 0.5rem;
+	background-color: var(--card_background);
+	color: var(--card_foreground);
+	padding: 0.25rem 0.5rem;
+	margin-bottom: 0.5rem;
+}
+/*stickerbook*/
+[data-endpoint="user_collected_stickers"] h1 {
+	display: none;
+}
+.stickerbook {
+	background-color: var(--card_background);
+	border: 1px solid var(--card_border);
+	border-radius: 1rem;
+	overflow: hidden;
+}
+.stickerbook h2 {
+	display: none;
+}
+.stickerbook .not_collected img {
+	filter: brightness(0.4) saturate(0);
+}
+.stickerbook .not_collected:hover img {
+	filter: brightness(1) saturate(1);
+}
+.stickerbook p:first-of-type {
+	margin: 0;
+	padding: 0.5rem;
+	font-size: 1rem;
+	font-weight: bold;
+	background-color: var(--header_background);
+	color: var(--header_foreground);
+}
+:root {
+	--stickers_per_row: 6;
+}
+.stickerbook .sticker_category {
+	font-size: 0;
+	margin: 0;
+	border-top: 1px solid var(--card_border);
+	padding: 0.5rem;
+	width: calc(calc(64px * var(--stickers_per_row)) + calc(0.5rem * var(--stickers_per_row)));
+	box-sizing: border-box;
+}
+.stickerbook .sticker_category:empty {
+	display: none;
+}
+.stickerbook .sticker_category .sticker {
+	margin: 0.25rem;
+}
+.stickerbook a {
+	display: inline-block;
+	position: relative;
+}
+.stickerbook .unique_placements_count {
+	display: inline-block;
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	font-size: 0.9rem;
+	font-weight: bold;
+	line-height: 1.5rem;
+	margin: 0;
+	padding: 0;
+	min-width: 1.5rem;
+	text-align: center;
+	border-radius: 1rem;
+	text-align: center;
+	z-index: 10;
+	cursor: help;
+	background-color: var(--sticker_unique_placements_count_background);
+	color: var(--sticker_unique_placements_count_foreground);
+}
+/*stickers list*/
+.stickers_admin-stickers_list .sticker,
+.stickers_admin-collected_stickers_list .sticker,
+.stickers_admin-sticker_placements_list .sticker {
+	width: 32px;
+	height: 32px;
+}
+.stickers_admin-stickers_list tbody td:nth-child(2) {
+	text-align: center;
+}
+/*edit sticker*/
+.stickers_admin-create_sticker,
+.stickers_admin-edit_sticker {
+	width: 480px;
+}
+.sticker_preview {
+	padding: 0.5rem;
+	border: 1px solid var(--card_border);
+	border-bottom: none;
+	border-top-left-radius: 1rem;
+	border-top-right-radius: 1rem;
+}
+label[for="remove_sticker_image"]::before {
+	border-top-color: var(--form_border)!important;
+}
+/*hide sticker drawer for non-javascript*/
+#sticker_drawer {
+	display: none;
+}

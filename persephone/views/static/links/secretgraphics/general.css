@@ -1,0 +1,484 @@
+@charset "utf-8";
+:root {
+	--danger_border: #ffffff;
+	--danger_background: #000000;
+	--danger_link: #ffffff;
+	--danger_foreground: #ff0000;
+	--danger_header_background: #ff0000;
+	--danger_header_foreground: #ffffff;
+	--checker_background: #101010;
+	--checker_foreground: rgba(255, 255, 255, 0.20);
+}
+body {
+	font-family: Tahoma, Verdana, sans-serif;
+	max-width: 100%;
+	text-align: center;
+	color: var(--foreground);
+	background-color: var(--background);
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	font-size: 12pt;
+}
+
+/*content*/
+#content {
+	font-size: 1rem;
+	margin: 0;
+	padding: 1rem;
+	display: flex;
+	/* leave room for static topmenu outside of #content when scripts are disabled*/
+	min-height: calc(100vh - 48px - 32px - 0.5rem - 1.75rem - 0.25rem);
+	box-sizing: border-box;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+/*other full centers*/
+.media_search_endpoint .legal_terms_of_use,
+.media_search_endpoint .error_status {
+	display: flex;
+	min-height: calc(100vh - 9rem);
+	box-sizing: border-box;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+/*other full center elements that need to align left*/
+.media_search_endpoint .legal_terms_of_use h1 {
+	width: 100%;
+	text-align: left;
+}
+/*non full center*/
+.media_search_endpoint #content {
+	display: block;
+}
+[data-endpoint="persephone.upload"] #content {
+	display: inline-block;
+}
+
+/*headers*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-align: left;
+	margin: 0 auto;
+}
+
+/*links*/
+a {
+	color: var(--link);
+}
+
+/*paragraphs*/
+p {
+	margin: 1rem;
+}
+
+/*lists*/
+li {
+	text-align: justify;
+	margin-right: 1rem;
+	margin-bottom: 0.5rem;
+}
+li li {
+	margin-right: 0;
+	margin-bottom: 0;
+	font-size: 0.9rem;
+}
+
+/*topmenu*/
+#topmenu {
+	display: block;
+	color: var(--topmenu_foreground);
+	background-color: var(--topmenu_background);
+	border-bottom: 1px solid var(--topmenu_border);
+	text-align: left;
+	z-index: 1000;
+	margin-bottom: 0;
+}
+#topmenu::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 1px;
+	left: 0;
+	z-index: -1;
+	border-bottom: 1px solid var(--background);
+}
+#topmenu a {
+	display: inline-block;
+	color: var(--topmenu_foreground);
+	background-color: var(--topmenu_background);
+	border-right: 1px solid var(--topmenu_inner_border);
+	padding: 0 1rem;
+	margin: 0;
+	text-decoration: none;
+	font-size: 0.9rem;
+	line-height: 2.5rem;
+}
+#topmenu a:hover {
+	color: var(--topmenu_background);
+	background-color: var(--topmenu_foreground);
+}
+
+/*regular menus*/
+nav {
+	margin-bottom: 0.5rem;
+	text-align: right;
+}
+nav a, nav span, nav strong {
+	display: inline-block;
+	margin-left: 0.75rem;
+}
+nav a:last-child {
+	margin-right: 0;
+}
+
+/*checkers*/
+.avatar_preview,
+.stickerbook .sticker_category,
+#sticker_drawer .stickers,
+.sticker_preview,
+.medium,
+.thumbnail,
+.persephone-manage_tags .remove_tag p:first-of-type,
+.persephone-manage_tags .replace_tag p,
+.persephone-manage_tags .accompany_tag p,
+.placed_sticker_header {
+	background-attachment: fixed;
+	position: relative;
+	background-position: center;
+	background-color: var(--checker_background);
+	background-image: url('data:image/svg+xml,\
+		<svg class="checker" xmlns="http://www.w3.org/2000/svg" width="48" height="48">\
+			<rect x="24" width="24" height="24" />\
+			<rect y="24" width="24" height="24" />\
+		</svg>');
+}
+.avatar_preview::before,
+.stickerbook .sticker_category::before,
+#sticker_drawer .stickers::before,
+.sticker_preview::before,
+.medium::before,
+.thumbnail::before,
+.persephone-manage_tags .remove_tag p:first-of-type::before,
+.persephone-manage_tags .replace_tag p::before,
+.persephone-manage_tags .accompany_tag p::before,
+.placed_sticker_header::before {
+	display: inline-block;
+	content: "";
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 0;
+	background-color: var(--checker_foreground);
+}
+
+/*danger cards*/
+.danger {
+	margin-top: 2rem;
+	border-radius: 0.5em;
+	overflow: hidden;
+	border: 1px solid var(--danger_border);
+	background-color: var(--danger_background);
+	color: var(--danger_foreground);
+	text-align: left;
+}
+.danger h1 {
+	background-color: var(--danger_header_background);
+	color: var(--danger_header_foreground);
+	padding: 0.5rem;
+}
+.danger a {
+	color: var(--danger_link);
+}
+
+/*textual pages*/
+.persephone-about,
+.announcement,
+.legal_terms_of_use,
+.legal-privacy,
+.legal-takedown,
+.persephone-takeout,
+.media_supplemental-help,
+.patreon_admin-create_client,
+.accounts_signed_in-redeem_auto_permission,
+.view_protected_medium,
+.persephone-premium_info,
+.confirm {
+	width: 512px;
+	max-width: 100%;
+	margin: 0 auto;
+	text-align: left;
+}
+
+/*error pages*/
+.error_status {
+	max-width: 512px;
+	margin: 0 auto;
+	text-align: left;
+}
+
+/*without headers*/
+.persephone-home>h1,
+.accounts_signed_out-sign_in_services h1,
+.stickers_signed_in-gachapon h1,
+.stickers_admin-edit_sticker h1,
+.persephone-user_collected_stickers h1,
+.persephone-user_sticker_placements h1 {
+	display: none;
+}
+
+/*announcements*/
+.persephone-announcements {
+	width: 512px;
+}
+.announcement {
+	text-align: left;
+	background-color: var(--card_background);
+	color: var(--card_foreground);
+	border: 1px solid var(--card_border);
+	border-radius: 0.5rem;
+	overflow: hidden;
+}
+.announcement h1 {
+	border-bottom: 1px solid var(--card_border);
+	background-color: var(--header_background);
+	color: var(--header_foreground);
+	padding: 0.5rem;
+}
+.announcement>p:first-child,
+.announcement h1 + p {
+	font-size: 0.75rem;
+	margin: 0.5rem;
+}
+.announcement .avatar {
+	margin: 0 0.5rem 0.5rem 0.5rem;
+	width: 32px;
+	height: 32px;
+}
+.announcement pre {
+	white-space: pre-wrap;
+	padding: 0 1rem;
+}
+.announcement div:last-child {
+	border-top: 1px solid var(--card_inner_border);
+}
+.announcement a {
+	color: var(--card_link);
+}
+.announcement + a {
+	display: block;
+	margin-top: 0.5rem;
+	text-align: left;
+	margin-bottom: 2rem;
+	font-size: 0.9rem;
+}
+.announcement + nav,
+.announcement + .comments {
+	margin-top: 0.5rem;
+}
+
+/*dashboards*/
+.dashboard_collection {
+	text-align: left;
+}
+.dashboard {
+	text-align: left;
+	border: 1px solid var(--card_border);
+	display: inline-block;
+	border-radius: 0.5rem;
+	overflow: hidden;
+}
+.dashboard a {
+	display: inline-block;
+	color: var(--topmenu_foreground);
+	background-color: var(--topmenu_background);
+	padding: 0.75em 1em;
+	margin: 0;
+	text-decoration: none;
+	border-right: 1px solid var(--card_inner_border);
+	font-size: 0.9em;
+}
+.dashboard a:last-child {
+	border-right: none;
+	margin-right: 0;
+}
+.dashboard a:hover {
+	color: var(--topmenu_background);
+	background-color: var(--topmenu_foreground);
+}
+/*special dashboard rules*/
+.persephone-home .dashboard {
+	text-align: center;
+}
+.persephone-contributor h1,
+.persephone-manager h1,
+.persephone-admin h1,
+.persephone-legal h1 {
+	margin-bottom: 0.5rem;
+}
+
+/*gachapon*/
+
+/*about*/
+.about_me, .about_persephone {
+	text-align: left;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	border: 1px solid var(--card_border);
+	background-color: var(--card_background);
+	color: var(--card_foreground);
+}
+.about_persephone {
+	font-size: 0.75rem;
+	margin-top: 1rem;
+}
+.about_persephone img {
+	float: left;
+	margin-right: 0.8rem;
+}
+.about_persephone p {
+	margin: 0.8rem;
+}
+
+/*legal*/
+.legal-privacy p,
+.legal-takedown p,
+.legal-takedown li {
+	text-align: justify;
+}
+
+/*always small submit button for terms of use agreement*/
+.legal_terms_of_use form {
+	text-align: center;
+}
+.legal_terms_of_use input[type="submit"] {
+	width: auto;
+	display: inline-block;
+}
+
+/*takeout*/
+
+/*user likes management*/
+.user_liked_media_list tbody td:first-child {
+	font-size: 0;
+	padding: 1px;
+}
+
+/*user sticker placements*/
+.placed_sticker_header {
+	font-size: 0;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+/*settings*/
+#theme_select_form {
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*narrower screens*/
+@media only screen and (max-width: 1024px)
+{
+}
+@media only screen and (max-width: 800px)
+{
+	body {
+		font-size: 11.5pt;
+	}
+}
+@media only screen and (max-width: 640px)
+{
+	#content {
+		/* leave room for static topmenu outside of #content when scripts are disabled*/
+		min-height: calc(100vh - 48px - 3px);
+	}
+	/*topmenu icons*/
+	#topmenu {
+		font-size: 0;
+	}
+	#topmenu a {
+		font-size: 0;
+		padding: 0;
+		width: 48px;
+		height: 48px;
+		position: relative;
+	}
+	#topmenu a::after {
+		position: absolute;
+		content: "";
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		mask-type: luminance;
+		mask-size: contain;
+		-webkit-mask-type: luminance;
+		-webkit-mask-size: contain;
+		background-color: var(--topmenu_foreground);
+	}
+	#topmenu a:hover::after {
+		background-color: var(--topmenu_background);
+	}
+	#top_home::after {
+		mask-image: url(top_home.svg);
+		-webkit-mask-image: url(top_home.svg);
+	}
+	#top_search::after {
+		mask-image: url(top_search.svg);
+		-webkit-mask-image: url(top_search.svg);
+	}
+	#top_random::after {
+		mask-image: url(top_random.svg);
+		-webkit-mask-image: url(top_random.svg);
+	}
+	#top_tegaki::after {
+		mask-image: url(top_tegaki.svg);
+		-webkit-mask-image: url(top_tegaki.svg);
+	}
+	#top_upload::after {
+		mask-image: url(top_upload.svg);
+		-webkit-mask-image: url(top_upload.svg);
+	}
+	#top_settings::after {
+		mask-image: url(top_settings.svg);
+		-webkit-mask-image: url(top_settings.svg);
+	}
+	#top_sign_out::after {
+		mask-image: url(top_sign_out.svg);
+		-webkit-mask-image: url(top_sign_out.svg);
+	}
+	#manage_media_toggle::after {
+		mask-image: url(top_manage.svg);
+		-webkit-mask-image: url(top_manage.svg);
+	}
+}
+@media only screen and (max-width: 480px)
+{
+	/*TODO for very narrow screens put topmenu items under an overflow menu*/
+}

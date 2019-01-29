@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block title %}Edit {{ medium.id }}{% endblock %}
+{% block content %}
+	<h2>Edit medium {{ medium.id }}</h2>
+	<div id="edit_medium_preview">{% include 'medium_thumbnail.html' %}</div>
+	{#TODO instead of prescribed medium_edit script add it manually from the main project after #preview #}
+	{% include 'medium_info.html' %}
+	{% include 'edit_medium_data_table.html' %}
+	{% include 'medium_form_errors.html' %}
+	{% include 'edit_medium_form.html' %}
+	<script 
+		type="text/javascript" 
+		src="{{ url_for('persephone.static', filename='scripts/thumbnail_previews.js') }}"></script>
+	<script 
+		type="text/javascript" 
+		src="{{ url_for('persephone.static', filename='scripts/edit_medium.js') }}"></script>
+	{% for mode, display in {
+		'delete_summaries': 'Delete summary files',
+		'delete_original': 'Delete original file',
+		'remove': 'Remove medium completely',
+	}.items() %}
+		<a 
+			id="{{ mode }}" 
+			href="{{ url_for(
+				request.endpoint,
+				medium_id=medium.id,
+				mode=mode,
+				**kwargs,
+			) }}">
+			{{ display }}
+		</a>
+	{% endfor %}
+{% endblock %}

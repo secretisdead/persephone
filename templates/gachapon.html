@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block title %}Gachapon{% endblock %}
+{% block content %}
+	<h1>Gachapon</h1>
+	<div id="gachapon">
+		{% include 'gachapon_errors.html' %}
+		{% if sticker %}
+			{% include 'gachapon_success.html' %}
+			{% from 'stickers.jinja' import sticker_image %}
+			{{ sticker_image(sticker) }}
+		{% endif %}
+		<a 
+			id="use_gachapon" 
+			href="{{ url_for('stickers_signed_in.gachapon', request=1) }}" 
+			data-action="{{ url_for('stickers_api.api_gachapon') }}">
+			Use the gachapon
+		</a>
+	</div>
+	<script 
+		type="module" 
+		src="{{ url_for(
+			'persephone.static',
+			filename='scripts/gachapon.js',
+		) }}"></script>
+{% endblock %}

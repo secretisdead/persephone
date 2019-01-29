@@ -1,0 +1,209 @@
+:root {
+	--tag_foreground: #ffffff;
+	--tag_background: #4080c0;
+
+	--tag_author: #408000;
+	--tag_name: #ff4000;
+	--tag_source: #804000;
+	--tag_title: #ff0080;
+	--tag_filename: #c04080;
+
+	--tag_sort: #008080;
+	--tag_order: #008080;
+	--tag_perpage: #008080;
+
+	--tag_group: #ff8000;
+	--tag_time: #808080;
+	--tag_category: #8080ff;
+	--tag_mime: #8080ff;
+	--tag_orientation: #ffa000;
+	--tag_filesize: #400040;
+	--tag_data: #604040;
+	--tag_protection: #c00000;
+	--tag_searchability: #c00000;
+
+	--tag_set: #8000ff;
+	--tag_cover: #004080;
+	--tag_render: #808000;
+	--tag_sequence: #c08000;
+	--tag_feature: #c00080;
+	--tag_mirror: #0080a0;
+	--tag_quality: #008080;
+
+	--tag_id: #000000;
+	--tag_origin: #000000;
+	--tag_user: #404040;
+	--tag_status: #c00000;
+	--tag_liked_by: #c080a0;
+}
+.tag {
+	display: inline-block;
+	font-size: 13px;
+	margin-top: 1px;
+	margin-right: 2px;
+	background-color: var(--tag_background);
+	color: var(--tag_foreground);
+	border-radius: 0.25em;
+	overflow: hidden;
+	word-break: keep-all;
+	cursor: default;
+	vertical-align: middle;
+	text-decoration: none;
+}
+.tag a,
+.tag a:hover,
+.tag a:active,
+.tag a:visited,
+.tag span {
+	display: inline-block;
+	color: inherit;
+	text-decoration: inherit;
+	padding: 2px 4px;
+}
+/*negation*/
+.tag[data-tag^="-"] {
+	text-decoration: line-through;
+}
+.tag[data-tag^="-"]:hover {
+	text-decoration: none;
+}
+/*normal*/
+.tag[data-tag^="author:"],
+.tag[data-tag^="-author:"] {
+	background-color: var(--tag_author);
+}
+.tag[data-tag^="name:"],
+.tag[data-tag^="-name:"] {
+	background-color: var(--tag_name);
+}
+.tag[data-tag^="source:"],
+.tag[data-tag^="-source:"] {
+	background-color: var(--tag_source);
+}
+.tag[data-tag^="title:"],
+.tag[data-tag^="-title:"] {
+	background-color: var(--tag_title);
+}
+.tag[data-tag^="filename:"],
+.tag[data-tag^="-filename:"] {
+	background-color: var(--tag_filename);
+}
+/*pagination*/
+.tag[data-tag^="sort:"] {
+	background-color: var(--tag_sort);
+}
+.tag[data-tag^="order:"] {
+	background-color: var(--tag_order);
+}
+.tag[data-tag^="perpage:"] {
+	background-color: var(--tag_perpage);
+}
+/*properties*/
+.tag[data-tag^="group:"],
+.tag[data-tag^="-group:"] {
+	background-color: var(--tag_group);
+}
+.tag[data-tag^="uploaded after:"],
+.tag[data-tag^="uploaded before:"],
+.tag[data-tag^="created after:"],
+.tag[data-tag^="created before:"] {
+	background-color: var(--tag_time);
+}
+.tag[data-tag^="category:"],
+.tag[data-tag^="-category:"] {
+	background-color: var(--tag_category);
+}
+.tag[data-tag^="mimetype:"],
+.tag[data-tag^="-mimetype:"] {
+	background-color: var(--tag_mime);
+}
+.tag[data-tag^="smaller than:"],
+.tag[data-tag^="-smaller than:"],
+.tag[data-tag^="larger than:"],
+.tag[data-tag^="-larger than:"] {
+	background-color: var(--tag_filesize);
+}
+.tag[data-tag^="data"][data-tag*="less than:"],
+.tag[data-tag^="-data"][data-tag*="less than:"],
+.tag[data-tag^="data"][data-tag*="more than:"],
+.tag[data-tag^="-data"][data-tag*="more than:"] {
+	background-color: var(--tag_data);
+}
+.tag[data-tag^="protection:"],
+.tag[data-tag^="-protection:"] {
+	background-color: var(--tag_protection);
+}
+.tag[data-tag^="searchability:"],
+.tag[data-tag^="-searchability:"] {
+	background-color: var(--tag_searchability);
+}
+/*rendering*/
+.tag[data-tag^="set:"],
+.tag[data-tag^="-set:"] {
+	background-color: var(--tag_set);
+}
+.tag[data-tag^="cover:"],
+.tag[data-tag^="-cover:"] {
+	background-color: var(--tag_cover);
+}
+.tag[data-tag^="text:"] {
+	background-color: var(--tag_render);
+}
+.tag[data-tag^="next:"],
+.tag[data-tag^="prev:"] {
+	background-color: var(--tag_sequence);
+}
+.tag[data-tag^="disable:"] {
+	background-color: var(--tag_feature);
+}
+.tag[data-tag^="suppress:"] {
+	background-color: var(--tag_feature);
+}
+.tag[data-tag^="mirror:"],
+.tag[data-tag^="-mirror:"] {
+	background-color: var(--tag_mirror);
+}
+.tag[data-tag^="superior of:"],
+.tag[data-tag^="-superior of:"],
+.tag[data-tag^="inferior of:"],
+.tag[data-tag^="-inferior of:"] {
+	background-color: var(--tag_quality);
+}
+/*management*/
+.tag[data-tag^="id:"] {
+	background-color: var(--tag_id);
+}
+.tag[data-tag^="origin:"] {
+	background-color: var(--tag_origin);
+}
+.tag[data-tag^="uploader:"],
+.tag[data-tag^="owner:"] {
+	background-color: var(--tag_user);
+}
+.tag[data-tag^="status:"],
+.tag[data-tag^="-status:"] {
+	background-color: var(--tag_status);
+}
+.tag[data-tag^="liked by:"],
+.tag[data-tag^="-liked by:"] {
+	background-color: var(--tag_liked_by);
+}
+
+/*actions*/
+.tag .action,
+.tags_preview .tag::after {
+	display: inline-block;
+	width: 1.25ex;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.25);
+	cursor: pointer;
+}
+.tag .action:hover,
+.tags_preview .tag:hover::after {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.tags_preview .tag::after {
+	color: #ffffff;
+	content: "ˣ";
+	padding: 2px 4px;
+}

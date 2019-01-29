@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block title %}Announcements{% endblock %}
+{% block content %}
+	{% if not announcement_medium %}
+		<h1>No announcements yet</h1>
+	{% else %}
+		{% include 'announcement.html' %}
+		{% from 'pages_list.jinja' import pages_list %}
+		{{ pages_list(
+			total_pages=total_pages,
+			url=url_for(
+				'persephone.announcements',
+				page='PAGE',
+			).replace('page=PAGE', 'page={}'),
+			current_page=page,
+		) }}
+		{% if 'suppress:comments' not in announcement_medium.tags %}
+			{% if 'disable:comments' not in announcement_medium.tags %}
+				{% from 'comments.jinja' import comment_form %}
+				{{ comment_form(announcement_medium.id, redirect_uri=request.url) }}
+				{% include 'stickers.html' %}
+			{% endif %}
+			{% set comments = g.comments.search_comments(filter={'subject_ids': announcement_medium.id}) %}
+			{% set _ = g.persephone['filter_comments'](comments) %}
+			{% from 'comments.jinja' import comments_table %}
+			{{ comments_table(comments) }}
+		{% endif %}
+	{% endif %}
+{% endblock %}

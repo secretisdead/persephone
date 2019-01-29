@@ -1,0 +1,55 @@
+{% set _ = g.persephone['populate_current_user_stickerbook']() %}
+{% if g.accounts.current_user and g.accounts.current_user.stickerbook %}
+	{% from 'stickers.jinja' import sticker_category_display, sticker_image %}
+	<div 
+		id="sticker_drawer" 
+		data-action-place-sticker="{{ url_for('stickers_api.api_place_sticker') }}" 
+		data-action-unplace-sticker="{{ url_for('stickers_api.api_unplace_sticker') }}" 
+		data-user-id="{{ g.accounts.current_user.id }}" 
+		data-maximum-stickers-per-target="{{ g.stickers.config['maximum_stickers_per_target'] }}">
+		<div id="sticker_categories">
+			{% for category, stickers in g.accounts.current_user.stickerbook.items() %}
+				{% if stickers %}
+					<a 
+						data-category="{{ category }}" 
+						title="{{ sticker_category_display(category) }}">
+						{{ sticker_category_display(category) }}
+					</a>
+				{% endif %}
+			{% endfor %}
+		</div>
+		<div id="sticker_category_indicator_track">
+			<span id="sticker_category_indicator"></span>
+		</div>
+		<div class="stickers">
+			<span class="stickers_prev">Prev</span>
+			<span class="stickers_next">Next</span>
+			{% for category, stickers in g.accounts.current_user.stickerbook.items() %}
+				{% if stickers %}
+					<div class="sticker_category" data-category="{{ category }}">
+					{% for sticker in stickers %}
+						{{ sticker_image(sticker) }}
+					{% endfor %}
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+{% endif %}
+{% if g.accounts.current_user.has_permission(group_names='manager') %}
+	{#TODO sticker management mode? #}
+{% endif %}
+<meta 
+	name="sticker_placements_uri" 
+	content="{{ url_for(
+		'stickers_static.placements_file',
+		placements_filename='PLACEMENTS_FILENAME'
+	).replace('PLACEMENTS_FILENAME', '{}.json') }}">
+<meta name="sticker_edge" content="{{ g.stickers.config['sticker_edge'] }}">
+<meta name="max_sticker_target_width" content="{{ g.media.config['summary_values']['view'] }}">
+<script 
+	type="module" 
+	src="{{ url_for(
+		'persephone.static',
+		filename='scripts/stickers.js',
+	) }}"></script>

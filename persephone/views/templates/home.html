@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+	{#TODO signed out splash can go here #}
+	{% if announcement_medium %}
+		{% include 'announcement.html' %}
+		<a href="{{ url_for('persephone.announcements') }}">View announcements</a>
+	{% endif %}
+	<h1>Home</h1>
+	<nav class="dashboard">
+		<a href="{{ url_for('accounts_signed_out.sign_in_services') }}">Sign In</a>
+		{% include 'home_links.html' %}
+	</nav>
+{% endblock%}

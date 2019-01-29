@@ -1,0 +1,182 @@
+{% extends 'layout.html' %}
+{% block title %}Comments list{% endblock %}
+{% block content %}
+	<h1>Comments list</h1>
+	{% from 'users.jinja' import edit_user_link, user_display %}
+	{% macro render_result(result) %}
+		<tr>
+			<td>
+				<a 
+					href="{{ url_for(
+						'comments_manager.comments_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						id=result.id,
+					) }}" 
+					title="View comment in list">
+					○
+				</a>
+			</td>
+			<td data-timestamp="{{ result.creation_time }}">
+				{{ result.creation_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+			</td>
+			{% if not result.edit_time %}
+				<td></td>
+			{% else %}
+				<td data-timestamp="{{ result.edit_time }}">
+					{{ result.edit_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+				</td>
+			{% endif %}
+			<td>
+				<a href="{{ url_for(
+						'comments_manager.comments_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						subject_id=result.subject_id,
+					) }}" 
+					title="Search comments for this subject">
+					(Search)
+				</a> 
+				<a 
+					href="{{ url_for(
+						'search_public_media',
+						medium_id=result.subject_id,
+					) }}" 
+					title="View this medium">
+					{{ result.subject_id }}
+				</a>
+			</td>
+			<td>
+				<a 
+					href="{{ url_for(
+						'comments_manager.comments_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						remote_origin=result.remote_origin.exploded,
+					) }}" 
+					title="Search this remote origin's comments">
+					{{ result.remote_origin.exploded }}
+				</a>
+			</td>
+			{% if not result.user_id %}
+				{% set user_id = 'guest' %}
+			{% else %}
+				{% set user_id = result.user_id %}
+			{% endif %}
+			<td>
+				<a href="{{ url_for(
+						'comments_manager.comments_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						user_id=user_id,
+					) }}" 
+					title="Search comments created by this user">
+					(Search)
+				</a> 
+				{% if not result.user_id %}
+					Guest
+				{% else %}
+					{{ edit_user_link(result.user) }}
+				{% endif %}
+			</td>
+			<td>{{ result.body }}</td>
+			<td>
+				<a 
+					href="{{ url_for(
+						'comments_manager.remove_comment',
+						comment_id=result.id,
+						redirect_uri=request.url,
+					) }}" 
+					title="Remove this comment">
+					Remove
+				</a>
+			</td>
+		</tr>
+	{% endmacro %}
+	{% set columns = [
+		{
+			'name': 'id',
+			'label': 'ID',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+		},
+		{
+			'name': 'creation_time',
+			'label': 'Created',
+			'sortable': True,
+			'searchable': True,
+			'type': 'amount',
+			'less_than_name': 'created_before',
+			'less_than_label': 'Created before',
+			'less_than_placeholder': 'Datetime string',
+			'greater_than_name': 'created_after',
+			'greater_than_label': 'Created after',
+			'greater_than_placeholder': 'Datetime string',
+		},
+		{
+			'name': 'edit_time',
+			'label': 'Edited',
+			'sortable': True,
+			'searchable': True,
+			'type': 'amount',
+			'less_than_name': 'edited_before',
+			'less_than_label': 'Edited before',
+			'less_than_placeholder': 'Datetime string',
+			'greater_than_name': 'edited_after',
+			'greater_than_label': 'Edited after',
+			'greater_than_placeholder': 'Datetime string',
+		},
+		{
+			'name': 'subject_id',
+			'label': 'Subject',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'Subject ID',
+		},
+		{
+			'name': 'remote_origin',
+			'label': 'Remote origin',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+		},
+		{
+			'name': 'user_id',
+			'label': 'User',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'User ID',
+		},
+		{
+			'name': 'body',
+			'label': 'Body',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+		},
+		{
+			'name': 'remove',
+			'label': 'Remove',
+			'sortable': False,
+			'searchable': False,
+		},
+	] %}
+	{% from 'tabular_list.jinja' import tabular_list %}
+	{{ tabular_list(
+		columns,
+		'comments_manager.comments_list',
+		results,
+		total_results,
+		render_result,
+		total_pages,
+		pagination,
+		search,
+	) }}
+{% endblock %}

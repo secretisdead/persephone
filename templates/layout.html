@@ -1,0 +1,142 @@
+{% set theme_class = '' %}
+{% if g.persephone_config['default_theme'] %}
+	{% set theme_class = g.persephone_config['default_theme'] %}
+{% endif %}
+{% set media_endpoint_class = '' %}
+{% if request.endpoint in [
+		'persephone.search_public_media',
+		'persephone.manage_media',
+		'persephone.user_liked_media',
+		'persephone.user_sticker_placements',
+		'persephone.search_user_media',
+	] %}
+	{% if medium %}
+		{% set media_endpoint_class = ' media_view_endpoint' %}
+	{% else %}
+		{% set media_endpoint_class = ' media_search_endpoint' %}
+	{% endif %}
+{% endif %}
+<!doctype html>
+<html 
+	lang="en" 
+	data-endpoint="{{ request.endpoint }}" 
+	class="{{ theme_class }}{{ media_endpoint_class }}">
+	<head>
+		{% block head %}
+			<meta charset="utf-8">
+			<meta 
+				name="viewport" 
+				content="width=device-width, initial-scale=1.0, maximum-scale=4.0, minimum-scale=1.0, user-scalable=1.0">
+			<meta name="twitter:site" content="@secretisdead">
+			<meta property="og:site_name" content="{{ g.persephone_config['site_name'] }}">
+			{% block meta %}{% endblock %}
+			<title>
+				{% block title %}{% endblock %}
+				{% if self.title() %} - {% endif %}{{ g.persephone_config['site_title'] }}
+			</title>
+			<link 
+				rel="shortcut icon" 
+				type="image/png" 
+				href="{{ url_for(
+					'persephone.static',
+					filename='persephone_tear_128.png',
+				) }}"/>
+			<link 
+				rel="shortcut icon" 
+				type="image/x-icon" 
+				href="{{ url_for(
+					'persephone.static',
+					filename='favicon.ico',
+				) }}"/>
+			<style 
+				type="text/css">
+				@import '{{ url_for('persephone.static', filename='links/secretgraphics/theme.css') }}';
+			</style>
+			{% for file in [
+					'general',
+					'forms',
+					'tables',
+					'accounts',
+					'groups',
+					'badges',
+					'comments',
+					'media',
+					'tags',
+					'stickers',
+					'scripts',
+				] %}
+				<link 
+					rel="stylesheet" 
+					type="text/css" 
+					href="{{ url_for('persephone.static', filename='links/secretgraphics/' + file + '.css') }}">
+			{% endfor %}
+			{% block styles %}{% endblock %}
+			<link 
+				rel="stylesheet" 
+				type="text/css" 
+				href="{{ url_for('static', filename='links/custom.css') }}">
+			<script type="text/javascript">
+				'use strict';
+				function change_theme(theme) {
+					for (let i = document.documentElement.classList.length - 1; i > -1; i--) {
+						let value = document.documentElement.classList[i];
+						if ('theme_' == value.substr(0, 6)) {
+							document.documentElement.classList.remove(value);
+						}
+					}
+					document.documentElement.classList.add(theme);
+				}
+				document.documentElement.classList.add('scripts_enabled');
+				let theme_preference = localStorage.getItem('theme');
+				if (theme_preference) {
+					change_theme(theme_preference);
+				}
+			</script>
+			<script 
+				type="text/javascript" 
+				src="{{ url_for('persephone.static', filename='scripts/string_format.js') }}"></script>
+			{% block scripts %}{% endblock %}
+		{% endblock %}
+	</head>
+	<body>
+		{% block body %}
+			<div id="wrapper">
+				{% include 'topmenu.html' %}
+				<div id="content">
+					<div{% if request.endpoint %} class="{{ request.endpoint.replace('.', '-') }}"{% endif %}>
+						{% block content %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		{% endblock %}
+		<script type="text/javascript" src="{{ url_for('persephone.static', filename='scripts/topmenu.js') }}"></script>
+		<script type="module">
+			'use strict';
+			import { fuzzy_time_localization_en, fuzzy_local_dates } from '{{ url_for(
+				'persephone.static',
+				filename='scripts/time.js',
+			) }}';
+			import { SequenceNavigation } from '{{ url_for(
+				'persephone.static',
+				filename='scripts/sequence_navigation.js',
+			) }}';
+			fuzzy_local_dates(fuzzy_time_localization_en);
+			new SequenceNavigation(document.querySelector('.prev'), document.querySelector('.next'));
+		</script>
+		<script type="text/javascript">
+			setTimeout(() => {
+				document.documentElement.classList.add('loading_finished');
+			}, 250);
+		</script>
+		{% if g.persephone_config['google_analytics'] %}
+			<script type="text/javascript">
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+				ga('create', '{{ g.persephone_config['google_analytics'] }}', 'auto');
+				ga('send', 'pageview');
+			</script>
+		{% endif %}
+	</body>
+</html>

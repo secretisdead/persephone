@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block title %}Legal{% endblock %}
+{% block content %}
+	<h1>Legal</h1>
+	<nav class="dashboard" id="legal">
+		<a href="{{ url_for('legal.terms') }}">Terms</a>
+		<a href="{{ url_for('legal.privacy') }}">Privacy</a>
+		<a href="{{ url_for('legal.takedown') }}">Takedown</a>
+		{% if g.accounts.current_user %}
+			<a href="{{ url_for('persephone.takeout') }}">Takeout</a>
+		{% endif %}
+	</nav>
+{% endblock%}

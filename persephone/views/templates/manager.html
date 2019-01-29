@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% block title %}Manager{% endblock %}
+{% block content %}
+	<h1>Manager</h1>
+	<div class="dashboard_collection">
+		<nav class="dashboard" id="manager_accounts">
+			<a 
+				href="{{ url_for('accounts_manager.users_list') }}" 
+				title="Manage users">
+				Users
+			</a>
+			<a 
+				href="{{ url_for('accounts_manager.permissions_list') }}" 
+				title="Manage permissions">
+				Permissions
+			</a>
+			<a 
+				href="{{ url_for('accounts_manager.auto_permissions_list') }}" 
+				title="Manage auto permissions">
+				Auto Permissions
+			</a>
+			<a 
+				href="{{ url_for('accounts_manager.sessions_list') }}" 
+				title="Manage sessions">
+				Sessions
+			</a>
+			<a 
+				href="{{ url_for('accounts_manager.authentications_list') }}" 
+				title="Manage authentications">
+				Authentications
+			</a>
+			<a 
+				href="{{ url_for('accounts_manager.invites_list') }}" 
+				title="Manage invites">
+				Invites
+			</a>
+		</nav>
+		<br>
+		<nav class="dashboard" id="manager_bans">
+			<a 
+				href="{{ url_for('bans_manager.bans_list') }}" 
+				title="Manage bans">
+				Bans
+			</a>
+		</nav>
+		<br>
+		<nav class="dashboard" id="manager_comments">
+			<a 
+				href="{{ url_for('comments_manager.comments_list') }}" 
+				title="Manage comments">
+				Comments
+			</a>
+		</nav>
+		<br>
+		<nav class="dashboard" id="manager_media">
+			<a 
+				href="{{ url_for('persephone.manage_media') }}" 
+				title="Manage media">
+				Media
+			</a>
+			<a 
+				href="{{ url_for('persephone.manage_tags') }}" 
+				title="Manage tags">
+				Tags
+			</a>
+		</nav>
+	</div>
+{% endblock %}

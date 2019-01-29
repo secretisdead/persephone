@@ -1,0 +1,285 @@
+{% extends 'layout.html' %}
+{% block title %}Logs list{% endblock %}
+{% block content %}
+	<h1>Logs list</h1>
+	{% from 'logs.jinja' import log_scope_display %}
+	{% from 'authentications.jinja' import service_display %}
+	{% from 'users.jinja' import edit_user_link, user_display %}
+	{% macro render_log_id(type, result) %}
+		{% if 'user' == result[type + '_category'] %}
+			{{ edit_user_link(result[type]) }}
+		{% elif 'authentication' == result[type + '_category'] %}
+			Authentication 
+			<a 
+				href="{{ url_for(
+					'accounts_manager.view_user_authentication',
+					user_id=result[type].user.id,
+					service=result[type].service
+				) }}" 
+				title="View user authentication">
+				{{ user_display(result[type].user) }} - {{ service_display(result[type].service) }}
+			</a>
+		{% elif 'session' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'accounts_manager.sessions_list',
+					id=result[type].id,
+				) }}" 
+				title="View session in list">
+				Session
+			</a>
+		{% elif 'invite' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'accounts_manager.invites_list',
+					id=result[type].id,
+				) }}" 
+				title="View invite in list">
+				Invite
+			</a>
+		{% elif 'auto_permission' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'accounts_manager.auto_permissions_list',
+					id=result[type].id,
+				) }}" 
+				title="View auto permission in list">
+				Auto permission
+			</a>
+		{% elif 'ban' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'bans_manager.bans_list',
+					id=result[type].id,
+				) }}" 
+				title="View ban in list">
+				Ban
+			</a>
+		{% elif 'comment' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'comments_manager.comments_list',
+					id=result[type].id,
+				) }}" 
+				title="View comment in list">
+				Comment
+			</a>
+		{% elif 'sticker' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'stickers_admin.stickers_list',
+					id=result[type].id,
+				) }}" 
+				title="View sticker in list">
+				Sticker
+			</a>
+		{% elif 'collected_sticker' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'stickers_admin.collected_stickers_list',
+					id=result[type].id,
+				) }}" 
+				title="View collected sticker in list">
+				Collected sticker
+			</a>
+		{% elif 'sticker_placement' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'stickers_admin.sticker_placements_list',
+					id=result[type].id,
+				) }}" 
+				title="View sticker placement in list">
+				Sticker placement
+			</a>
+		{% elif 'patreon_client' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'patreon_admin.clients_list',
+					id=result[type].id,
+				) }}" 
+				title="View patreon client in list">
+				Patreon client
+			</a>
+		{% elif 'patreon_tier' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'patreon_admin.edit_tier',
+					id=str(result[type].id).decode(),
+				) }}" 
+				title="Edit patreon tier">
+				Patreon tier
+			</a>
+		{% elif 'medium' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'persephone.search_public_media',
+					medium_id=result[type].id,
+				) }}" 
+				title="View medium">
+				View medium
+			</a>
+		{% else %}
+			{{ result[type + '_id'] }}
+		{% endif %}
+	{% endmacro %}
+	{% macro render_result(result) %}
+		<tr>
+			<td>
+				<a 
+					href="{{ url_for(
+						'persephone.logs_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						id=result.id,
+					) }}" 
+					title="View log in list">
+					○
+				</a>
+			</td>
+			<td data-timestamp="{{ result.creation_time }}">
+				{{ result.creation_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+			</td>
+			<td>
+				<a 
+					href="{{ url_for(
+						'persephone.logs_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						scope=result.scope,
+					) }}" 
+					title="Search this scope's logs">
+					{{ log_scope_display(result.scope) }}
+				</a>
+			</td>
+			<td>
+				<a 
+					href="{{ url_for(
+						'persephone.logs_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						remote_origin=result.remote_origin.exploded,
+					) }}" 
+					title="Search this remote origin's logs">
+					{{ result.remote_origin.exploded }}
+				</a>
+			</td>
+			{% if not result.subject_id %}
+				{% set subject_id = 'system' %}
+				{% if result.scope in [
+						'create_comment',
+						'sent_forbidden_phrase',
+					] %}
+					{% set subject_display = 'Guest' %}
+				{% else %}
+					{% set subject_display = 'System' %}
+				{% endif %}
+			{% else %}
+				{% set subject_id = result.subject_id %}
+				{% set subject_display = render_log_id('subject', result) %}
+			{% endif %}
+			<td>
+				<a href="{{ url_for(
+						'persephone.logs_list',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						subject_id=subject_id,
+					) }}" 
+					title="Search this subject's logs" 
+					class="search">
+					(Search)
+				</a> 
+				{{ subject_display }}
+			</td>
+			{% if not result.object_id %}
+				<td></td>
+			{% else %}
+				<td>
+					<a href="{{ url_for(
+							'persephone.logs_list',
+							sort=pagination['sort'],
+							order=pagination['order'],
+							perpage=pagination['perpage'],
+							object_id=result.object_id,
+						) }}" 
+						title="Search this object's logs" 
+						class="search">
+						(Search)
+					</a> 
+					{{ render_log_id('object', result) }}
+				</td>
+			{% endif %}
+		</tr>
+	{% endmacro %}
+	{% set scope_options = {'': 'Any'} %}
+	{% for scope in unique_scopes %}
+		{% set _temp = scope_options.update({scope: log_scope_display(scope)}) %}
+	{% endfor %}
+	{% set columns = [
+		{
+			'name': 'id',
+			'label': 'ID',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+		},
+		{
+			'name': 'creation_time',
+			'label': 'Created',
+			'sortable': True,
+			'searchable': True,
+			'type': 'amount',
+			'less_than_name': 'created_before',
+			'less_than_label': 'Created before',
+			'less_than_placeholder': 'Datetime string',
+			'greater_than_name': 'created_after',
+			'greater_than_label': 'Created after',
+			'greater_than_placeholder': 'Datetime string',
+		},
+		{
+			'name': 'scope',
+			'label': 'Scope',
+			'sortable': False,
+			'searchable': True,
+			'type': 'select',
+			'options': scope_options,
+		},
+		{
+			'name': 'remote_origin',
+			'label': 'Remote origin',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+		},
+		{
+			'name': 'subject_id',
+			'label': 'Subject',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'Subject ID',
+		},
+		{
+			'name': 'object_id',
+			'label': 'Object',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'Object ID',
+		},
+	] %}
+	{% from 'tabular_list.jinja' import tabular_list %}
+	{{ tabular_list(
+		columns,
+		'persephone.logs_list',
+		results,
+		total_results,
+		render_result,
+		total_pages,
+		pagination,
+		search,
+	) }}
+{% endblock %}

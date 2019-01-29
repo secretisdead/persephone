@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+	{#TODO signed in splash can go here #}
+	{% if announcement_medium %}
+		{% include 'announcement.html' %}
+		<a href="{{ url_for('persephone.announcements') }}">View announcements</a>
+	{% endif %}
+	<h1>Dashboard</h1>
+	<nav class="dashboard">
+		{% if g.accounts.current_user.has_permission(group_names='admin') %}
+			<a href="{{ url_for('persephone.admin') }}">Admin</a>
+		{% endif %}
+		{% if g.accounts.current_user.has_permission(group_names='manager') %}
+			<a href="{{ url_for('persephone.manager') }}">Manager</a>
+		{% endif %}
+		{% if g.accounts.current_user.has_permission(group_names='contributor') %}
+			<a href="{{ url_for('persephone.contributor') }}">Contributor</a>
+		{% endif %}
+		<a href="{{ url_for('stickers_signed_in.gachapon') }}">Gachapon</a>
+		{% include 'home_links.html' %}
+	</nav>
+{% endblock %}

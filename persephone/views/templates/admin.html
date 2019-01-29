@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+	<h1>Admin</h1>
+	<div class="dashboard_collection">
+		<nav class="dashboard" id="admin_accounts">
+			<a 
+				href="{{ url_for('persephone.logs_list') }}" 
+				title="Administration logs list">
+				Logs
+			</a>
+		</nav>
+		<br>
+		<nav class="dashboard" id="admin_stickers">
+			<a 
+				href="{{ url_for('stickers_admin.stickers_list') }}" 
+				title="Administrate stickers list">
+				Stickers
+			</a>
+			<a href="{{ url_for('stickers_admin.collected_stickers_list') }}" 
+				title="Administration collected stickers list">
+				Collected stickers
+			</a>
+			<a 
+				href="{{ url_for('stickers_admin.sticker_placements_list') }}" 
+				title="Administration sticker placements list">
+				Sticker placements
+			</a>
+		</nav>
+		<br>
+		<nav class="dashboard" id="admin_patreon">
+			<a 
+				href="{{ url_for('patreon_admin.clients_list') }}" 
+				title="Administration patreon clients list">
+				Patreon clients
+			</a>
+			<a 
+				href="{{ url_for('patreon_admin.members_list') }}" 
+				title="Administration patreon members list">
+				Patreon members
+			</a>
+		</nav>
+	</div>
+{% endblock %}

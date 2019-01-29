@@ -1,0 +1,372 @@
+@charset "utf-8";
+:root {
+	--form_border: var(--card_border);
+	--label_background: var(--header_background);
+	--label_foreground: var(--header_foreground);
+	--label_border: var(--card_border);
+	--input_background: var(--card_background);
+	--input_foreground: var(--card_foreground);
+	--input_disabled_background: #ebebe4;
+	--input_disabled_foreground: #545454;
+	--input_border: var(--card_inner_border);
+	--form_error_background: #800000;
+	--form_error_foreground: #ffffff;
+	--submit_background: #dddddd;
+	--submit_foreground: #000000;
+}
+::placeholder {
+  color: var(--input_foreground);
+  opacity: 0.75;
+}
+form {
+	display: block;
+	overflow: hidden;
+	margin: 0;
+	box-sizing: border-box;
+	font-size: 0;
+}
+label, input, textarea, select {
+	display: inline-block;
+	font-family: Tahoma, Verdana, sans-serif;
+	font-size: 1rem;
+	border: none;
+	box-sizing: border-box;
+	margin: 0;
+	line-height: 1.5em;
+	padding: 0.1em 0.5em;
+	vertical-align: top;
+	outline: none;
+}
+label {
+	width: 40%;
+	color: var(--label_foreground);
+	background-color: var(--label_background);
+	white-space: nowrap;
+	text-align: right;
+	border-top: 1px solid var(--label_border);
+	border-left: 1px solid var(--form_border);
+}
+input, textarea, select {
+	width: 60%;
+	border: 1px solid var(--input_border);
+	border-right-color: var(--form_border);
+	border-bottom: none;
+	/*TODO currently selected indicator to replace the outline removed above*/
+}
+/*submit*/
+input[type="submit"] {
+	width: 100%;
+	font-weight: bold;
+	cursor: pointer;
+	background-color: var(--submit_background);
+	color: var(--submit_foreground);
+	border: 1px solid var(--label_border);
+	border-top-color: var(--input_border);
+	border-bottom-left-radius: 0.5rem;
+	border-bottom-right-radius: 0.5rem;
+}
+input[type="submit"]:first-child {
+	border-top-color: var(--label_border);
+	border-radius: 0.5rem;
+}
+/*select*/
+select {
+	vertical-align: top;
+	padding: 0.2rem 0.5rem;
+	background-color: var(--input_background);
+	color: var(--input_foreground);
+}
+/*disabled*/
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+textarea:disabled,
+select:disabled {
+	background-color: var(--input_disabled_background);
+	color: var(--input_disabled_foreground);
+}
+/*checkbox and radio*/
+input[type=checkbox], 
+input[type=radio] {
+	display: none;
+}
+input[type=checkbox] + label, 
+input[type=radio] + label {
+	width: 100%;
+	padding-right: calc(60% + 0.5rem - 1px);
+	border: 1px solid var(--form_border);
+	border-bottom: none;
+}
+input[type=checkbox] + label, 
+input[type=radio] + label {
+	position: relative;
+}
+input[type=checkbox] + label::before, input[type=checkbox] + label::after, 
+input[type=radio] + label::before, input[type=radio] + label::after {
+	background-repeat: no-repeat;
+	background-position: center;
+	display: block;
+	position: absolute;
+	right: 0;
+	font-size: 0;
+	content: "";
+	padding-bottom: 1px;
+	top: -1px;
+	height: calc(100% + 1px);
+	max-height: calc(100% + 1px);
+	cursor: pointer;
+	box-sizing: border-box;
+	background-size: contain;
+	width: 60%;
+}
+input[type=checkbox] + label::before,
+input[type=radio] + label::before {
+	background-image: url("data:image/svg+xml;utf8,<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><g><rect stroke='#000000' rx='4' id='rounded_box' height='12' width='12' y='6' x='6' stroke-width='1' fill='#ffffff'/></g></svg>");
+	background-color: var(--input_background);
+	border-top: 1px solid var(--input_border);
+	border-left: 1px solid var(--input_border);
+}
+input[type=checkbox] + label::after, 
+input[type=radio] + label::after {
+	display: none;
+}
+/*TODO empty checkboxes should be masks and should get border color of input foreground*/
+/*TODO checkmarks should be masks and should get color of input foreground*/
+/*TODO disabled checkmark mask images*/
+input[type=checkbox]:checked + label::after {
+	display: inline-block;
+	background-image: url("data:image/svg+xml;utf8,<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><g><line x1='3' y1='10' x2='11' y2='18' stroke='#ffffff' stroke-width='8'/><line x1='8' y1='17' x2='20' y2='5' stroke='#ffffff' stroke-width='8'/></g><g><line x1='3' y1='10' x2='11' y2='18' stroke='#000000' stroke-width='6'/><line x1='8' y1='17' x2='20' y2='5'	stroke='#000000' stroke-width='6'/></g></svg>");
+}
+input[type=radio]:checked + label::after {
+	display: inline-block;
+	background-image: url("data:image/svg+xml;utf8,<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><g><rect stroke='#000000' rx='4' id='rounded_box' height='6' width='6' y='9' x='9' stroke-width='1'/></g></svg>");;
+}
+input[type=checkbox]:disabled + label::before,
+input[type=radio]:disabled + label::before {
+	cursor: default;
+	background-image: url("data:image/svg+xml;utf8,<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><g><rect stroke='#808080' rx='4' id='rounded_box' height='12' width='12' y='6' x='6' stroke-width='1' fill='#ffffff'/></g></svg>");
+}
+input[type=checkbox]:disabled + label::after {
+	cursor: default;
+	background-image: url("data:image/svg+xml;utf8,<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><g><line x1='3' y1='10' x2='11' y2='18' stroke='#ffffff' stroke-width='8'/><line x1='8' y1='17' x2='20' y2='5' stroke='#ffffff' stroke-width='8'/></g><g><line x1='3' y1='10' x2='11' y2='18' stroke='#808080' stroke-width='6'/><line x1='8' y1='17' x2='20' y2='5'	stroke='#808080' stroke-width='6'/></g></svg>");
+}
+/*checkbox and radio first input*/
+input[type=checkbox]:first-child + label,
+input[type=radio]:first-child + label {
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
+}
+input[type=checkbox]:first-child + label::before,
+input[type=radio]:first-child + label::before {
+	border-top: 1px solid var(--form_border);
+	border-left: 1px solid var(--form_border);
+	border-top-right-radius: 0.3rem;
+}
+/*top of form*/
+form label:first-child {
+	border-top-left-radius: 0.5rem;
+	border-top: 1px solid var(--form_border);
+}
+form>label:first-child + input,
+form>label:first-child + textarea,
+form>label:first-child + select,
+form>input:first-child + label {
+	border-top-right-radius: 0.5rem;
+	border-top: 1px solid var(--form_border);
+}
+input[type="hidden"] {
+	display: none;
+}
+input:disabled {
+	cursor: not-allowed;
+}
+form>br,
+label + br,
+input + br,
+select + br,
+textarea + br {
+	margin: 0;
+	padding: 0;
+	height: 0;
+}
+/*text*/
+input[type=text],
+input[type=password] {
+	background-color: var(--input_background);
+	color: var(--input_foreground);
+}
+/** /
+/* textarea * /
+label[data-type="textarea"] {
+	line-height: 1em;
+	padding-top: 4px;
+}
+label[data-type="textarea"], textarea {
+	height: 8em;
+	vertical-align: top;
+}
+textarea {
+	padding: 0 0.5em;
+	background-color: var(--input_background);
+	color: var(--input_foreground);
+	resize: none;
+}
+/**/
+/*file*/
+input[type=file], input[type=date] {
+	padding: 0;
+}
+.form_file {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	overflow: hidden;
+}
+.form_file label {
+	cursor: pointer;
+	margin: 0px;
+}
+.form_file input {
+	opacity: 0;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 100%;
+	height: 0px;
+	padding: 0px 0px calc(1.5em + 0.2em) 0px;
+	margin: 0px;
+	cursor: pointer;
+}
+.form_file .file_selection {
+	display: inline-block;
+	width: 60%;
+	color: var(--input_foreground);
+	background-color: var(--input_background);
+	line-height: 1.5rem;
+	padding: 0.1rem 0.5rem;
+	font-size: 1rem;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	vertical-align: bottom;
+	border-top: 1px solid var(--input_border);
+	border-left: 1px solid var(--input_border);
+	border-right: 1px solid var(--form_border);
+}
+.form_file input:valid + .file_selection::after {
+	content: attr(data-file-selected);
+}
+.form_file input:invalid + .file_selection::after {
+	content: attr(data-file-not-selected);
+}
+.form_file + br {
+	display: none;
+}
+/*non-first file input*/
+.form_file:not(:first-child) label {
+	border-radius: 0;
+}
+.form_file:first-child .file_selection {
+	border-top-right-radius: 0.5rem;
+}
+.form_file:first-child .file_selection {
+	border-top-color: var(--form_border);
+}
+/*TODO first checkbox/radio input*/
+
+/** /
+/ *legend* /
+legend {
+	padding: 0.5em 0.5em;
+	color: var(--label_foreground);
+	background-color: var(--label_background);
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
+	text-align: left;
+	padding: 0.25em 0.5em;
+	font-size: 1.5em;
+	box-sizing: border-box;
+	width: 100%;
+}
+legend + legend {
+	font-size: 1em;
+	border-radius: 0;
+	margin-top: 1px;
+}
+
+/*tabular form*/
+form table label,
+form table input,
+form table select,
+form table textarea {
+	margin: 0;
+}
+form table:not(:first-child) tr:first-child td:first-child,
+form table:not(:first-child) tr:first-child td:last-child,
+form table:not(:last-child) tr:last-child td:first-child,
+form table:not(:last-child) tr:last-child td:last-child {
+	border-radius: 0;
+}
+form thead td,
+form tbody td:first-child {
+	font-size: 0.9rem;
+}
+form tbody td {
+	position: relative;
+}
+form tbody td:first-child {
+	background-color: var(--header_background);
+	color: var(--header_foreground);
+	width: 1px;
+}
+form tbody input {
+	margin: 0;
+}
+form tbody input[type=checkbox] + label,
+form tbody input[type=checkbox] + label:after,
+form tbody input[type=checkbox] + label:before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: transparent;
+	color: transparent;
+	height: 100%;
+	width: 100%;
+	border: none;
+	padding: 0;
+}
+form tbody input[type=checkbox] + label:after,
+form tbody input[type=checkbox] + label:before {
+	left: 0;
+}
+/*errors*/
+.form_error {
+	display: block;
+	margin: 0 0 0.25rem 0;
+	padding: 0.25rem 0.5rem;
+	background-color: var(--form_error_background);
+	color: var(--form_error_foreground);
+	border-radius: 0.5rem;
+	text-align: left;
+}
+/*items preceeding forms*/
+table + form,
+form + form,
+h1 + form,
+h2 + form,
+h3 + form,
+h4 + form,
+h5 + form,
+h6 + form {
+	margin-top: 1rem;
+}
+/*items following forms*/
+form + nav,
+form + h1,
+form + h2,
+form + h3,
+form + h4,
+form + h5,
+form + h6 {
+	margin-top: 1rem;
+}

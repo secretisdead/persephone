@@ -1,0 +1,58 @@
+{
+	"db": {
+		"common": {
+			"type": "sqlite",
+			"host": "db/persephone.db",
+			"user": "",
+			"pass": ""
+		},
+		"access_log": {
+			"type": "common",
+			"host": "",
+			"user": "",
+			"pass": ""
+		},
+		"users": {
+			"type": "common",
+			"host": "",
+			"user": "",
+			"pass": ""
+		},
+		"bans": {
+			"type": "common",
+			"host": "",
+			"user": "",
+			"pass": ""
+		},
+		"comments": {
+			"type": "common",
+			"host": "",
+			"user": "",
+			"pass": ""
+		},
+		"stickers": {
+			"type": "common",
+			"host": "",
+			"user": "",
+			"pass": ""
+		},
+		"patreon": {
+			"type": "common",
+			"host": "",
+			"user": "",
+			"pass": ""
+		},
+		"media": {
+			"type": "common",
+			"host": "",
+			"user": "",
+			"pass": ""
+		}
+	},
+	"default_theme": "theme_ghost",
+	"site_name": "persephone",
+	"site_title": "persephone",
+	"custom_groups": [],
+	"custom_scopes": [],
+	"google_analytics": ""
+}

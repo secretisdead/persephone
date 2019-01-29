@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block title %}View {{ medium.id }}{% if 'title' in medium.semantic_tags %} - {{ medium.semantic_tags['title'] }}{% endif %}{% endblock %}
+{% block content %}
+	{% if 'title' in medium.semantic_tags %}
+		{% set title = medium.semantic_tags['title'] %}
+	{% else %}
+		{% set title = 'Untitled' %}
+	{% endif %}
+	<h2>{{ title }}</h2>
+	{% include 'medium_summary.html' %}
+	{% include 'view_medium_management_info.html' %}
+	{% include 'medium_info.html' %}
+	{% include 'medium_blurb.html' %}
+	{% include 'view_medium_tags.html' %}
+	{% if management_mode %}
+		{% include 'view_medium_tags_editor.html' %}
+		<script 
+			type="module" 
+			src="{{ url_for(
+				'persephone.static',
+				filename='scripts/view_medium_tags_editor.js',
+			) }}"></script>
+	{% endif %}
+	{% include 'media_slideshow_navigation.html' %}
+	{% include 'medium_sets.html' %}
+	{% include 'medium_semantic_tag_block.html' %}
+	{% if 'suppress:comments' not in medium.tags %}
+		{% if 'disable:comments' not in medium.tags %}
+			{% from 'comments.jinja' import comment_form %}
+			{{ comment_form(medium.id, redirect_uri=request.url) }}
+		{% endif %}
+		{% set comments = g.comments.search_comments(filter={'subject_ids': medium.id}) %}
+		{% set _ = g.persephone['filter_comments'](comments) %}
+		{% from 'comments.jinja' import comments_table %}
+		{{ comments_table(comments) }}
+	{% endif %}
+	{% if 'supress:stickers' not in medium.tags %}
+		{% include 'stickers.html' %}
+	{% endif %}
+	<script 
+		type="module" 
+		src="{{ url_for(
+			'persephone.static',
+			filename='scripts/view_medium.js',
+		) }}"></script>
+{% endblock %}
+{% block meta %}
+	{{ super() }}
+	{% include 'media_rich_data.html' %}
+	{% if management_mode %}
+		{% include 'tag_suggestions_list_meta.html' %}
+	{% endif %}
+{% endblock %}

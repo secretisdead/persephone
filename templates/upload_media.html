@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block title %}Upload{% endblock %}
+{% block content %}
+	<h1>Upload</h1>
+	{% include 'medium_form_errors.html' %}
+	<form 
+		method="post" 
+		enctype="multipart/form-data" 
+		data-action-upload="{{ url_for('media_api.api_upload_medium') }}" 
+		data-action-build-tag-suggestions="{{ url_for('media_api.api_build_tag_suggestions') }}" 
+		data-advanced="Advanced options" novalidate>
+		{% include 'medium_groups_form.html' %}
+		{% include 'medium_properties_form.html' %}
+		{% include 'upload_media_tagging_form.html' %}
+		{% include 'medium_creation_form.html' %}
+		<input type="hidden" name="view_endpoint" value="{{ view_endpoint }}">
+		<input type="submit" value="Create">
+	</form>
+	<script 
+		type="module" 
+		src="{{ url_for('persephone.static', filename='scripts/upload_media.js') }}"></script>
+{% endblock %}

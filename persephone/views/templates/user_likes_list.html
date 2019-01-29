@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+{% block title %}Likes list{% endblock %}
+{% block content %}
+	<h1>Likes list</h1>
+	{% set override_endpoint = 'user_liked_media' %}
+	{% set kwargs = {'user_identifier': user.identifier} %}
+	{% macro render_result(result) %}
+		<tr>
+			<td>
+				{% set medium = result.medium %}
+				{% include 'medium_thumbnail.html' %}
+			</td>
+			<td data-timestamp="{{ result.creation_time }}">
+				{{ result.creation_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+			</td>
+			<td>
+				<a 
+					href="{{ url_for(
+						'persephone.user_liked_media_list',
+						user_identifier=user.identifier,
+						like_id=result.id,
+					) }}" 
+					title="Remove like">
+					Remove
+				</a>
+			</td>
+		</tr>
+	{% endmacro %}
+	{% set columns = [
+		{
+			'name': 'medium',
+			'label': 'Medium',
+			'sortable': False,
+			'searchable': False,
+		},
+		{
+			'name': 'creation_time',
+			'label': 'Liked',
+			'sortable': False,
+			'searchable': False,
+		},
+		{
+			'name': 'remove',
+			'label': 'Remove',
+			'sortable': False,
+			'searchable': False,
+		},
+	] %}
+	{% from 'tabular_list.jinja' import tabular_list %}
+	{{ tabular_list(
+		columns,
+		'persephone.user_liked_media_list',
+		results,
+		total_results,
+		render_result,
+		total_pages,
+		pagination,
+		{'user_identifier': user.identifier},
+	) }}
+	<script 
+		type="text/javascript" 
+		src="{{ url_for(
+			'media_static.static',
+			filename='scripts/thumbnail_previews.js',
+		) }}"></script>
+{% endblock %}

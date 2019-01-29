@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<svg width="50" height="50" viewBox="0 0 50 50" version="1.1" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<mask id="mask" x="0" y="0" width="50" height="50">
+			<rect x="0" y="0" width="50" height="50" fill="black" />
+			<path d="M25 33 
+					C21.5 31.5, 19 20, 19 20,
+					C19 20, 25 17, 25 17,
+					C25 17, 31 20, 31 20,
+					C31 20, 28.5 31.5, 25 33,
+					C21.5 31.5, 19 20, 19 20" 
+					stroke-width="16" stroke="white" fill="white" />
+			<!-- TODO question mark -->
+		</mask>
+	</defs>
+	<rect x="0" y="0" width="50" height="50" fill="white" mask="url(#mask)" />
+</svg>

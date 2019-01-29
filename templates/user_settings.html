@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block title %}User settings{% endblock %}
+{% block content %}
+	<h1>Settings</h1>
+	<nav>
+		<a href="{{ url_for('accounts_signed_in.redeem_auto_permission') }}"
+			title="Redeem a permission code">Redeem permission</a>
+		<a 
+			href="{{ url_for('accounts_signed_out.profile', user_identifier=user.identifier) }}" 
+			title="View your public profile">Public profile</a>
+	</nav>
+	{% include 'user_settings_form.html' %}
+	{% include 'user_settings_authentications.html' %}
+	{% include 'theme_select_form.html' %}
+	{% from 'users.jinja' import user_sessions_table, user_invites_table %}
+	{{ user_sessions_table(
+		sessions,
+		url_for('accounts_signed_in.close_all_sessions'),
+		'accounts_signed_in.close_session',
+	) }}
+	{% if g.accounts.config['registration_closed'] %}
+		<nav class="user_invites">
+			<a href="{{ url_for('accounts_signed_in.create_invite') }}">Create Invite</a>
+		</nav>
+	{% endif %}
+	{{ user_invites_table(invites, 'accounts_signed_in.remove_invite') }}
+	<div class="danger">
+		<h1>Deactivate account</h1>
+		<p>Deactivating your account is permanent.</p>
+		<p>Please be sure before continuing.</p>
+		<p><a href="{{ url_for('accounts_signed_in.deactivate') }}">Deactivate account</a></p>
+	</div>
+{% endblock %}

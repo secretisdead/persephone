@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<svg width="50" height="50" viewBox="0 0 50 50" version="1.1" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<mask id="mask" x="0" y="0" width="50" height="50">
+			<circle cx="25" cy="25" r="17" stroke="white" stroke-width="3" fill="white" />
+			<polyline 
+				points="15,15 20,20 15,25" 
+				stroke-width="3" 
+				stroke="black" 
+				fill="transparent" />
+			<line x1="28" y1="21" x2="37" y2="21" stroke-width="3" stroke="black" />
+			<path 
+				d="M25 30 C 25 30, 34 30, 34 30, 34 33, 31 39, 25 39, 19 39, 16 33, 16 30, 16 30, 25 30, 25 30" 
+				stroke-width="3" 
+				stroke="black" 
+				fill="transparent" />
+		</mask>
+	</defs>
+	<rect x="0" y="0" width="50" height="50" fill="white" mask="url(#mask)" />
+</svg>

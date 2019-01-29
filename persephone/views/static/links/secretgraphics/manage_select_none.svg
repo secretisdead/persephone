@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<svg width="50" height="50" viewBox="0 0 50 50" version="1.1" 
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<mask id="mask" x="0" y="0" width="50" height="50">
+			<rect x="0" y="0" width="50" height="50" fill="black" />
+			<rect rx="3" ry="3" x="12" y="12" width="26" height="26" stroke-width="4" stroke="white" fill="black" />
+			<line x1="20" y1="0" x2="20" y2="50" stroke-width="4" stroke="black" />
+			<line x1="30" y1="0" x2="30" y2="50" stroke-width="4" stroke="black" />
+			<line x1="0" y1="20" x2="50" y2="20" stroke-width="4" stroke="black" />
+			<line x1="0" y1="30" x2="50" y2="30" stroke-width="4" stroke="black" />
+			<line x1="20" y1="20" x2="30" y2="30" stroke-width="4" stroke="white" />
+			<line x1="30" y1="20" x2="20" y2="30" stroke-width="4" stroke="white" />
+		</mask>
+	</defs>
+	<rect x="0" y="0" width="50" height="50" fill="white" mask="url(#mask)" />
+</svg>
