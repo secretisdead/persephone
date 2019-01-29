@@ -371,6 +371,8 @@ def response_minify_html(response):
 
 @app.after_request
 def check_global_ban(response):
+	if not hasattr(g, 'bans'):
+		return response
 	if response.direct_passthrough:
 		return response
 	if not request.endpoint:
