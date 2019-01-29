@@ -5,7 +5,7 @@
 	{#TODO uncomment when tegaki is working 
 	<a id="top_tegaki" href="https://tegaki.secret.graphics">Tegaki</a>
 	#}
-	{% if g.accounts.current_user %}
+	{% if g.accounts and g.accounts.current_user %}
 		{% if g.accounts.current_user.has_permission(group_names='contributor') %}
 			<a id="top_upload" href="{{ url_for('persephone.upload') }}">Upload</a>
 		{% endif %}
