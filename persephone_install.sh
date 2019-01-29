@@ -17,7 +17,7 @@ which python3 2>&1 >/dev/null && (
 ) || (
 	echo  failure
 	echo   python not found
-	echo   please ensure you have python 3.5+ installed
+	echo   please ensure you have python 3.6+ installed
 	exit 1
 )
 
@@ -31,19 +31,19 @@ else
 	if (( $py_version_major == 3 ));
 	then
 		py_version_minor="$(cut -d'.' -f2 <<< $py_version)"
-		if (( $py_version_minor > 4 ));
+		if (( $py_version_minor > 5 ));
 		then
 			echo success
 		else
 			echo   failure
 			echo    python version $py_version
-			echo    please ensure you have python 3.5+ installed
+			echo    please ensure you have python 3.6+ installed
 			exit 1
 		fi
 	else
 		echo   failure
 		echo    python version $py_version
-		echo    please ensure you have python 3.5+ installed
+		echo    please ensure you have python 3.6+ installed
 		exit 1
 	fi
 fi
