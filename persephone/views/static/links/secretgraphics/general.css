@@ -327,8 +327,6 @@ nav a:last-child {
 	margin-bottom: 0.5rem;
 }
 
-/*gachapon*/
-
 /*about*/
 .about_me, .about_persephone {
 	text-align: left;
@@ -366,8 +364,6 @@ nav a:last-child {
 	display: inline-block;
 }
 
-/*takeout*/
-
 /*user likes management*/
 .user_liked_media_list tbody td:first-child {
 	font-size: 0;
@@ -386,21 +382,6 @@ nav a:last-child {
 #theme_select_form {
 	display: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*narrower screens*/
 @media only screen and (max-width: 1024px)
