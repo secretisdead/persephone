@@ -535,9 +535,9 @@ def get_badges(user):
 			'title': flavor + ' (' + description + ')',
 		})
 	third_party_services = g.accounts.config['authentication_services'].copy()
-	del third_party_services['local']
-	del third_party_services['cert']
-	del third_party_services['mail']
+	for local_authentication in ['local', 'cert', 'mail']:
+		if local_authentication in third_party_services:
+			del third_party_services[local_authentication]
 	connected_third_party_service_total = 0
 	extremely_online = True
 	for service in third_party_services.keys():
