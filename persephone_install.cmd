@@ -10,7 +10,7 @@ if %errorLevel% == 0 (
 	echo  failure
 	echo   administrator permissions are required to be able to create symlinks
 	echo   please run the installer as administrator
-	goto end:
+	goto end
 )
 
 echo checking for git
@@ -21,7 +21,7 @@ git --version >nul 2>&1 && (
 	echo   git not found
 	echo   git is required to clone necessary persephone component repos
 	echo   please ensure you have git installed
-	goto end:
+	goto end
 )
 
 echo checking for python3
@@ -33,7 +33,7 @@ python3 --version >nul 2>&1 && (
 			echo   failure
 			echo    python3 version %%i
 			echo    please ensure you have python3 3.6+ installed
-			goto end:
+			goto end
 		)
 		echo   success
 	)
@@ -41,7 +41,7 @@ python3 --version >nul 2>&1 && (
 	echo  failure
 	echo   python3 not found
 	echo   please ensure you have python 3.6+ installed
-	goto end:
+	goto end
 )
 
 echo checking for pip
@@ -51,7 +51,7 @@ python3 -m pip --version >nul 2>&1 && (
 	echo  failure
 	echo   pip not found
 	echo   please ensure you have pip for python installed
-	goto end:
+	goto end
 )
 
 set persephone=%CD%
@@ -66,7 +66,7 @@ python3 -m venv environment >nul 2>&1 && (
 	echo  failure
 	echo   venv not found
 	echo   please ensure you have venv for python installed
-	goto end:
+	goto end
 )
 
 echo activating virtual environment
