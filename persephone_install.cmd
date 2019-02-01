@@ -59,10 +59,22 @@ echo checking for pip
 	goto end
 )
 
-set persephone=%CD%
+set /p persephone=enter the directory to install persephone to: 
+if exist "%persephone%" (
+	rem
+) else (
+	rem set /p createdir=specified directory does not exist, do you want to create it (y/[n])? 
+	rem if /i "%createdir%" neq "y" goto end
+	mkdir "%persephone%" || (
+		echo  problem creating specified directory
+		goto end
+	)
+)
 
-set /p confirm=install persephone to the current directory "%persephone%" (y/[n])? 
+set /p confirm="install persephone to %persephone% (y/[n])? "
 if /i "%confirm%" neq "y" goto end
+
+cd "%persephone%"
 
 echo checking for venv and creating virtual environment
 %python% -m venv environment && (
