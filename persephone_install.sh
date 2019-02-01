@@ -296,7 +296,7 @@ echo installation finished
 echo edit configuration files to customize your installation
 echo "later this install script will automatically add default file paths to config files, but for now be sure to point them at the correct directories in ${persephone}/files"
 echo "make a copy of any templates you wish to customize to the main project templates folder (${persephone}/templates) and edit them"
-echo "usually ${persephone}/persephone/views/templates/about.html, ${persephone}/legal/views/templates/legal_terms.html, and ${persephone}/legal/views/templates/legal_terms.html"
+echo "usually ${persephone}/persephone/views/templates/about.html, ${persephone}/legal/views/templates/legal_terms.html, and ${persephone}/legal/views/templates/legal_rules.html"
 echo "custom style rules can go in ${persephone}/static/links/custom.css"
 echo "you can run the debug server in development mode by running ${persephone}/start_dev_persephone.sh"
 echo "point your production webserver at ${persephone}/persephone_wsgi.py to go live"
