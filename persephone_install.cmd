@@ -14,7 +14,7 @@ if %errorLevel% == 0 (
 )
 
 echo checking for git
-git --version >nul 2>&1 && (
+git --version && (
 	echo  success
 ) || (
 	echo  failure
@@ -24,14 +24,19 @@ git --version >nul 2>&1 && (
 	goto end
 )
 
-echo checking for python3
-python3 --version >nul 2>&1 && (
+set python=python3
+%python% --version >nul 2>&1 || (
+	set python=python
+)
+
+echo checking for python
+%python% --version && (
 	echo  success
-	echo  checking python3 version
-	for /f "usebackq tokens=2 delims= " %%i in ('python3 --version') do (
+	echo  checking python version
+	for /f "usebackq tokens=2 delims= " %%i in ('%python% --version') do (
 		if /i "%%i" leq "3.5.6" (
 			echo   failure
-			echo    python3 version %%i
+			echo    python version %%i
 			echo    please ensure you have python3 3.6+ installed
 			goto end
 		)
@@ -39,13 +44,13 @@ python3 --version >nul 2>&1 && (
 	)
 ) || (
 	echo  failure
-	echo   python3 not found
+	echo   required python not found
 	echo   please ensure you have python 3.6+ installed
 	goto end
 )
 
 echo checking for pip
-python3 -m pip --version >nul 2>&1 && (
+%python% -m pip --version && (
 	echo  success
 ) || (
 	echo  failure
@@ -60,7 +65,7 @@ set /p confirm=install persephone to the current directory "%persephone%" (y/[n]
 if /i "%confirm%" neq "y" goto end
 
 echo checking for venv and creating virtual environment
-python3 -m venv environment >nul 2>&1 && (
+%python% -m venv environment && (
 	echo  success
 ) || (
 	echo  failure
@@ -75,7 +80,7 @@ call "%persephone%\environment\Scripts\activate.bat"
 rem latest versions should be fine, if there end up being problems later i'll make it more specific
 echo installing required python packages
 echo  flask...
-python3 -m pip install flask >nul 2>&1 && (
+%python% -m pip install flask && (
 	echo   success
 ) || (
 	echo   failure
@@ -83,7 +88,7 @@ python3 -m pip install flask >nul 2>&1 && (
 	goto end
 )
 echo  sqlalchemy...
-python3 -m pip install sqlalchemy >nul 2>&1 && (
+%python% -m pip install sqlalchemy && (
 	echo   success
 ) || (
 	echo   failure
@@ -91,7 +96,7 @@ python3 -m pip install sqlalchemy >nul 2>&1 && (
 	goto end
 )
 echo  python-dateutil...
-python3 -m pip install python-dateutil >nul 2>&1 && (
+%python% -m pip install python-dateutil && (
 	echo   success
 ) || (
 	echo   failure
@@ -99,7 +104,7 @@ python3 -m pip install python-dateutil >nul 2>&1 && (
 	goto end
 )
 echo  werkzeug...
-python3 -m pip install werkzeug >nul 2>&1 && (
+%python% -m pip install werkzeug && (
 	echo   success
 ) || (
 	echo   failure
@@ -107,7 +112,7 @@ python3 -m pip install werkzeug >nul 2>&1 && (
 	goto end
 )
 echo  Pillow...
-python3 -m pip install Pillow >nul 2>&1 && (
+%python% -m pip install Pillow && (
 	echo   success
 ) || (
 	echo   failure
@@ -115,7 +120,7 @@ python3 -m pip install Pillow >nul 2>&1 && (
 	goto end
 )
 echo  python3-openid...
-python3 -m pip install python3-openid >nul 2>&1 && (
+%python% -m pip install python3-openid && (
 	echo   success
 ) || (
 	echo   failure
@@ -123,7 +128,7 @@ python3 -m pip install python3-openid >nul 2>&1 && (
 	goto end
 )
 echo  passlib...
-python3 -m pip install passlib >nul 2>&1 && (
+%python% -m pip install passlib && (
 	echo   success
 ) || (
 	echo   failure
@@ -131,7 +136,7 @@ python3 -m pip install passlib >nul 2>&1 && (
 	goto end
 )
 echo  python-magic...
-python3 -m pip install python-magic >nul 2>&1 && (
+%python% -m pip install python-magic && (
 	echo   success
 ) || (
 	echo   failure
@@ -139,7 +144,7 @@ python3 -m pip install python-magic >nul 2>&1 && (
 	goto end
 )
 echo  python-libmagic...
-python3 -m pip install python-libmagic >nul 2>&1 && (
+%python% -m pip install python-libmagic && (
 	echo   success
 ) || (
 	echo   failure
@@ -147,7 +152,7 @@ python3 -m pip install python-libmagic >nul 2>&1 && (
 	goto end
 )
 echo  python-magic-bin 0.4.14...
-python3 -m pip install python-magic-bin==0.4.14 >nul 2>&1 && (
+%python% -m pip install python-magic-bin==0.4.14 && (
 	echo   success
 ) || (
 	echo   failure

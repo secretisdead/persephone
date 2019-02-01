@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo checking for git
-which git 2>&1 >/dev/null && (
+which git && (
 	echo  success
 ) || (
 	echo  failure
@@ -11,8 +11,13 @@ which git 2>&1 >/dev/null && (
 	exit 1
 )
 
-echo checking for python3
-which python3 2>&1 >/dev/null && (
+python=python3
+${python} --version || (
+	python=python
+)
+
+echo checking for python
+which ${python} && (
 	echo  success
 ) || (
 	echo  failure
@@ -22,7 +27,7 @@ which python3 2>&1 >/dev/null && (
 )
 
 echo  checking python version
-py_version="$(cut -d' ' -f2 <<< `python3 --version`)"
+py_version="$(cut -d' ' -f2 <<< `${python} --version`)"
 py_version_major="$(cut -d'.' -f1 <<< $py_version)"
 if (( $py_version_major > 3 ));
 then
@@ -49,7 +54,7 @@ else
 fi
 
 echo checking for pip
-python3 -m pip --version 2>&1 >/dev/null && (
+${python} -m pip --version && (
 	echo  success
 ) || (
 	echo  failure
@@ -67,7 +72,7 @@ then
 fi
 
 echo checking for venv and creating virtual environment
-python3 -m venv environment >/dev/null 2>&1 && (
+${python} -m venv environment && (
 	echo  success
 ) || (
 	echo  failure
@@ -82,7 +87,7 @@ source "${persephone}/environment/bin/activate"
 # latest versions should be fine, if there end up being problems later i'll make it more specific
 echo installing required python packages
 echo  flask...
-python3 -m pip install flask 2>&1 >/dev/null && (
+${python} -m pip install flask && (
 	echo   success
 ) || (
 	echo   failure
@@ -90,7 +95,7 @@ python3 -m pip install flask 2>&1 >/dev/null && (
 	exit 1
 )
 echo  sqlalchemy...
-python3 -m pip install sqlalchemy 2>&1 >/dev/null && (
+${python} -m pip install sqlalchemy && (
 	echo   success
 ) || (
 	echo   failure
@@ -98,7 +103,7 @@ python3 -m pip install sqlalchemy 2>&1 >/dev/null && (
 	exit 1
 )
 echo  python-dateutil...
-python3 -m pip install python-dateutil 2>&1 >/dev/null && (
+${python} -m pip install python-dateutil && (
 	echo   success
 ) || (
 	echo   failure
@@ -106,7 +111,7 @@ python3 -m pip install python-dateutil 2>&1 >/dev/null && (
 	exit 1
 )
 echo  werkzeug...
-python3 -m pip install werkzeug 2>&1 >/dev/null && (
+${python} -m pip install werkzeug && (
 	echo   success
 ) || (
 	echo   failure
@@ -114,7 +119,7 @@ python3 -m pip install werkzeug 2>&1 >/dev/null && (
 	exit 1
 )
 echo  Pillow...
-python3 -m pip install Pillow 2>&1 >/dev/null && (
+${python} -m pip install Pillow && (
 	echo   success
 ) || (
 	echo   failure
@@ -122,7 +127,7 @@ python3 -m pip install Pillow 2>&1 >/dev/null && (
 	exit 1
 )
 echo  python3-openid...
-python3 -m pip install python3-openid 2>&1 >/dev/null && (
+${python} -m pip install python3-openid && (
 	echo   success
 ) || (
 	echo   failure
@@ -130,7 +135,7 @@ python3 -m pip install python3-openid 2>&1 >/dev/null && (
 	exit 1
 )
 echo  passlib...
-python3 -m pip install passlib 2>&1 >/dev/null && (
+${python} -m pip install passlib && (
 	echo   success
 ) || (
 	echo   failure
@@ -138,7 +143,7 @@ python3 -m pip install passlib 2>&1 >/dev/null && (
 	exit 1
 )
 echo  python-magic...
-python3 -m pip install python-magic 2>&1 >/dev/null && (
+${python} -m pip install python-magic && (
 	echo   success
 ) || (
 	echo   failure
