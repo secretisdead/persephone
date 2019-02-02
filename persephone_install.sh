@@ -64,25 +64,22 @@ ${python} -m pip --version && (
 )
 
 read -p "enter the directory to install persephone to: " persephone
-if [ -d "${persephone}" ]
-then
-	#
-else
-	read -p "specified directory does not exist, do you want to create it (y/[n])? " createdir
-	if [ "${createdir}" != "y" ]
-	then
-		exit 1
-	mkdir -p "${persephone}" || (
-		echo  problem creating specified directory
-		exit 1
-	)
-fi
 
 read -p "install persephone to \"${persephone}\" (y/[n])? " confirm
 if [ "$confirm" != "y" ]
 then
 	exit 1
 fi
+
+if [ -d "${persephone}" ]
+then
+	echo  directory exists
+else (
+	mkdir -p "${persephone}" || (
+		echo  problem creating specified directory
+		exit 1
+	)
+) fi
 
 cd "${persephone}"
 
