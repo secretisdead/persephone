@@ -1,4 +1,8 @@
 #!/bin/bash
+
+persephone=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "${persephone}"
+
 source ./environment/bin/activate
 export FLASK_DEBUG=ON
 export FLASK_APP=./persephone_wsgi.py
