@@ -266,6 +266,7 @@ git clone https://github.com/secretisdead/persephone.git
 ln -s "${persephone}/repos/persephone/persephone" "${persephone}/persephone"
 ln -s "${persephone}/repos/persephone/persephone_wsgi.py" "${persephone}/persephone_wsgi.py"
 ln -s "${persephone}/repos/persephone/start_dev_persephone.sh" "${persephone}/start_dev_persephone.sh"
+ln -s "${persephone}/repos/persephone/persephone_update.sh" "${persephone}/persephone_update.sh"
 ln -s "${persephone}/repos/persephone/templates/*" "${persephone}/templates/"
 echo  stickers...
 git clone https://github.com/secretisdead/stickers.git

@@ -264,6 +264,7 @@ git clone https://github.com/secretisdead/persephone.git
 mklink /D "%persephone%\persephone" "%persephone%\repos\persephone\persephone"
 mklink "%persephone%\persephone_wsgi.py" "%persephone%\repos\persephone\persephone_wsgi.py"
 mklink "%persephone%\start_dev_persephone.cmd" "%persephone%\repos\persephone\start_dev_persephone.cmd"
+mklink "%persephone%\persephone_update.cmd" "%persephone%\repos\persephone\persephone_update.cmd"
 rem link all persephone top level template files
 for %%i in ("%persephone%\repos\persephone\templates\*") do (
 	mklink "%persephone%\templates\%%~nxi" "%persephone%\repos\persephone\templates\%%~nxi"
