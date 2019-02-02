@@ -146,7 +146,8 @@
 .tag[data-tag^="-cover:"] {
 	background-color: var(--tag_cover);
 }
-.tag[data-tag^="text:"] {
+.tag[data-tag^="text:"],
+.tag[data-tag^="embed:"] {
 	background-color: var(--tag_render);
 }
 .tag[data-tag^="next:"],
