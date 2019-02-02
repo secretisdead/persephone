@@ -34,10 +34,10 @@ echo checking for python
 	echo  success
 	echo  checking python version
 	for /f "usebackq tokens=2 delims= " %%i in ('%python% --version') do (
-		if /i "%%i" leq "3.5.6" (
+		if /i "%%i" leq "3.4.9" (
 			echo   failure
 			echo    python version %%i
-			echo    please ensure you have python3 3.6+ installed
+			echo    please ensure you have python3 3.5+ installed
 			goto end
 		)
 		echo   success
@@ -45,7 +45,7 @@ echo checking for python
 ) || (
 	echo  failure
 	echo   required python not found
-	echo   please ensure you have python 3.6+ installed
+	echo   please ensure you have python 3.5+ installed
 	goto end
 )
 
