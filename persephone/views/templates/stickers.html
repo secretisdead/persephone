@@ -36,7 +36,7 @@
 		</div>
 	</div>
 {% endif %}
-{% if g.accounts.current_user.has_permission(group_names='manager') %}
+{% if g.accounts.current_user and g.accounts.current_user.has_permission(group_names='manager') %}
 	{#TODO sticker management mode? #}
 {% endif %}
 <meta 
