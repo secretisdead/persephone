@@ -56,7 +56,9 @@ div[data-category=text] .summary::after {
 div[data-category=video] .summary.nofile::before,
 div[data-category=video] .summary::after,
 div[data-mime="image/gif"]:not([data-data4="0"]):not([data-data4="1"]) .summary.nofile::before,
-div[data-mime="image/gif"]:not([data-data4="0"]):not([data-data4="1"]) .summary::after {
+div[data-mime="image/gif"]:not([data-data4="0"]):not([data-data4="1"]) .summary::after,
+div.thumbnail[title*="embed:"] .summary.nofile::before,
+div.thumbnail[title*="embed:"] .summary::after {
 	background-image: url(media_placeholder_video.svg);
 }
 div[data-mime="application/x-shockwave-flash"] .summary.nofile::before,
@@ -88,7 +90,8 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 .thumbnail[data-category=text] .summary:not(.nofile)::after,
 .thumbnail[data-category=video] .summary:not(.nofile)::after,
 .thumbnail[data-mime="application/x-shockwave-flash"] .summary:not(.nofile)::after,
-.thumbnail[data-mime="image/gif"]:not([data-data4="0"]):not([data-data4="1"]) .summary:not(.nofile)::after {
+.thumbnail[data-mime="image/gif"]:not([data-data4="0"]):not([data-data4="1"]) .summary:not(.nofile)::after,
+.thumbnail[title*="#embed:"] .summary:not(.nofile)::after {
 	display: inline-block;
 }
 /*type placeholders*/
