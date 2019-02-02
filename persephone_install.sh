@@ -265,11 +265,7 @@ git clone https://github.com/secretisdead/persephone.git
 ln -s "${persephone}/repos/persephone/persephone" "${persephone}/persephone"
 ln -s "${persephone}/repos/persephone/persephone_wsgi.py" "${persephone}/persephone_wsgi.py"
 ln -s "${persephone}/repos/persephone/start_dev_persephone.sh" "${persephone}/start_dev_persephone.sh"
-#TODO 
-for filename in "${persephone}/repos/persephone/templates/*"; do
-	[ -e "$filename" ] || continue
-	ln -s "$filename" "${persephone}/templates/$(basename "$filename")"
-done
+ln -s "${persephone}/repos/persephone/templates/*" "${persephone}/templates/"
 echo  stickers...
 git clone https://github.com/secretisdead/stickers.git
 ln -s "${persephone}/repos/stickers/stickers" "${persephone}/stickers"
