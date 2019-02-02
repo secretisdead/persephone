@@ -374,6 +374,10 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 	border: 1px solid var(--card_border);
 	border-bottom: none;
 }
+.media_view_endpoint .medium.embed {
+	width: 512px;
+	height: 288px;
+}
 /*summary displays*/
 .medium .summary.nofile {
 	width: 256px;
