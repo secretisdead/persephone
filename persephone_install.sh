@@ -165,6 +165,17 @@ ${python} -m pip install python-magic && (
 	echo    problem installing python-magic
 	exit 1
 )
+if [ "$(uname)" == "Darwin" ]
+then
+	echo  python-libmagic...
+	${python} -m pip install python-libmagic && (
+		echo   success
+	) || (
+		echo   failure
+		echo    problem installing python-libmagic
+		exit 1
+	)
+fi
 
 echo deactivating virtual environment
 deactivate
