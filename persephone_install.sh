@@ -310,6 +310,9 @@ cp "${persephone}/repos/patreonfrontend/patreon_config-example.json" "${persepho
 cp "${persephone}/repos/persephone/persephone_config-example.json" "${persephone}/config/persephone_config.json"
 cp "${persephone}/repos/stickersfrontend/stickers_config-example.json" "${persephone}/config/stickers_config.json"
 
+echo setting configuration files default paths
+${python} "${persephone}/repos/persephone/set_config_default_paths.py" "${persephone}"
+
 echo creating other supplemental files
 echo  config/shortener_config.json...
 echo {}> "${persephone}/config/shortener_config.json"
@@ -319,7 +322,6 @@ touch "${persephone}/static/links/custom.css"
 echo ...
 echo installation finished
 echo edit configuration files to customize your installation
-echo "later this install script will automatically add default file paths to config files, but for now be sure to point them at the correct directories in ${persephone}/files"
 echo "make a copy of any templates you wish to customize to the main project templates folder (${persephone}/templates) and edit them"
 echo "usually ${persephone}/persephone/views/templates/about.html, ${persephone}/legal/views/templates/legal_terms.html, and ${persephone}/legal/views/templates/legal_rules.html"
 echo "custom style rules can go in ${persephone}/static/links/custom.css"

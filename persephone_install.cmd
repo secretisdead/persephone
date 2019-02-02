@@ -311,6 +311,9 @@ copy "%persephone%\repos\patreonfrontend\patreon_config-example.json" "%persepho
 copy "%persephone%\repos\persephone\persephone_config-example.json" "%persephone%\config\persephone_config.json"
 copy "%persephone%\repos\stickersfrontend\stickers_config-example.json" "%persephone%\config\stickers_config.json"
 
+echo setting configuration files default paths
+%python% "%persephone%\repos\persephone\set_config_default_paths.py" "%persephone%"
+
 echo creating other supplemental files
 echo  config/shortener_config.json...
 echo {}> "%persephone%\config\shortener_config.json"
