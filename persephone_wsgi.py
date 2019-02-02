@@ -426,7 +426,7 @@ def response_add_meta_graph(response):
 			return response
 		graph_tags = ''
 		# response doesn't contain meta graph title
-		if -1 == data.find('meta property="og:title"', 0, head_end):
+		if -1 == data.find('property="og:title"', 0, head_end):
 			# add general site meta graph title
 			site_title = g.persephone_config['site_title']
 			graph_tags += (
@@ -434,7 +434,7 @@ def response_add_meta_graph(response):
 					+ '<meta property="og:title" content="' + site_title + '">'
 			)
 		# response doesn't contain meta graph image
-		if -1 == data.find('meta property="og:image"', 0, head_end):
+		if -1 == data.find('property="og:image"', 0, head_end):
 			# add general site meta graph image
 			site_image = url_for(
 				'persephone.static',
