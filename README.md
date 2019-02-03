@@ -60,7 +60,10 @@ It's a personal site with fun extras for users with accounts, and it's fun if an
 
 ## Install
 
-Download the install script for [Linux/Mac](persephone_install.sh) or [Windows](persephone_install.cmd) and run it in the directory you want persephone to be installed into.
+- Make sure you have Git installed.
+- Make sure you have Python 3.5+ installed.
+- Download the install script for [Linux/Mac](persephone_install.sh) or [Windows](persephone_install.cmd) and run it.
+- Follow the installation prompts.
 
 ---
 
