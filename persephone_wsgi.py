@@ -262,6 +262,12 @@ def initialize():
 			g.accounts.current_user.stickerbook = g.stickers.stickers_by_category(
 				stickers
 			)
+			empty_categories = []
+			for category, stickers in g.accounts.current_user.stickerbook.items():
+				if not stickers:
+					empty_categories.append(category)
+			for category in empty_categories:
+				del g.accounts.current_user.stickerbook[category]
 
 	g.persephone = {
 		'filter_comments': filter_comments,
