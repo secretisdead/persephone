@@ -913,7 +913,7 @@ def user_collected_stickers(user_identifier):
 	return render_template(
 		'user_stickerbook.html',
 		user=user,
-		total_potential_stickers=len(stickers),
+		total_potential_stickers=len(potential_stickers),
 		total_collected_stickers=len(collected_stickers),
 		stickers_by_category=stickers_by_category,
 	)
