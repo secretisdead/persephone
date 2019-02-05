@@ -302,7 +302,7 @@ def banned(e):
 
 # custom templates for other status errors
 def error_page(code, message):
-	return render_template('status_error.html', code=code, message=message)
+	return render_template('status_error.html', code=code, message=message), code
 
 @app.errorhandler(400)
 def e400(e):
