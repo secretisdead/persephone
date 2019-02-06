@@ -79,6 +79,7 @@
 .scripts_enabled #theme_select_form {
 	display: block;
 	margin-bottom: 1rem;
+	overflow: unset;
 }
 .scripts_enabled [for="theme_select"] {
 	border-bottom-left-radius: 0.5rem;
