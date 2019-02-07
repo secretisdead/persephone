@@ -456,12 +456,28 @@ def response_add_meta_graph(response):
 			response.set_data(data)
 	return response
 
+def close_connections():
+	for connection in [
+			g.access_log.connection,
+			g.accounts.connection,
+			g.bans.connection,
+			g.comments.connection,
+			g.stickers.connection,
+			g.patreon.connection,
+			g.media.connection,
+		]:
+		try:
+			connection.close()
+		except:
+			pass
+
 @app.after_request
 def after_request(response):
 	response = response_minify_html(response)
 	response = check_global_ban(response)
 	response = response_add_cache_headers(response)
 	response = response_add_meta_graph(response)
+	close_connections()
 	return response
 
 # persephone has to be registered after other endpoints for wildcard profiles
