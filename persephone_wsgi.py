@@ -133,64 +133,85 @@ def initialize():
 	)
 
 	# access log
-	g.access_log = AccessLog(
-		engines['access_log'],
-		remote_origin=request.remote_addr,
-		install=True,
-	)
+	try:
+		g.access_log = AccessLog(
+			engines['access_log'],
+			remote_origin=request.remote_addr,
+			install=True,
+		)
+	except:
+		abort(500, 'Problem initializing AccessLog')
 
 	# accounts
-	initialize_accounts(
-		configs['users'],
-		g.access_log,
-		engines['users'],
-		install=True,
-	)
+	try:
+		initialize_accounts(
+			configs['users'],
+			g.access_log,
+			engines['users'],
+			install=True,
+		)
+	except:
+		abort(500, 'Problem initializing Accounts')
 
 	# bans
-	initialize_bans(
-		configs['bans'],
-		g.accounts,
-		g.access_log,
-		engines['bans'],
-		install=True,
-	)
+	try:
+		initialize_bans(
+			configs['bans'],
+			g.accounts,
+			g.access_log,
+			engines['bans'],
+			install=True,
+		)
+	except:
+		abort(500, 'Problem initializing Bans')
 
 	# comments
-	initialize_comments(
-		configs['comments'],
-		g.accounts,
-		g.access_log,
-		engines['comments'],
-		install=True,
-	)
+	try:
+		initialize_comments(
+			configs['comments'],
+			g.accounts,
+			g.access_log,
+			engines['comments'],
+			install=True,
+		)
+	except:
+		abort(500, 'Problem initializing Comments')
 
 	# stickers
-	initialize_stickers(
-		configs['stickers'],
-		g.accounts,
-		g.access_log,
-		engines['stickers'],
-		install=True,
-	)
+	try:
+		initialize_stickers(
+			configs['stickers'],
+			g.accounts,
+			g.access_log,
+			engines['stickers'],
+			install=True,
+		)
+	except:
+		abort(500, 'Problem initializing Stickers')
 
 	# patreon
-	initialize_patreon(
-		configs['patreon'],
-		g.accounts,
-		g.access_log,
-		engines['patreon'],
-		install=True,
-	)
+	try:
+		initialize_patreon(
+			configs['patreon'],
+			g.accounts,
+			g.access_log,
+			engines['patreon'],
+			install=True,
+		)
+	except:
+		abort(500, 'Problem initializing Patreon')
 
 	# media
-	initialize_media(
-		configs['media'],
-		g.accounts,
-		g.access_log,
-		engines['media'],
-		install=True,
-	)
+	try:
+		initialize_media(
+			configs['media'],
+			g.accounts,
+			g.access_log,
+			engines['media'],
+			install=True,
+		)
+	except:
+		abort(500, 'Problem initializing Media')
 
 	if 'contributor' not in g.accounts.available_groups:
 		g.accounts.create_group('contributor')
