@@ -355,7 +355,6 @@ def e451(e):
 def e500(e):
 	return error_page(500, e.description)
 
-@app.after_request
 def response_minify_html(response):
 	if (
 			response.content_type == u'text/html; charset=utf-8'
@@ -375,7 +374,6 @@ def response_minify_html(response):
 		)
 	return response
 
-@app.after_request
 def check_global_ban(response):
 	if not hasattr(g, 'bans'):
 		return response
@@ -409,7 +407,6 @@ def check_global_ban(response):
 	else:
 		return response
 
-@app.after_request
 def response_add_cache_headers(response):
 	if hasattr(g, 'no_store'):
 		response.cache_control.public = False
@@ -419,7 +416,6 @@ def response_add_cache_headers(response):
 			del response.headers['Expires']
 	return response
 
-@app.after_request
 def response_add_meta_graph(response):
 	if (
 			response.content_type == u'text/html; charset=utf-8'
@@ -458,6 +454,14 @@ def response_add_meta_graph(response):
 				graph_tags + '<title>',
 			)
 			response.set_data(data)
+	return response
+
+@app.after_request
+def after_request(response):
+	response = response_minify_html(response)
+	response = check_global_ban(response)
+	response = response_add_cache_headers(response)
+	response = response_add_meta_graph(response)
 	return response
 
 # persephone has to be registered after other endpoints for wildcard profiles
