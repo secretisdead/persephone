@@ -82,13 +82,16 @@ def get_engine(db_config):
 			connect_args={'check_same_thread': False},
 		)
 	elif db_config['type']:
-		return create_engine(
-			'mysql://'
-				+ db_config['user']
-				+ ':'
-				+ db_config['pass']
-				+ '@' + db_config['host']
-		)
+		try:
+			return create_engine(
+				'mysql://'
+					+ db_config['user']
+					+ ':'
+					+ db_config['pass']
+					+ '@' + db_config['host']
+			)
+		except:
+			abort(500, 'Problem connecting to db')
 	else:
 		abort(500, 'Problem with db configuration')
 
