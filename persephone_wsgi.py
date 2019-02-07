@@ -457,15 +457,19 @@ def response_add_meta_graph(response):
 	return response
 
 def close_connections():
-	for connection in [
-			g.access_log.connection,
-			g.accounts.connection,
-			g.bans.connection,
-			g.comments.connection,
-			g.stickers.connection,
-			g.patreon.connection,
-			g.media.connection,
+	connections = []
+	for component in [
+			'access_log',
+			'accounts',
+			'bans',
+			'comments',
+			'stickers',
+			'patreon',
+			'media',
 		]:
+		if hasattr(g, component):
+			connections.append(getattr(g, component).connection)
+	for connection in connections:
 		try:
 			connection.close()
 		except:
