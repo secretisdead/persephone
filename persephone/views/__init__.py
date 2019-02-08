@@ -412,7 +412,6 @@ def search_public_media(medium_id=None, rss=False):
 
 @persephone.route('/media/search/rss')
 def search_public_media_rss():
-	g.legal['ignore_terms_agreement'] = True
 	return search_public_media(rss=True)
 
 # management media search
