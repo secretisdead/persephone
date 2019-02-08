@@ -157,19 +157,26 @@ class Manage {
 			// current tags in current form tags input
 			this.input.parentNode.querySelector('[name="tags"]').value = this.to_string(this.tags_list);
 		}.bind(this.tags_field);
-		// fetch suggestions
-		this.tags_field.fetch_suggestions();
-		// create suggestions list (excluding search suggestions)
-		let tag_suggestion_lists = document.querySelectorAll('meta[name="tag_suggestion_list"]');
-		let excluded_lists = [];
-		for (let i = 0; i < tag_suggestion_lists.length; i++) {
-			let list_uri = tag_suggestion_lists[i].getAttribute('content');
-			let list_uri_pieces = list_uri.replace('\\', '/').split('/');
-			if ('search' == list_uri_pieces[list_uri_pieces.length - 1].substr(0, 6)) {
-				excluded_lists.push(list_uri);
+		// only fetch tag suggestions on first search input focus
+		tags_field.input.addEventListener('focus', e => {
+			if (e.currentTarget.hasOwnProperty('fetched')) {
+				return;
 			}
-		}
-		this.tags_field.create_suggestions_list(excluded_lists);
+			e.currentTarget.fetched = true;
+			// fetch suggestions
+			this.tags_field.fetch_suggestions();
+			// create suggestions list (excluding search suggestions)
+			let tag_suggestion_lists = document.querySelectorAll('meta[name="tag_suggestion_list"]');
+			let excluded_lists = [];
+			for (let i = 0; i < tag_suggestion_lists.length; i++) {
+				let list_uri = tag_suggestion_lists[i].getAttribute('content');
+				let list_uri_pieces = list_uri.replace('\\', '/').split('/');
+				if ('search' == list_uri_pieces[list_uri_pieces.length - 1].substr(0, 6)) {
+					excluded_lists.push(list_uri);
+				}
+			}
+			this.tags_field.create_suggestions_list(excluded_lists);
+		});
 
 		// manage action buttons
 		let actions = [

@@ -71,19 +71,27 @@ if (search_input) {
 			}
 		});
 	}
-	// fetch suggestions
-	tags_field.fetch_suggestions();
-	// create suggestions list (excluding semantic suggestions)
-	let tag_suggestion_lists = document.querySelectorAll('meta[name="tag_suggestion_list"]');
-	let excluded_lists = [];
-	for (let i = 0; i < tag_suggestion_lists.length; i++) {
-		let list_uri = tag_suggestion_lists[i].getAttribute('content');
-		let list_uri_pieces = list_uri.replace('\\', '/').split('/');
-		if ('semantic' == list_uri_pieces[list_uri_pieces.length - 1].substr(0, 8)) {
-			excluded_lists.push(list_uri);
+
+	// only fetch tag suggestions on first search input focus
+	tags_field.input.addEventListener('focus', e => {
+		if (e.currentTarget.hasOwnProperty('fetched')) {
+			return;
 		}
-	}
-	tags_field.create_suggestions_list(excluded_lists);
+		e.currentTarget.fetched = true;
+		// fetch suggestions
+		tags_field.fetch_suggestions();
+		// create suggestions list (excluding semantic suggestions)
+		let tag_suggestion_lists = document.querySelectorAll('meta[name="tag_suggestion_list"]');
+		let excluded_lists = [];
+		for (let i = 0; i < tag_suggestion_lists.length; i++) {
+			let list_uri = tag_suggestion_lists[i].getAttribute('content');
+			let list_uri_pieces = list_uri.replace('\\', '/').split('/');
+			if ('clutter' == list_uri_pieces[list_uri_pieces.length - 1].substr(0, 8)) {
+				excluded_lists.push(list_uri);
+			}
+		}
+		tags_field.create_suggestions_list(excluded_lists);
+	});
 
 	// max search tags limit
 	let max_tags = parseInt(search_input.dataset.maxTags);

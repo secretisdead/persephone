@@ -187,9 +187,16 @@ if (target_input) {
 		autocopy(tag_string, plain_tags_editor.dataset.autocopyAlert, plain_tags_editor.dataset.copyAlert);
 		tags_field.input.focus();
 	});
-	// fetch suggestions
-	tags_field.fetch_suggestions();
-	tags_field.create_suggestions_list();
+	// only fetch tag suggestions on first search input focus
+	tags_field.input.addEventListener('focus', e => {
+		if (e.currentTarget.hasOwnProperty('fetched')) {
+			return;
+		}
+		e.currentTarget.fetched = true;
+		// fetch suggestions
+		tags_field.fetch_suggestions();
+		tags_field.create_suggestions_list();
+	});
 }
 // add listener for leaving page to check if any tags are still processing
 window.addEventListener('beforeunload', e => {
