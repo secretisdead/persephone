@@ -301,7 +301,7 @@ def initialize():
 		'populate_current_user_stickerbook': populate_current_user_stickerbook,
 	}
 
-	if not terms_agreed() and 'accounts_signed_out.sign_in' == request.endpoint:
+	if not terms_agreed() and 'accounts_signed_out.sign_in_services' == request.endpoint:
 		@after_this_request
 		def require_terms(response):
 			return make_response(
