@@ -976,7 +976,7 @@ def search_user_media_rss(user_identifier):
 @persephone.route('/<user_identifier>/media/<medium_id>', methods=['GET', 'POST'])
 def search_user_media(user_identifier, medium_id=None, rss=False):
 	if not rss and not terms_agreed():
-		return terms(agreement_form=True, medium_id=medium_id, rss=rss)
+		return terms(agreement_form=True, user_identifier=user_identifier, medium_id=medium_id)
 	user = require_profile_user(user_identifier)
 	override_filters, management_mode, omit_future = build_search_override(user)
 	override_filters['owner_ids'] = user.id_bytes
