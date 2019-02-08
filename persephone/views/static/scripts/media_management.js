@@ -158,7 +158,7 @@ class Manage {
 			this.input.parentNode.querySelector('[name="tags"]').value = this.to_string(this.tags_list);
 		}.bind(this.tags_field);
 		// only fetch tag suggestions on first search input focus
-		tags_field.input.addEventListener('focus', e => {
+		this.tags_field.input.addEventListener('focus', e => {
 			if (e.currentTarget.hasOwnProperty('fetched')) {
 				return;
 			}
