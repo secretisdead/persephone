@@ -41,10 +41,7 @@
 {% endif %}
 <meta 
 	name="sticker_placements_uri" 
-	content="{{ url_for(
-		'stickers_static.placements_file',
-		placements_filename='PLACEMENTS_FILENAME'
-	).replace('PLACEMENTS_FILENAME', '{}.json') }}">
+	content="{{ g.stickers.config['sticker_placements_file_uri'] }}.json">
 <meta name="sticker_edge" content="{{ g.stickers.config['sticker_edge'] }}">
 <meta name="max_sticker_target_width" content="{{ g.media.config['summary_values']['view'] }}">
 <script 
