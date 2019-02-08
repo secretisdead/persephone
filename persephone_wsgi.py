@@ -139,8 +139,9 @@ def initialize():
 	try:
 		g.access_log = AccessLog(
 			engines['access_log'],
-			remote_origin=request.remote_addr,
+			db_prefix=configs['access_log']['db_prefix'],
 			install=True,
+			remote_origin=request.remote_addr,
 		)
 	except:
 		abort(500, 'Problem initializing AccessLog')
