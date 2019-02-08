@@ -305,7 +305,9 @@ export function fetch_tag_suggestions() {
 		let action = tag_suggestion_lists[i].getAttribute('content');
 		xhr.open('GET', action + (-1 != action.indexOf('?') ? '&' : '?') + '_' + new Date().getTime(), true);
 		xhr.responseType = 'json';
-		xhr.withCredentials = true;
+		if ('1' == meta_tag.dataset.credentials) {
+			xhr.withCredentials = true;
+		}
 		xhr.send();
 	}
 }
