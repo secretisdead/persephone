@@ -2,7 +2,7 @@
 {% block title %}Likes list{% endblock %}
 {% block content %}
 	<h1>Likes list</h1>
-	{% set override_endpoint = 'user_liked_media' %}
+	{% set override_endpoint = 'persephone.user_liked_media' %}
 	{% set kwargs = {'user_identifier': user.identifier} %}
 	{% macro render_result(result) %}
 		<tr>
