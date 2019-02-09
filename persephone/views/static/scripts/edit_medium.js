@@ -1,4 +1,13 @@
 'use strict';
+
+import { add_thumbnail_preview } from './thumbnail_preview.js';
+
+// thumbnail previews
+let thumbnail = document.querySelector('.thumbnail');
+if (thumbnail) {
+	add_thumbnail_preview(thumbnail);
+}
+
 let thumbnail = document.querySelector('.thumbnail');
 let summary = thumbnail.querySelector('.summary');
 let medium_element = summary.querySelector('picture');

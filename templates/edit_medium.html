@@ -9,10 +9,7 @@
 	{% include 'medium_form_errors.html' %}
 	{% include 'edit_medium_form.html' %}
 	<script 
-		type="text/javascript" 
-		src="{{ url_for('persephone.static', filename='scripts/thumbnail_previews.js') }}"></script>
-	<script 
-		type="text/javascript" 
+		type="module" 
 		src="{{ url_for('persephone.static', filename='scripts/edit_medium.js') }}"></script>
 	{% for mode, display in {
 		'delete_summaries': 'Delete summary files',
