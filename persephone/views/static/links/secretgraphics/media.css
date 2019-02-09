@@ -353,7 +353,7 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 /*view medium*/
 .media_view_endpoint #content {
 	display: inline-block;
-	min-width: 400px;
+	width: 400px;
 }
 /*constrain media width to viewport*/
 .media_view_endpoint,

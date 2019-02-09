@@ -35,6 +35,9 @@ body {
 	align-items: center;
 	justify-content: center;
 }
+#content > div {
+	max-width: 100%;
+}
 /*other full centers*/
 .media_search_endpoint .legal_terms_of_use,
 .media_search_endpoint .error_status {
