@@ -29,6 +29,9 @@
 				content="width=device-width, initial-scale=1.0, maximum-scale=4.0, minimum-scale=1.0, user-scalable=1.0">
 			<meta name="twitter:site" content="@secretisdead">
 			<meta property="og:site_name" content="{{ g.persephone_config['site_name'] }}">
+			{% if g.persephone_config['google_verification'] %}
+				<meta name="google-site-verification" content="{{ g.persephone_config['google_verification'] }}">
+			{% endif %}
 			{% block meta %}{% endblock %}
 			<title>
 				{% block title %}{% endblock %}
