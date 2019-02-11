@@ -987,8 +987,14 @@ def search_user_media(user_identifier, medium_id=None, rss=False):
 		return terms(agreement_form=True, user_identifier=user_identifier, medium_id=medium_id)
 	user = require_profile_user(user_identifier)
 	override_filters, management_mode, omit_future = build_search_override(user)
-	override_filters['owner_ids'] = user.id_bytes
-
+	if (
+			not g.persephone_config['public_contributors']
+			or user.id in g.persephone_config['public_contributors']
+		):
+		override_filters['owner_ids'] = user.id_bytes
+	else:
+		# force no results
+		override_filters['smaller_than'] = 0
 	return search_media(
 		override_filters=override_filters,
 		management_mode=management_mode,
@@ -1027,7 +1033,14 @@ def user_profile(user_identifier=None):
 	# media card
 	if user.has_permission(group_names='contributor'):
 		override_filters, management_mode, omit_future = build_search_override(user)
-		override_filters['owner_ids'] = user.id_bytes
+		if (
+				not g.persephone_config['public_contributors']
+				or user.id in g.persephone_config['public_contributors']
+			):
+			override_filters['owner_ids'] = user.id_bytes
+		else:
+			# force no results
+			override_filters['smaller_than'] = 0
 		if omit_future:
 			override_filters['created_before'] = int(time.time())
 		total_media = g.media.count_media(filter=override_filters)
