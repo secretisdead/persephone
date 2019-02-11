@@ -293,11 +293,14 @@ def takeout():
 
 # announcements
 def get_announcement_medium(page=0):
-	media = g.media.search_media(
-		filter={
+	filter = {
 			'created_before': int(time.time()),
 			'with_tags': 'announcement',
-		},
+	}
+	if g.persephone_config['public_contributors']:
+		filter['owner_ids'] = g.persephone_config['public_contributors']
+	media = g.media.search_media(
+		filter=filter,
 		page=int(page),
 		perpage=1,
 	)
@@ -318,12 +321,13 @@ def announcements(page=0):
 	announcement_medium = get_announcement_medium(page)
 	if not announcement_medium:
 		abort(404)
-	total_results = g.media.count_media(
-		filter={
-			'created_before': int(time.time()),
-			'with_tags': 'announcement',
-		},
-	)
+	filter = {
+		'created_before': int(time.time()),
+		'with_tags': 'announcement',
+	}
+	if g.persephone_config['public_contributors']:
+		filter['owner_ids'] = g.persephone_config['public_contributors']
+	total_results = g.media.count_media(filter=filter)
 	return render_template(
 		'announcements.html',
 		announcement_medium=announcement_medium,
@@ -354,6 +358,8 @@ def build_search_override(user=None):
 			'without_protections': [MediumProtection.PRIVATE],
 			'with_statuses': [MediumStatus.ALLOWED],
 		}
+		if g.persephone_config['public_contributors']:
+			filter['owner_ids'] = g.persephone_config['public_contributors']
 		return filter, False, True
 	# manager, or owner browsing their own media
 	if (
@@ -368,6 +374,8 @@ def build_search_override(user=None):
 		'without_protections': [MediumProtection.PRIVATE],
 		'with_statuses': [MediumStatus.ALLOWED],
 	}
+	if g.persephone_config['public_contributors']:
+		filter['owner_ids'] = g.persephone_config['public_contributors']
 	# set without_group_bits to inverse of user permissions for media | global scopes
 	user_group_bits = []
 	for scope in ['', 'media']:
