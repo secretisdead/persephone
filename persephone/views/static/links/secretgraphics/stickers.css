@@ -99,25 +99,30 @@
 	color: var(--header_foreground);
 }
 :root {
-	--stickers_per_row: 6;
+	--stickers_per_row: 7;
 }
 .stickerbook .sticker_category {
 	font-size: 0;
 	margin: 0;
 	border-top: 1px solid var(--card_border);
 	padding: 0.5rem;
-	width: calc(calc(64px * var(--stickers_per_row)) + calc(0.5rem * var(--stickers_per_row)));
+	width: 512px;
 	box-sizing: border-box;
 }
 .stickerbook .sticker_category:empty {
 	display: none;
 }
 .stickerbook .sticker_category .sticker {
-	margin: 0.25rem;
+	width: 100%;
+	height: 0;
+	padding-bottom: 100%;
 }
+.stickerbook .sticker_category > span,
 .stickerbook a {
 	display: inline-block;
 	position: relative;
+	width: calc(calc(100% / var(--stickers_per_row)) - 0.5rem);
+	margin: 0.25rem;
 }
 .stickerbook .unique_placements_count {
 	display: inline-block;
@@ -137,6 +142,16 @@
 	cursor: help;
 	background-color: var(--sticker_unique_placements_count_background);
 	color: var(--sticker_unique_placements_count_foreground);
+}
+@media only screen and (max-width: 512px) {
+	:root {
+		--stickers_per_row: 4.5;
+	}
+	.persephone-user_collected_stickers,
+	.stickerbook,
+	.stickerbook .sticker_category {
+		width: 100%;
+	}
 }
 /*stickers list*/
 .stickers_admin-stickers_list .sticker,

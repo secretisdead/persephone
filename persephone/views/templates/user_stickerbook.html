@@ -31,7 +31,7 @@
 							{{ sticker_image(sticker) }}
 						{% else %}
 							{% if not sticker.unique_placements_count %}
-								{{ sticker_image(sticker) }}
+								<span>{{ sticker_image(sticker) }}</span>
 							{% else %}
 								<a 
 									href="{{ url_for(
