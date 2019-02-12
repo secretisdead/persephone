@@ -8,7 +8,6 @@ if (thumbnail) {
 	add_thumbnail_preview(thumbnail);
 }
 
-let thumbnail = document.querySelector('.thumbnail');
 let summary = thumbnail.querySelector('.summary');
 let medium_element = summary.querySelector('picture');
 if (!medium_element) {
