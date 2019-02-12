@@ -24,11 +24,13 @@
 
 	--tag_set: #8000ff;
 	--tag_cover: #004080;
-	--tag_render: #808000;
 	--tag_sequence: #c08000;
 	--tag_feature: #c00080;
 	--tag_mirror: #0080a0;
 	--tag_quality: #008080;
+	--tag_blurb: #804080;
+	--tag_text: #4040c0;
+	--tag_embed: #808000;
 
 	--tag_id: #000000;
 	--tag_origin: #000000;
@@ -146,10 +148,6 @@
 .tag[data-tag^="-cover:"] {
 	background-color: var(--tag_cover);
 }
-.tag[data-tag^="text:"],
-.tag[data-tag^="embed:"] {
-	background-color: var(--tag_render);
-}
 .tag[data-tag^="next:"],
 .tag[data-tag^="prev:"] {
 	background-color: var(--tag_sequence);
@@ -169,6 +167,15 @@
 .tag[data-tag^="inferior of:"],
 .tag[data-tag^="-inferior of:"] {
 	background-color: var(--tag_quality);
+}
+.tag[data-tag^="blurb:"] {
+	background-color: var(--tag_blurb);
+}
+.tag[data-tag^="text:"] {
+	background-color: var(--tag_text);
+}
+.tag[data-tag^="embed:"] {
+	background-color: var(--tag_embed);
 }
 /*management*/
 .tag[data-tag^="id:"] {
