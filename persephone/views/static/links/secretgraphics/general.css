@@ -240,6 +240,10 @@ nav a:last-child {
 .persephone-user_sticker_placements h1 {
 	display: none;
 }
+/*sign in services displaying terms header*/
+.accounts_signed_out-sign_in_services .legal_terms_of_use h1 {
+	display: block;
+}
 
 /*announcements*/
 .persephone-announcements {
