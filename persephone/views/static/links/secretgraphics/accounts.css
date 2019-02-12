@@ -73,7 +73,7 @@
 	border-radius: 0.25rem;
 	overflow: hidden;
 	background-size: contain;
-	background-image: url(protected.svg);
+	background-image: url(media_protected.svg);
 	background-repeat: no-repeat;
 	margin-right: 0.25rem;
 }
