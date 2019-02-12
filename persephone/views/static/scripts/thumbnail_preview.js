@@ -5,7 +5,7 @@ export function add_thumbnail_preview(thumbnail) {
 	if (!picture) {
 		return;
 	}
-	if ('image/gif' == thumbnail.dataset.mime) {
+	if ('image/gif' == thumbnail.dataset.mime && thumbnail.dataset.preview) {
 		let preview_picture = document.createElement('picture');
 		preview_picture.classList.add('preview');
 		let preview_image = document.createElement('img');
