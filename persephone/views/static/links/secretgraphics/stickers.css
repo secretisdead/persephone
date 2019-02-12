@@ -143,7 +143,7 @@
 	background-color: var(--sticker_unique_placements_count_background);
 	color: var(--sticker_unique_placements_count_foreground);
 }
-@media only screen and (max-width: 512px) {
+@media only screen and (max-width: 600px) {
 	:root {
 		--stickers_per_row: 4.5;
 	}
