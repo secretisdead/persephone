@@ -68,16 +68,37 @@
 					'stickers',
 					'scripts',
 				] %}
+				{% set modified_time = g.persephone['get_file_modified_time'](
+					[
+						'persephone',
+						'views',
+						'static',
+						'links',
+						'secretgraphics',
+						file + '.css',
+					]
+				)|int|string %}
 				<link 
 					rel="stylesheet" 
 					type="text/css" 
-					href="{{ url_for('persephone.static', filename='links/secretgraphics/' + file + '.css') }}">
+					href="{{ url_for(
+						'persephone.static',
+						filename='links/secretgraphics/' + file + '.css',
+						v=modified_time,
+					) }}">
 			{% endfor %}
 			{% block styles %}{% endblock %}
+			{% set modified_time = g.persephone['get_file_modified_time'](
+				[
+					'static',
+					'links',
+					'custom.css',
+				]
+			)|int|string %}
 			<link 
 				rel="stylesheet" 
 				type="text/css" 
-				href="{{ url_for('static', filename='links/custom.css') }}">
+				href="{{ url_for('static', filename='links/custom.css', v=modified_time) }}">
 			<script type="text/javascript">
 				'use strict';
 				function change_theme(theme) {

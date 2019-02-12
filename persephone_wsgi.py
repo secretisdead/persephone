@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import Flask, url_for, g, request, abort, redirect, escape, Markup
 from flask import render_template, make_response, after_this_request
@@ -262,6 +263,9 @@ def initialize():
 						),
 					)
 
+	def get_file_modified_time(path_components):
+		return os.path.getmtime(os.path.join(*path_components))
+
 	def populate_media_comment_counts(media):
 		comment_counts = g.comments.get_subject_comment_counts(media.keys())
 		for medium in media.values():
@@ -295,6 +299,7 @@ def initialize():
 				del g.accounts.current_user.stickerbook[category]
 
 	g.persephone = {
+		'get_file_modified_time': get_file_modified_time,
 		'filter_comments': filter_comments,
 		'populate_media_comment_counts': populate_media_comment_counts,
 		'populate_media_sticker_counts': populate_media_sticker_counts,
