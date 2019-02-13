@@ -134,10 +134,19 @@
 	position: fixed;
 	width: 60%;
 	min-width: 400px;
-	max-width: calc(100% - 2em);
+	max-width: calc(100% - 2rem);
 	top: 25%;
 	left: 20%;
 	z-index: 1100;
+}
+@media only screen and (max-width: 512px)
+{
+	.scripts_enabled #media_preferences {
+		width: calc(100% - 3rem);
+		min-width: auto;
+		top: 1.5rem;
+		left: 1.5rem;
+	}
 }
 .scripts_enabled label[for="media_preference_blacklisted_tags"] {
 	width: 100%;
@@ -880,10 +889,6 @@
 	/*make room for topmenu*/
 	.scripts_enabled #content {
 		padding-top: calc(1rem + 48px);
-	}
-	.scripts_enabled #media_preferences {
-		width: 80%;
-		left: 10%;
 	}
 }
 /*extra narrow for topmenu*/
