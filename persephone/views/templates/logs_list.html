@@ -118,6 +118,15 @@
 				title="View medium">
 				View medium
 			</a>
+		{% elif 'medium_like' == result[type + '_category'] %}
+			<a 
+				href="{{ url_for(
+					'persephone.manage_likes',
+					id=result[type].id,
+				) }}" 
+				title="View like">
+				View like
+			</a>
 		{% else %}
 			{{ result[type + '_id'] }}
 		{% endif %}

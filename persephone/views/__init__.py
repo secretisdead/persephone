@@ -109,6 +109,7 @@ def logs_list():
 		),
 		'patreon_client': g.patreon.search_clients(filter={'ids': ids}),
 		'medium': g.media.search_media(filter={'ids': ids}),
+		'medium_like': g.media.search_likes(filter={'ids': ids}),
 	}
 	for log in results.values():
 		for category, collection in collections.items():
