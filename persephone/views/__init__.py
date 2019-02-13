@@ -451,8 +451,70 @@ def manage_tags():
 @persephone.route('/manager/likes')
 @require_permissions(group_names='manager')
 def manage_likes():
-	#TODO manage media likes
-	return 'manager view likes list goes here'
+	search = {
+		'id': '',
+		'created_before': '',
+		'created_after': '',
+		'user_id': '',
+		'medium_id': '',
+	}
+	for field in search:
+		if field in request.args:
+			search[field] = request.args[field]
+
+	filter = {}
+	# for parsing datetime and timestamp from submitted form
+	# filter fields are named the same as search fields
+	time_fields = [
+		'created_before',
+		'created_after',
+	]
+	for field, value in search.items():
+		if not value:
+			continue
+		if 'id' == field:
+			filter['ids'] = value
+		elif field in time_fields:
+			try:
+				parsed = dateutil.parser.parse(value)
+			except ValueError:
+				filter[field] = 'bad_query'
+			else:
+				search[field] = parsed.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+				filter[field] = parsed.timestamp()
+		elif 'user_id' == field:
+			filter['user_ids'] = value
+		elif 'medium_id' == field:
+			filter['medium_ids'] = value
+
+	pagination = pagination_from_request('creation_time', 'desc', 0, 32)
+
+	total_results = g.media.count_likes(filter=filter)
+	results = g.media.search_likes(filter=filter, **pagination)
+
+	user_ids = []
+	medium_ids = []
+	for result in results.values():
+		user_ids.append(result.user_id)
+		medium_ids.append(result.medium_id)
+
+	users = g.accounts.search_users(filter={'ids': user_ids})
+	media = g.media.search_media(filter={'ids': medium_ids})
+
+	for result in results.values():
+		if result.user_id in users:
+			result.user = users.get(result.user_id)
+		if result.medium_id in media:
+			result.medium = media.get(result.medium_id)
+
+	return render_template(
+		'likes_list.html',
+		results=results,
+		search=search,
+		pagination=pagination,
+		total_results=total_results,
+		total_pages=math.ceil(total_results / pagination['perpage']),
+	)
 
 # profiles
 def require_profile_user(identifier):

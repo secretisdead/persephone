@@ -1,0 +1,104 @@
+{% extends 'layout.html' %}
+{% block title %}Likes list{% endblock %}
+{% block content %}
+	<h1>Likes list</h1>
+	{% from 'users.jinja' import edit_user_link, user_display %}
+	{% set override_endpoint = 'persephone.search_public_media' %}
+	{% set kwargs = {} %}
+	{% macro render_result(result) %}
+		<tr>
+			<td>
+				<a 
+					href="{{ url_for(
+						'persephone.manage_likes',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						id=result.id,
+					) }}" 
+					title="View like in list">
+					○
+				</a>
+			</td>
+			<td data-timestamp="{{ result.creation_time }}">
+				{{ result.creation_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}
+			</td>
+			<td>
+				<a href="{{ url_for(
+						'persephone.manage_likes',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						user_id=result.user_id,
+					) }}" 
+					title="Search likes by this user">
+					(Search)
+				</a> 
+				{{ edit_user_link(result.user) }}
+			</td>
+			<td>
+				<a href="{{ url_for(
+						'persephone.manage_likes',
+						sort=pagination['sort'],
+						order=pagination['order'],
+						perpage=pagination['perpage'],
+						medium_id=result.medium_id,
+					) }}" 
+					title="Search likes for this medium">
+					(Search)
+				</a> 
+				{% set medium = result.medium %}
+				{% include 'medium_thumbnail.html' %}
+			</td>
+		</tr>
+	{% endmacro %}
+	{% set columns = [
+		{
+			'name': 'id',
+			'label': 'ID',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+		},
+		{
+			'name': 'creation_time',
+			'label': 'Created',
+			'sortable': True,
+			'searchable': True,
+			'type': 'amount',
+			'less_than_name': 'created_before',
+			'less_than_label': 'Created before',
+			'less_than_placeholder': 'Datetime string',
+			'greater_than_name': 'created_after',
+			'greater_than_label': 'Created after',
+			'greater_than_placeholder': 'Datetime string',
+		},
+		{
+			'name': 'user_id',
+			'label': 'User',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'User ID',
+		},
+		{
+			'name': 'medium_id',
+			'label': 'Medium',
+			'sortable': False,
+			'searchable': True,
+			'type': 'text',
+			'placeholder': 'Medium ID',
+		},
+	] %}
+	{% from 'tabular_list.jinja' import tabular_list %}
+	{{ tabular_list(
+		columns,
+		'persephone.manage_likes',
+		results,
+		total_results,
+		render_result,
+		total_pages,
+		pagination,
+		search,
+	) }}
+{% endblock %}
