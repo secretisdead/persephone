@@ -1,0 +1,13 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+	<g>
+		<rect 
+			stroke="#000000" 
+			rx="4" 
+			id="rounded_box" 
+			height="6" 
+			width="6" 
+			y="9" 
+			x="9" 
+			stroke-width="1"/>
+	</g>
+</svg>
