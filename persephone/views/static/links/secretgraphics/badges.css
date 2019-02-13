@@ -5,7 +5,7 @@
 }
 /*badges */
 .persephone-user_badges {
-	max-width: calc(calc(128px * 3) + 1.6rem);
+	width: calc(calc(128px * 3) + 1.6rem);
 	margin: 0 auto;
 	text-align: left;
 }
@@ -120,4 +120,11 @@
 }
 .user_profile_badge[data-badge=sand_mandala] {
 	background-image: url(badge_sand_mandala.png);
+}
+@media only screen and (max-width: 512px)
+{
+	.user_profile_badge {
+		width: calc(50% - 0.4rem);
+		padding-bottom: calc(calc(50% - 0.4rem) / 2);
+	}
 }
