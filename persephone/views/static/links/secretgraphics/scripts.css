@@ -753,6 +753,9 @@
 
 
 
+.scripts_enabled.media_search_endpoint #content {
+	padding-bottom: 3.5rem;
+}
 
 /*narrower screens*/
 @media only screen and (max-width: 1280px)
