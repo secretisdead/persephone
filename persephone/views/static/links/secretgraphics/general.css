@@ -231,6 +231,19 @@ nav a:last-child {
 	text-align: left;
 }
 
+/*page lists*/
+#pages {
+	background-color: var(--card_background);
+	color: var(--card_foreground);
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.5rem;
+	border: 1px solid var(--card_border);
+	font-size: 0.9rem;
+}
+#pages a {
+	color: var(--card_link);
+}
+
 /*without headers*/
 .persephone-home>h1,
 .accounts_signed_out-sign_in_services h1,

@@ -213,7 +213,7 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 	grid-gap: 1px;
 }
 #media_search #pages {
-	margin-top: 0.5rem;
+	margin-top: 1rem;
 }
 /*hack for firefox search grid rendering*/
 @-moz-document url-prefix() {
