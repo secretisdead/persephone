@@ -51,13 +51,19 @@ export class StickerDrawer {
 		}
 
 		// add listeners to comments
-		let comment_body = document.querySelector('#comment_body');
-		if (comment_body) {
-			comment_body.addEventListener('focus', e => {
+		this.comment_body = document.querySelector('#comment_body');
+		if (this.comment_body) {
+			this.comment_body.addEventListener('focus', e => {
 				document.documentElement.classList.add('comment_active');
 			});
-			comment_body.addEventListener('blur', e => {
+			this.comment_body.addEventListener('blur', e => {
 				document.documentElement.classList.remove('comment_active');
+				// set flag for just left comment field
+				this.comment_body.just_blurred = true;
+				// wait a moment then unset flag
+				this.comment_body.blurred_timeout = setTimeout(() => {
+					this.comment_body.just_blurred = false;
+				}, 250);
 			});
 		}
 
@@ -134,6 +140,12 @@ export class StickerDrawer {
 
 		this.sticker_drawer.classList.add('loaded');
 	}
+	return_to_comment() {
+		if (this.comment_body && this.comment_body.just_blurred) {
+			this.comment_body.blurred_timeout = null;
+			this.comment_body.focus();
+		}
+	}
 	drawer_pagination() {
 		// get category width
 		let sticker_category = this.sticker_drawer.querySelector('.sticker_category');
@@ -192,6 +204,7 @@ export class StickerDrawer {
 		this.show_page('last');
 	}
 	show_page(page) {
+		this.return_to_comment();
 		if ('last' == page) {
 			page = this.current_category.pages.length - 1;
 		}
