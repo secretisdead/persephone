@@ -468,10 +468,13 @@ def response_add_meta_graph(response):
 		# response doesn't contain meta graph image
 		if -1 == data.find('property="og:image"', 0, head_end):
 			# add general site meta graph image
-			site_image = url_for(
-				'persephone.static',
-				filename='persephone_128.png',
-			)
+			if g.persephone_config['site_image_uri']:
+				site_image = g.persephone_config['site_image_uri']
+			else:
+				site_image = url_for(
+					'persephone.static',
+					filename='persephone_128.png',
+				)
 			graph_tags += (
 				'<meta name="twitter:image" content="' + site_image + '">'
 					+ '<meta property="og:image" content="' + site_image + '">'

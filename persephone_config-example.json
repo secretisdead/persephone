@@ -50,6 +50,7 @@
 		}
 	},
 	"default_theme": "theme_ghost",
+	"site_image_uri": "",
 	"site_name": "persephone",
 	"site_title": "persephone",
 	"custom_groups": [],
