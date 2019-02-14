@@ -7,6 +7,10 @@ function change_theme(theme) {
 		}
 	}
 	document.documentElement.classList.add(theme);
+	let background_color = getComputedStyle(
+		document.documentElement
+	).getPropertyValue('--background');
+	document.querySelector('meta[name="theme-color"]').content = background_color;
 }
 let theme_select = document.querySelector('#theme_select');
 if ('undefined' == theme_preference) {

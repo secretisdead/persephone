@@ -29,6 +29,7 @@
 				content="width=device-width, initial-scale=1.0, maximum-scale=4.0, minimum-scale=1.0, user-scalable=1.0">
 			<meta name="twitter:site" content="@secretisdead">
 			<meta property="og:site_name" content="{{ g.persephone_config['site_name'] }}">
+			<meta name="theme-color" content="#a0a0a0">
 			{% if g.persephone_config['google_verification'] %}
 				<meta name="google-site-verification" content="{{ g.persephone_config['google_verification'] }}">
 			{% endif %}
@@ -115,6 +116,10 @@
 				if (theme_preference) {
 					change_theme(theme_preference);
 				}
+				let background_color = getComputedStyle(
+					document.documentElement
+				).getPropertyValue('--background');
+				document.querySelector('meta[name="theme-color"]').content = background_color;
 			</script>
 			<script 
 				type="text/javascript" 
