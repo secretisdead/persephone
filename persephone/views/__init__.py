@@ -158,6 +158,13 @@ def home():
 def about():
 	return render_template('about.html')
 
+@persephone.route('/pages/<page_name>')
+def pages(page_name):
+	try:
+		return render_template('page_' + page_name + '.html')
+	except:
+		abort(404, 'Page not found')
+
 # legal
 @persephone.route('/legal')
 def legal():

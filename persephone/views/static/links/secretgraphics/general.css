@@ -223,6 +223,9 @@ nav a:last-child {
 	margin: 0 auto;
 	text-align: left;
 }
+.persephone-pages {
+	text-align: left;
+}
 
 /*error pages*/
 .error_status {
