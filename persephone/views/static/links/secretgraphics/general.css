@@ -423,6 +423,7 @@ nav a:last-child {
 	/*topmenu icons*/
 	#topmenu {
 		font-size: 0;
+		border-top: 1px solid var(--topmenu_border);
 	}
 	#topmenu a {
 		font-size: 0;
