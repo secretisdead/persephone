@@ -1,5 +1,8 @@
-import json
+import sys
 import os
+import json
+
+sys.path.append(os.path.dirname(__file__))
 
 from flask import Flask, url_for, g, request, abort, redirect, escape, Markup
 from flask import render_template, make_response, after_this_request
