@@ -300,8 +300,8 @@ git clone https://github.com/secretisdead/statement_helper.git
 ln -s "${persephone}/repos/statement_helper/statement_helper.py" "${persephone}/statement_helper.py"
 
 echo copying favicons
-cp "${persephone}/repos/persephone/persephone/static/persephone_tear_128.png" "${persephone}/static/favicon.png"
-cp "${persephone}/repos/persephone/persephone/static/favicon.ico" "${persephone}/static/favicon.ico"
+cp "${persephone}/repos/persephone/persephone/views/static/persephone_tear_128.png" "${persephone}/static/favicon.png"
+cp "${persephone}/repos/persephone/persephone/views/static/favicon.ico" "${persephone}/static/favicon.ico"
 
 echo copying example configuration files
 cp "${persephone}/repos/accesslog/access_log_config-example.json" "${persephone}/config/access_log_config.json"
