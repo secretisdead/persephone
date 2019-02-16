@@ -14,6 +14,10 @@ if 2 > len(sys.argv):
 persephone_install_directory = sys.argv[1]
 print('persephone install directory: ' + persephone_install_directory)
 configs = {
+	'persephone': {
+		'path': '',
+		'data': {},
+	},
 	'users': {
 		'path': '',
 		'data': {},
@@ -36,6 +40,12 @@ for config in configs:
 	with open(configs[config]['path'], 'r') as handle:
 		configs[config]['data'] = json.load(handle)
 
+print('persephone')
+print(' /db/persephone.db')
+configs['persephone']['db']['common']['host'] = os.path.join(
+	persephone_install_directory,
+	'persephone.db',
+)
 print('users')
 print(' /temp/accounts')
 configs['users']['data']['temp_path'] = os.path.join(
