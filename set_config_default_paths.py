@@ -42,10 +42,12 @@ for config in configs:
 
 print('persephone')
 print(' /db/persephone.db')
-configs['persephone']['db']['common']['host'] = os.path.join(
+configs['persephone']['data']['db']['common']['host'] = os.path.join(
 	persephone_install_directory,
+	'db',
 	'persephone.db',
 )
+
 print('users')
 print(' /temp/accounts')
 configs['users']['data']['temp_path'] = os.path.join(
