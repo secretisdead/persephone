@@ -67,8 +67,9 @@ app.register_blueprint(media_supplemental, url_prefix='/media')
 app.register_blueprint(media_api, url_prefix='/api/media')
 
 def get_config(config_file, config_name):
+	config_path = os.path.join(os.path.dirname(__file__), config_file)
 	try:
-		f = open(config_file, 'r')
+		f = open(config_path, 'r')
 	except FileNotFoundError:
 		abort(500, 'Missing ' + config_name + ' config file')
 
@@ -267,7 +268,9 @@ def initialize():
 					)
 
 	def get_file_modified_time(path_components):
-		return os.path.getmtime(os.path.join(*path_components))
+		return os.path.getmtime(
+			os.path.join(os.path.dirname(__file__), *path_components)
+		)
 
 	def populate_media_comment_counts(media):
 		comment_counts = g.comments.get_subject_comment_counts(media.keys())
