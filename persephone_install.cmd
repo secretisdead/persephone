@@ -2,60 +2,52 @@
 
 setlocal
 
-echo checking administrator permissions
+echo checking administrator permissions...
 net session >nul 2>&1
 if %errorLevel% == 0 (
-	echo  success
+	rem
 ) else (
-	echo  failure
-	echo   administrator permissions are required to be able to create symlinks
-	echo   please run the installer as administrator
+	echo  administrator permissions are required to be able to create symlinks
+	echo  please run the installer as administrator
 	goto end
 )
 
-echo checking for git
-git --version && (
-	echo  success
-) || (
-	echo  failure
-	echo   git not found
-	echo   git is required to clone necessary persephone component repos
-	echo   please ensure you have git installed
+echo checking for git...
+git --version || (
+	echo  git not found
+	echo  git is required to clone necessary persephone component repos
+	echo  please ensure you have git installed
 	goto end
 )
 
+echo checking for python3 alias...
 set python=python3
-%python% --version >nul 2>&1 || (
+%python% --version || (
+	echo  python3 alias not found
+	echo  using python
 	set python=python
 )
 
-echo checking for python
+echo checking for python...
 %python% --version && (
-	echo  success
 	echo  checking python version
 	for /f "usebackq tokens=2 delims= " %%i in ('%python% --version') do (
 		if /i "%%i" leq "3.4.9" (
-			echo   failure
-			echo    python version %%i
-			echo    please ensure you have python3 3.5+ installed
+			echo   python version %%i
+			echo   please ensure you have python3 3.5+ installed
 			goto end
 		)
-		echo   success
 	)
 ) || (
-	echo  failure
-	echo   required python not found
-	echo   please ensure you have python 3.5+ installed
+	echo  required python not found
+	echo  please ensure you have python 3.5+ installed
 	goto end
 )
 
-echo checking for pip
-%python% -m pip --version && (
-	echo  success
-) || (
-	echo  failure
-	echo   pip not found
-	echo   please ensure you have pip for python installed
+echo checking for pip...
+%python% -m pip --version || (
+	echo  pip not found
+	echo  please ensure you have pip for python3 installed
 	goto end
 )
 
@@ -76,106 +68,34 @@ if /i "%confirm%" neq "y" goto end
 
 cd "%persephone%"
 
-echo checking for venv and creating virtual environment
-%python% -m venv environment && (
-	echo  success
-) || (
-	echo  failure
-	echo   venv not found
-	echo   please ensure you have venv for python installed
+echo checking for venv and creating virtual environment...
+%python% -m venv environment
+if not exist "%persephone%\environment" (
+	echo  venv not found or problem creating virtual environment
+	echo  please ensure you have venv for python3 installed
 	goto end
 )
 
-echo activating virtual environment
+echo activating virtual environment...
 call "%persephone%\environment\Scripts\activate.bat"
 
 rem latest versions should be fine, if there end up being problems later i'll make it more specific
-echo installing required python packages
-echo  flask...
-%python% -m pip install flask && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing flask
-	goto end
-)
-echo  sqlalchemy...
-%python% -m pip install sqlalchemy && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing sqlalchemy
-	goto end
-)
-echo  python-dateutil...
-%python% -m pip install python-dateutil && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python-dateutil
-	goto end
-)
-echo  werkzeug...
-%python% -m pip install werkzeug && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing werkzeug
-	goto end
-)
-echo  Pillow...
-%python% -m pip install Pillow && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing Pillow
-	goto end
-)
-echo  python3-openid...
-%python% -m pip install python3-openid && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python3-openid
-	goto end
-)
-echo  passlib...
-%python% -m pip install passlib && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing passlib
-	goto end
-)
-echo  python-magic...
-%python% -m pip install python-magic && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python-magic
-	goto end
-)
-echo  python-libmagic...
-%python% -m pip install python-libmagic && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python-libmagic
-	goto end
-)
-echo  python-magic-bin 0.4.14...
-%python% -m pip install python-magic-bin==0.4.14 && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python-magic-bin 0.4.14
-	goto end
-)
+echo installing required python packages...
+%python% -m pip install flask
+%python% -m pip install sqlalchemy
+%python% -m pip install python-dateutil
+%python% -m pip install werkzeug
+%python% -m pip install Pillow
+%python% -m pip install python3-openid
+%python% -m pip install passlib
+%python% -m pip install python-magic
+%python% -m pip install python-libmagic
+%python% -m pip install python-magic-bin==0.4.14
 
-echo deactivating virtual environment
+echo deactivating virtual environment...
 call "%persephone%\environment\Scripts\deactivate.bat"
 
-echo creating directories
+echo creating directories...
 mkdir "%persephone%\config"
 mkdir "%persephone%\db"
 mkdir "%persephone%\files"
@@ -224,43 +144,44 @@ mkdir "%persephone%\temp\media"
 mkdir "%persephone%\temp\stickers"
 mkdir "%persephone%\templates"
 
-echo cloning persephone projects to repos directory and symlinking their components to the working directory
+echo cloning persephone projects to repos directory...
 cd "%persephone%\repos"
-echo  accesslog...
 git clone https://github.com/secretisdead/accesslog.git
-mklink /D "%persephone%\accesslog" "%persephone%\repos\accesslog\accesslog"
-echo  accounts...
 git clone https://github.com/secretisdead/accounts.git
-mklink /D "%persephone%\accounts" "%persephone%\repos\accounts\accounts"
-echo  bans...
 git clone https://github.com/secretisdead/bans.git
-mklink /D "%persephone%\bans" "%persephone%\repos\bans\bans"
-echo  bansfrontend...
 git clone https://github.com/secretisdead/bansfrontend.git
-mklink /D "%persephone%\bansfrontend" "%persephone%\repos\bansfrontend\bansfrontend"
-echo  comments...
 git clone https://github.com/secretisdead/comments.git
-mklink /D "%persephone%\comments" "%persephone%\repos\comments\comments"
-echo  commentsfrontend...
 git clone https://github.com/secretisdead/commentsfrontend.git
-mklink /D "%persephone%\commentsfrontend" "%persephone%\repos\commentsfrontend\commentsfrontend"
-echo  legal...
 git clone https://github.com/secretisdead/legal.git
-mklink /D "%persephone%\legal" "%persephone%\repos\legal\legal"
-echo  media...
 git clone https://github.com/secretisdead/media.git
-mklink /D "%persephone%\media" "%persephone%\repos\media\media"
-echo  mediafrontend...
 git clone https://github.com/secretisdead/mediafrontend.git
-mklink /D "%persephone%\mediafrontend" "%persephone%\repos\mediafrontend\mediafrontend"
-echo  patreon...
 git clone https://github.com/secretisdead/patreon.git
-mklink /D "%persephone%\patreon" "%persephone%\repos\patreon\patreon"
-echo  patreonfrontend...
 git clone https://github.com/secretisdead/patreonfrontend.git
-mklink /D "%persephone%\patreonfrontend" "%persephone%\repos\patreonfrontend\patreonfrontend"
-echo  persephone...
 git clone https://github.com/secretisdead/persephone.git
+git clone https://github.com/secretisdead/stickers.git
+git clone https://github.com/secretisdead/stickersfrontend.git
+git clone https://github.com/secretisdead/thirdpartyauth.git
+git clone https://github.com/secretisdead/users.git
+git clone https://github.com/secretisdead/base64_url.git
+git clone https://github.com/secretisdead/idcollection.git
+git clone https://github.com/secretisdead/pagination_from_request.git
+git clone https://github.com/secretisdead/parse_id.git
+git clone https://github.com/secretisdead/shortener.git
+git clone https://github.com/secretisdead/statement_helper.git
+cd "%persephone%"
+
+echo symlinking persephone project components to the working directory...
+mklink /D "%persephone%\accesslog" "%persephone%\repos\accesslog\accesslog"
+mklink /D "%persephone%\accounts" "%persephone%\repos\accounts\accounts"
+mklink /D "%persephone%\bans" "%persephone%\repos\bans\bans"
+mklink /D "%persephone%\bansfrontend" "%persephone%\repos\bansfrontend\bansfrontend"
+mklink /D "%persephone%\comments" "%persephone%\repos\comments\comments"
+mklink /D "%persephone%\commentsfrontend" "%persephone%\repos\commentsfrontend\commentsfrontend"
+mklink /D "%persephone%\legal" "%persephone%\repos\legal\legal"
+mklink /D "%persephone%\media" "%persephone%\repos\media\media"
+mklink /D "%persephone%\mediafrontend" "%persephone%\repos\mediafrontend\mediafrontend"
+mklink /D "%persephone%\patreon" "%persephone%\repos\patreon\patreon"
+mklink /D "%persephone%\patreonfrontend" "%persephone%\repos\patreonfrontend\patreonfrontend"
 mklink /D "%persephone%\persephone" "%persephone%\repos\persephone\persephone"
 mklink "%persephone%\persephone_wsgi.py" "%persephone%\repos\persephone\persephone_wsgi.py"
 mklink "%persephone%\start_dev_persephone.cmd" "%persephone%\repos\persephone\start_dev_persephone.cmd"
@@ -269,42 +190,22 @@ rem link all persephone top level template files
 for %%i in ("%persephone%\repos\persephone\templates\*") do (
 	mklink "%persephone%\templates\%%~nxi" "%persephone%\repos\persephone\templates\%%~nxi"
 )
-echo  stickers...
-git clone https://github.com/secretisdead/stickers.git
 mklink /D "%persephone%\stickers" "%persephone%\repos\stickers\stickers"
-echo  stickersfrontend...
-git clone https://github.com/secretisdead/stickersfrontend.git
 mklink /D "%persephone%\stickersfrontend" "%persephone%\repos\stickersfrontend\stickersfrontend"
-echo  thirdpartyauth...
-git clone https://github.com/secretisdead/thirdpartyauth.git
 mklink /D "%persephone%\thirdpartyauth" "%persephone%\repos\thirdpartyauth\thirdpartyauth"
-echo  users...
-git clone https://github.com/secretisdead/users.git
 mklink /D "%persephone%\users" "%persephone%\repos\users\users"
-echo  base64_url...
-git clone https://github.com/secretisdead/base64_url.git
 mklink "%persephone%\base64_url.py" "%persephone%\repos\base64_url\base64_url.py"
-echo  idcollection...
-git clone https://github.com/secretisdead/idcollection.git
 mklink "%persephone%\idcollection.py" "%persephone%\repos\idcollection\idcollection.py"
-echo  pagination_from_request...
-git clone https://github.com/secretisdead/pagination_from_request.git
 mklink "%persephone%\pagination_from_request.py" "%persephone%\repos\pagination_from_request\pagination_from_request.py"
-echo  parse_id...
-git clone https://github.com/secretisdead/parse_id.git
 mklink "%persephone%\parse_id.py" "%persephone%\repos\parse_id\parse_id.py"
-echo  shortener...
-git clone https://github.com/secretisdead/shortener.git
 mklink "%persephone%\shortener.py" "%persephone%\repos\shortener\shortener.py"
-echo  statement_helper...
-git clone https://github.com/secretisdead/statement_helper.git
 mklink "%persephone%\statement_helper.py" "%persephone%\repos\statement_helper\statement_helper.py"
 
-echo copying favicons
+echo copying favicons...
 copy "%persephone%\repos\persephone\persephone\views\static\persephone_tear_128.png" "%persephone%\static\favicon.png"
 copy "%persephone%\repos\persephone\persephone\views\static\favicon.ico" "%persephone%\static\favicon.ico"
 
-echo copying example configuration files
+echo copying example configuration files...
 copy "%persephone%\repos\accesslog\access_log_config-example.json" "%persephone%\config\access_log_config.json"
 copy "%persephone%\repos\accounts\users_config-example.json" "%persephone%\config\users_config.json"
 copy "%persephone%\repos\bansfrontend\bans_config-example.json" "%persephone%\config\bans_config.json"
@@ -316,13 +217,13 @@ copy "%persephone%\repos\patreonfrontend\patreon_config-example.json" "%persepho
 copy "%persephone%\repos\persephone\persephone_config-example.json" "%persephone%\config\persephone_config.json"
 copy "%persephone%\repos\stickersfrontend\stickers_config-example.json" "%persephone%\config\stickers_config.json"
 
-echo setting configuration files default paths
+echo setting configuration files default paths...
 %python% "%persephone%\repos\persephone\set_config_default_paths.py" "%persephone%"
 
-echo creating other supplemental files
-echo  config/shortener_config.json...
+echo creating other supplemental files...
+echo  config/shortener_config.json
 echo {}> "%persephone%\config\shortener_config.json"
-echo  static/links/custom.css...
+echo  static/links/custom.css
 echo > "%persephone%\static\links\custom.css"
 
 echo ...

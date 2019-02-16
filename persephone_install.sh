@@ -1,183 +1,118 @@
 #!/bin/bash
 
-echo checking for git
-which git && (
-	echo  success
-) || (
-	echo  failure
-	echo   git not found
-	echo   git is required to clone necessary persephone component repos
-	echo   please ensure you have git installed
+echo checking for git...
+if ! test -x "$(command -v git)"
+then
+	echo  git not found
+	echo  git is required to clone necessary persephone component repos
+	echo  please ensure you have git installed
 	exit 1
-)
+fi
 
+echo checking for python3 alias...
 python=python3
-${python} --version || (
+if ! test -x "$(command -v ${python})"
+then
+	echo  python3 alias not found
+	echo  using python
 	python=python
-)
+fi
 
-echo checking for python
-which ${python} && (
-	echo  success
-) || (
-	echo  failure
-	echo   python not found
-	echo   please ensure you have python 3.6+ installed
+echo checking for python...
+if ! test -x "$(command -v ${python})"
+then
+	echo  python not found
+	echo  please ensure you have python 3.6+ installed
 	exit 1
-)
+fi
 
-echo  checking python version
+echo  checking python version...
 py_version="$(cut -d' ' -f2 <<< `${python} --version`)"
 py_version_major="$(cut -d'.' -f1 <<< $py_version)"
-if (( $py_version_major > 3 ));
+if (( $py_version_major < 3 ))
 then
-	echo   success
+	echo   python version $py_version
+	echo   please ensure you have python 3.5+ installed
+	exit 1
 else
-	if (( $py_version_major == 3 ));
+	if (( $py_version_major == 3 ))
 	then
 		py_version_minor="$(cut -d'.' -f2 <<< $py_version)"
-		if (( $py_version_minor > 4 ));
+		if (( $py_version_minor < 5 ))
 		then
-			echo success
-		else
-			echo   failure
-			echo    python version $py_version
-			echo    please ensure you have python 3.5+ installed
+			echo   python version $py_version
+			echo   please ensure you have python 3.5+ installed
 			exit 1
 		fi
-	else
-		echo   failure
-		echo    python version $py_version
-		echo    please ensure you have python 3.5+ installed
-		exit 1
 	fi
 fi
 
-echo checking for pip
-${python} -m pip --version && (
-	echo  success
-) || (
-	echo  failure
-	echo   pip not found
-	echo   please ensure you have pip for python installed
+echo checking for pip...
+${python} -c "import pip"
+if ! test $?
+then
+	echo  pip not found
+	echo  please ensure you have pip for python3 installed
 	exit 1
-)
+fi
 
 read -p "enter the directory to install persephone to: " persephone
 
 read -p "install persephone to \"${persephone}\" (y/[n])? " confirm
-if [ "$confirm" != "y" ]
+if test "$confirm" != "y"
 then
 	exit 1
 fi
 
-if [ -d "${persephone}" ]
+if ! test -d "${persephone}"
 then
-	echo  directory exists
-else (
-	mkdir -p "${persephone}" || (
+	if ! test mkdir -p "${persephone}"
+	then
 		echo  problem creating specified directory
 		exit 1
-	)
-) fi
+	fi
+fi
 
 cd "${persephone}"
 
-echo checking for venv and creating virtual environment
-${python} -m venv environment && (
-	echo  success
-) || (
-	echo  failure
-	echo   venv not found
-	echo   please ensure you have venv for python installed
+echo checking for venv...
+${python} -c "import venv"
+if ! test $?
+then
+	echo  venv not found
+	echo  please ensure you have venv for python3 installed
 	exit 1
-)
+fi
 
-echo activating virtual environment
+echo creating virtual environment...
+if ! ${python} -m venv environment
+then
+	echo  problem creating virtual environment
+	exit 1
+fi
+
+echo activating virtual environment...
 source "${persephone}/environment/bin/activate"
 
 # latest versions should be fine, if there end up being problems later i'll make it more specific
-echo installing required python packages
-echo  flask...
-${python} -m pip install flask && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing flask
-	exit 1
-)
-echo  sqlalchemy...
-${python} -m pip install sqlalchemy && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing sqlalchemy
-	exit 1
-)
-echo  python-dateutil...
-${python} -m pip install python-dateutil && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python-dateutil
-	exit 1
-)
-echo  werkzeug...
-${python} -m pip install werkzeug && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing werkzeug
-	exit 1
-)
-echo  Pillow...
-${python} -m pip install Pillow && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing Pillow
-	exit 1
-)
-echo  python3-openid...
-${python} -m pip install python3-openid && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python3-openid
-	exit 1
-)
-echo  passlib...
-${python} -m pip install passlib && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing passlib
-	exit 1
-)
-echo  python-magic...
-${python} -m pip install python-magic && (
-	echo   success
-) || (
-	echo   failure
-	echo    problem installing python-magic
-	exit 1
-)
-if [ "$(uname)" == "Darwin" ]
+echo installing required python packages...
+${python} -m pip install flask
+${python} -m pip install sqlalchemy
+${python} -m pip install python-dateutil
+${python} -m pip install werkzeug
+${python} -m pip install Pillow
+${python} -m pip install python3-openid
+${python} -m pip install passlib
+${python} -m pip install python-magic
+if test "$(uname)" == "Darwin"
 then
-	echo  python-libmagic...
-	${python} -m pip install python-libmagic && (
-		echo   success
-	) || (
-		echo   failure
-		echo    problem installing python-libmagic
-		exit 1
-	)
+	${python} -m pip install python-libmagic
 fi
 
-echo deactivating virtual environment
+echo deactivating virtual environment...
 deactivate
 
-echo creating directories
+echo creating directories...
 mkdir -p "${persephone}/config"
 mkdir -p "${persephone}/db"
 mkdir -p "${persephone}/files"
@@ -226,84 +161,73 @@ mkdir -p "${persephone}/temp/media"
 mkdir -p "${persephone}/temp/stickers"
 mkdir -p "${persephone}/templates"
 
-echo cloning persephone projects to repos directory and symlinking their components to the working directory
+echo cloning persephone projects to repos directory...
 cd "${persephone}/repos"
-echo  accesslog...
 git clone https://github.com/secretisdead/accesslog.git
-ln -s "${persephone}/repos/accesslog/accesslog" "${persephone}/accesslog"
-echo  accounts...
 git clone https://github.com/secretisdead/accounts.git
-ln -s "${persephone}/repos/accounts/accounts" "${persephone}/accounts"
-echo  bans...
-ln -s "${persephone}/repos/bans/bans" "${persephone}/bans"
 git clone https://github.com/secretisdead/bans.git
-echo  bansfrontend...
-ln -s "${persephone}/repos/bansfrontend/bansfrontend" "${persephone}/bansfrontend"
 git clone https://github.com/secretisdead/bansfrontend.git
-echo  comments...
-ln -s "${persephone}/repos/comments/comments" "${persephone}/comments"
 git clone https://github.com/secretisdead/comments.git
-echo  commentsfrontend...
-ln -s "${persephone}/repos/commentsfrontend/commentsfrontend" "${persephone}/commentsfrontend"
 git clone https://github.com/secretisdead/commentsfrontend.git
-echo  legal...
 git clone https://github.com/secretisdead/legal.git
-ln -s "${persephone}/repos/legal/legal" "${persephone}/legal"
-echo  media...
 git clone https://github.com/secretisdead/media.git
-ln -s "${persephone}/repos/media/media" "${persephone}/media"
-echo  mediafrontend...
 git clone https://github.com/secretisdead/mediafrontend.git
-ln -s "${persephone}/repos/mediafrontend/mediafrontend" "${persephone}/mediafrontend"
-echo  patreon...
 git clone https://github.com/secretisdead/patreon.git
-ln -s "${persephone}/repos/patreon/patreon" "${persephone}/patreon"
-echo  patreonfrontend...
 git clone https://github.com/secretisdead/patreonfrontend.git
-ln -s "${persephone}/repos/patreonfrontend/patreonfrontend" "${persephone}/patreonfrontend"
-echo  persephone...
 git clone https://github.com/secretisdead/persephone.git
+git clone https://github.com/secretisdead/stickers.git
+git clone https://github.com/secretisdead/stickersfrontend.git
+git clone https://github.com/secretisdead/thirdpartyauth.git
+git clone https://github.com/secretisdead/users.git
+git clone https://github.com/secretisdead/base64_url.git
+git clone https://github.com/secretisdead/idcollection.git
+git clone https://github.com/secretisdead/pagination_from_request.git
+git clone https://github.com/secretisdead/parse_id.git
+git clone https://github.com/secretisdead/shortener.git
+git clone https://github.com/secretisdead/statement_helper.git
+cd "${persephone}"
+
+echo symlinking persephone project components to the working directory...
+ln -s "${persephone}/repos/accesslog/accesslog" "${persephone}/accesslog"
+ln -s "${persephone}/repos/accounts/accounts" "${persephone}/accounts"
+ln -s "${persephone}/repos/bans/bans" "${persephone}/bans"
+ln -s "${persephone}/repos/bansfrontend/bansfrontend" "${persephone}/bansfrontend"
+ln -s "${persephone}/repos/comments/comments" "${persephone}/comments"
+ln -s "${persephone}/repos/commentsfrontend/commentsfrontend" "${persephone}/commentsfrontend"
+ln -s "${persephone}/repos/legal/legal" "${persephone}/legal"
+ln -s "${persephone}/repos/media/media" "${persephone}/media"
+ln -s "${persephone}/repos/mediafrontend/mediafrontend" "${persephone}/mediafrontend"
+ln -s "${persephone}/repos/patreon/patreon" "${persephone}/patreon"
+ln -s "${persephone}/repos/patreonfrontend/patreonfrontend" "${persephone}/patreonfrontend"
 ln -s "${persephone}/repos/persephone/persephone" "${persephone}/persephone"
 ln -s "${persephone}/repos/persephone/persephone_wsgi.py" "${persephone}/persephone_wsgi.py"
 ln -s "${persephone}/repos/persephone/start_dev_persephone.sh" "${persephone}/start_dev_persephone.sh"
 ln -s "${persephone}/repos/persephone/persephone_update.sh" "${persephone}/persephone_update.sh"
-ln -s "${persephone}/repos/persephone/templates/*" "${persephone}/templates/"
-echo  stickers...
-git clone https://github.com/secretisdead/stickers.git
+shopt -s nullglob
+cd "${persephone}/repos/persephone/templates"
+for filepath in ./*
+do
+	filename=$(basename "${filepath}")
+	ln -s "${persephone}/repos/persephone/templates/${filename}" "${persephone}/templates/${filename}"
+done
+cd "${persephone}"
+shopt -u nullglob
 ln -s "${persephone}/repos/stickers/stickers" "${persephone}/stickers"
-echo  stickersfrontend...
-git clone https://github.com/secretisdead/stickersfrontend.git
 ln -s "${persephone}/repos/stickersfrontend/stickersfrontend" "${persephone}/stickersfrontend"
-echo  thirdpartyauth...
-git clone https://github.com/secretisdead/thirdpartyauth.git
 ln -s "${persephone}/repos/thirdpartyauth/thirdpartyauth" "${persephone}/thirdpartyauth"
-echo  users...
-git clone https://github.com/secretisdead/users.git
 ln -s "${persephone}/repos/users/users" "${persephone}/users"
-echo  base64_url...
-git clone https://github.com/secretisdead/base64_url.git
 ln -s "${persephone}/repos/base64_url/base64_url.py" "${persephone}/base64_url.py"
-echo  idcollection...
-git clone https://github.com/secretisdead/idcollection.git
 ln -s "${persephone}/repos/idcollection/idcollection.py" "${persephone}/idcollection.py"
-echo  pagination_from_request...
-git clone https://github.com/secretisdead/pagination_from_request.git
 ln -s "${persephone}/repos/pagination_from_request/pagination_from_request.py" "${persephone}/pagination_from_request.py"
-echo  parse_id...
-git clone https://github.com/secretisdead/parse_id.git
 ln -s "${persephone}/repos/parse_id/parse_id.py" "${persephone}/parse_id.py"
-echo  shortener...
-git clone https://github.com/secretisdead/shortener.git
 ln -s "${persephone}/repos/shortener/shortener.py" "${persephone}/shortener.py"
-echo  statement_helper...
-git clone https://github.com/secretisdead/statement_helper.git
 ln -s "${persephone}/repos/statement_helper/statement_helper.py" "${persephone}/statement_helper.py"
 
-echo copying favicons
+echo copying favicons...
 cp "${persephone}/repos/persephone/persephone/views/static/persephone_tear_128.png" "${persephone}/static/favicon.png"
 cp "${persephone}/repos/persephone/persephone/views/static/favicon.ico" "${persephone}/static/favicon.ico"
 
-echo copying example configuration files
+echo copying example configuration files...
 cp "${persephone}/repos/accesslog/access_log_config-example.json" "${persephone}/config/access_log_config.json"
 cp "${persephone}/repos/accounts/users_config-example.json" "${persephone}/config/users_config.json"
 cp "${persephone}/repos/bansfrontend/bans_config-example.json" "${persephone}/config/bans_config.json"
@@ -315,13 +239,13 @@ cp "${persephone}/repos/patreonfrontend/patreon_config-example.json" "${persepho
 cp "${persephone}/repos/persephone/persephone_config-example.json" "${persephone}/config/persephone_config.json"
 cp "${persephone}/repos/stickersfrontend/stickers_config-example.json" "${persephone}/config/stickers_config.json"
 
-echo setting configuration files default paths
+echo setting configuration files default paths...
 ${python} "${persephone}/repos/persephone/set_config_default_paths.py" "${persephone}"
 
-echo creating other supplemental files
-echo  config/shortener_config.json...
+echo creating other supplemental files...
+echo  config/shortener_config.json
 echo {}> "${persephone}/config/shortener_config.json"
-echo  static/links/custom.css...
+echo  static/links/custom.css
 touch "${persephone}/static/links/custom.css"
 
 echo ...
