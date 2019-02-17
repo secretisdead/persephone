@@ -50,7 +50,7 @@
 		}
 	},
 	"default_theme": "theme_ghost",
-	"initial_theme_color": "#a0a0a0",
+	"initial_theme_color": "#000000",
 	"site_image_uri": "",
 	"site_name": "persephone",
 	"site_title": "persephone",
