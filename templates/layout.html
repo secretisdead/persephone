@@ -16,6 +16,11 @@
 		{% set media_endpoint_class = ' media_search_endpoint' %}
 	{% endif %}
 {% endif %}
+{% set initial_theme_color = '#a0a0a0' %}
+{% if 'initial_theme_color' in g.persephone_config and g.persephone_config['initial_theme_color'] %}
+	{% set initial_theme_color = g.persephone_config['initial_theme_color'] %}
+{% endif %}
+
 <!doctype html>
 <html 
 	lang="en" 
@@ -29,7 +34,7 @@
 				content="width=device-width, initial-scale=1.0, maximum-scale=4.0, minimum-scale=1.0, user-scalable=1.0">
 			<meta name="twitter:site" content="@secretisdead">
 			<meta property="og:site_name" content="{{ g.persephone_config['site_name'] }}">
-			<meta name="theme-color" content="#a0a0a0">
+			<meta name="theme-color" content="{{ initial_theme_color }}">
 			{% if g.persephone_config['google_verification'] %}
 				<meta name="google-site-verification" content="{{ g.persephone_config['google_verification'] }}">
 			{% endif %}
