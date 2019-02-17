@@ -343,6 +343,11 @@ def announcements(page=0):
 		page=page,
 	)
 
+# tegaki
+@persephone.route('/tegaki')
+def tegaki():
+	return 'tegaki is being updated'
+
 # media archive
 @persephone.route('/premium/<campaign>')
 def premium_info(campaign):

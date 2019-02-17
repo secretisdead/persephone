@@ -223,6 +223,8 @@ echo setting configuration files default paths...
 echo creating other supplemental files...
 echo  config/shortener_config.json
 echo {}> "%persephone%\config\shortener_config.json"
+echo  temporary tegaki config until tegaki is finished
+echo echo {"temp_path": "","tegaki_path": "","tegaki_file_uri": ""}> "%persephone%\config\tegaki_config.json"
 echo  static/links/custom.css
 echo > "%persephone%\static\links\custom.css"
 

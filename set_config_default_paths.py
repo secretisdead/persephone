@@ -30,6 +30,10 @@ configs = {
 		'path': '',
 		'data': {},
 	},
+	'tegaki': {
+		'path': '',
+		'data': {},
+	},
 }
 for config in configs:
 	configs[config]['path'] = os.path.join(
@@ -114,8 +118,21 @@ configs['media']['data']['tags_path'] = os.path.join(
 	'tags',
 )
 
+print('tegaki')
+print(' /temp/tegaki')
+configs['tegaki']['data']['temp_path'] = os.path.join(
+	persephone_install_directory,
+	'temp',
+	'tegaki',
+)
+print(' /files/tegaki')
+configs['media']['data']['tegaki_path'] = os.path.join(
+	persephone_install_directory,
+	'files',
+	'tegaki',
+)
+
 for config in configs:
 	print('save ' + config)
 	with open(configs[config]['path'], 'w') as handle:
 		handle.write(json.dumps(configs[config]['data'], indent=4))
-	
