@@ -217,9 +217,6 @@ copy "%persephone%\repos\patreonfrontend\patreon_config-example.json" "%persepho
 copy "%persephone%\repos\persephone\persephone_config-example.json" "%persephone%\config\persephone_config.json"
 copy "%persephone%\repos\stickersfrontend\stickers_config-example.json" "%persephone%\config\stickers_config.json"
 
-echo setting configuration files default paths...
-%python% "%persephone%\repos\persephone\set_config_default_paths.py" "%persephone%"
-
 echo creating other supplemental files...
 echo  config/shortener_config.json
 echo {}> "%persephone%\config\shortener_config.json"
@@ -227,6 +224,9 @@ echo  temporary tegaki config until tegaki is finished
 echo {"temp_path": "","tegaki_path": "","tegaki_file_uri": ""}> "%persephone%\config\tegaki_config.json"
 echo  static/links/custom.css
 echo > "%persephone%\static\links\custom.css"
+
+echo setting configuration files default paths...
+%python% "%persephone%\repos\persephone\set_config_default_paths.py" "%persephone%"
 
 echo ...
 echo installation finished
