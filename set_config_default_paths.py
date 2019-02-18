@@ -126,7 +126,7 @@ configs['tegaki']['data']['temp_path'] = os.path.join(
 	'tegaki',
 )
 print(' /files/tegaki')
-configs['media']['data']['tegaki_path'] = os.path.join(
+configs['tegaki']['data']['tegaki_path'] = os.path.join(
 	persephone_install_directory,
 	'files',
 	'tegaki',
