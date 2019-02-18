@@ -360,6 +360,9 @@ nav a:last-child {
 	background-color: var(--card_background);
 	color: var(--card_foreground);
 }
+.about_me a, .about_persephone a {
+	color: var(--card_link);
+}
 .about_persephone {
 	font-size: 0.75rem;
 	margin-top: 1rem;
