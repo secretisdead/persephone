@@ -321,6 +321,8 @@ def initialize():
 				'accounts_signed_out.authentication_landing',
 				'accounts_signed_out.redeem_invite',
 				'accounts_signed_out.register',
+				'static',
+				'persephone.static',
 			]
 		):
 		abort(401)
@@ -437,6 +439,8 @@ def check_global_ban(response):
 			'accounts_signed_out.authentication_landing',
 			'accounts_signed_out.profile',
 			'accounts_signed_out.avatar_file',
+			'static',
+			'persephone.static',
 		]:
 		return response
 	# prevent entire ranges of endpoints from being caught in bans
