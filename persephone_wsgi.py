@@ -105,14 +105,27 @@ def initialize():
 	# this should be the root wsgi directory, not the persephone repository directory
 	g.persephone_directory = os.path.dirname(__file__)
 
+	# persephone and database config
+	g.persephone_config = get_config('config/persephone_config.json', 'persephone')
+
+	if not g.persephone_config['static_persephone_uri']:
+		g.persephone_config['static_persephone_uri'] = url_for(
+			'persephone.static',
+			filename='FILENAME',
+		).replace('FILENAME', '{}')
+
+	if not g.persephone_config['static_custom_uri']:
+		g.persephone_config['static_custom_uri'] = url_for(
+			'static',
+			filename='FILENAME',
+		).replace('FILENAME', '{}')
+
 	# shortener
 	g.shortener_config = get_config('config/shortener_config.json', 'shortener')
 
 	# legal
 	initialize_legal(get_config('config/legal_config.json', 'legal'))
 
-	# persephone and database config
-	g.persephone_config = get_config('config/persephone_config.json', 'persephone')
 	packages = {
 		'access_log': None,
 		'users': None,
@@ -497,9 +510,8 @@ def response_add_meta_graph(response):
 			if g.persephone_config['site_image_uri']:
 				site_image = g.persephone_config['site_image_uri']
 			else:
-				site_image = url_for(
-					'persephone.static',
-					filename='persephone_128.png',
+				site_image = g.persephone_config['static_persephone_uri'].format(
+					'persephone_128.png',
 				)
 			graph_tags += (
 				'<meta name="twitter:image" content="' + site_image + '">'

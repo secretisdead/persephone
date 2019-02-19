@@ -46,20 +46,16 @@
 			<link 
 				rel="shortcut icon" 
 				type="image/png" 
-				href="{{ url_for(
-					'static',
-					filename='favicon.png',
-				) }}"/>
+				href="{{ g.persephone_config['static_custom_uri'].format('favicon.png') }}"/>
 			<link 
 				rel="shortcut icon" 
 				type="image/x-icon" 
-				href="{{ url_for(
-					'static',
-					filename='favicon.ico',
-				) }}"/>
+				href="{{ g.persephone_config['static_custom_uri'].format('favicon.ico') }}"/>
 			<style 
 				type="text/css">
-				@import '{{ url_for('persephone.static', filename='links/secretgraphics/theme.css') }}';
+				@import '{{ g.persephone_config['static_persephone_uri'].format(
+					'links/secretgraphics/theme.css',
+				) }}';
 			</style>
 			{% for file in [
 					'general',
@@ -87,10 +83,8 @@
 				<link 
 					rel="stylesheet" 
 					type="text/css" 
-					href="{{ url_for(
-						'persephone.static',
-						filename='links/secretgraphics/' + file + '.css',
-						v=modified_time,
+					href="{{ g.persephone_config['static_persephone_uri'].format(
+						'links/secretgraphics/' + file + '.css?v=' + modified_time,
 					) }}">
 			{% endfor %}
 			{% block styles %}{% endblock %}
@@ -104,7 +98,9 @@
 			<link 
 				rel="stylesheet" 
 				type="text/css" 
-				href="{{ url_for('static', filename='links/custom.css', v=modified_time) }}">
+				href="{{ g.persephone_config['static_custom_uri'].format(
+					'links/custom.css?v=' + modified_time,
+				) }}">
 			<script type="text/javascript">
 				'use strict';
 				function change_theme(theme) {
@@ -128,7 +124,9 @@
 			</script>
 			<script 
 				type="text/javascript" 
-				src="{{ url_for('persephone.static', filename='scripts/string_format.js') }}"></script>
+				src="{{ g.persephone_config['static_persephone_uri'].format(
+					'scripts/string_format.js',
+				) }}"></script>
 			{% block scripts %}{% endblock %}
 		{% endblock %}
 	</head>
@@ -145,13 +143,11 @@
 		{% endblock %}
 		<script type="module">
 			'use strict';
-			import { fuzzy_time_localization_en, fuzzy_local_dates } from '{{ url_for(
-				'persephone.static',
-				filename='scripts/time.js',
+			import { fuzzy_time_localization_en, fuzzy_local_dates } from '{{ g.persephone_config['static_persephone_uri'].format(
+				'scripts/time.js',
 			) }}';
-			import { SequenceNavigation } from '{{ url_for(
-				'persephone.static',
-				filename='scripts/sequence_navigation.js',
+			import { SequenceNavigation } from '{{ g.persephone_config['static_persephone_uri'].format(
+				'scripts/sequence_navigation.js',
 			) }}';
 			fuzzy_local_dates(fuzzy_time_localization_en);
 			new SequenceNavigation(document.querySelector('.prev'), document.querySelector('.next'));

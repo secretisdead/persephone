@@ -18,5 +18,5 @@
 	</form>
 	<script 
 		type="module" 
-		src="{{ url_for('persephone.static', filename='scripts/upload_media.js') }}"></script>
+		src="{{ g.persephone_config['static_persephone_uri'].format('scripts/upload_media.js') }}"></script>
 {% endblock %}

@@ -46,7 +46,6 @@
 <meta name="max_sticker_target_width" content="{{ g.media.config['summary_values']['view'] }}">
 <script 
 	type="module" 
-	src="{{ url_for(
-		'persephone.static',
-		filename='scripts/stickers.js',
+	src="{{ g.persephone_config['static_persephone_uri'].format(
+		'scripts/stickers.js',
 	) }}"></script>

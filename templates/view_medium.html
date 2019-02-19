@@ -16,9 +16,8 @@
 		{% include 'view_medium_tags_editor.html' %}
 		<script 
 			type="module" 
-			src="{{ url_for(
-				'persephone.static',
-				filename='scripts/view_medium_tags_editor.js',
+			src="{{ g.persephone_config['static_persephone_uri'].format(
+				'scripts/view_medium_tags_editor.js',
 			) }}"></script>
 	{% endif %}
 	{% include 'media_slideshow_navigation.html' %}
@@ -39,9 +38,8 @@
 	{% endif %}
 	<script 
 		type="module" 
-		src="{{ url_for(
-			'persephone.static',
-			filename='scripts/view_medium.js',
+		src="{{ g.persephone_config['static_persephone_uri'].format(
+			'scripts/view_medium.js',
 		) }}"></script>
 {% endblock %}
 {% block meta %}

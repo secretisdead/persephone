@@ -10,7 +10,7 @@
 	{% include 'edit_medium_form.html' %}
 	<script 
 		type="module" 
-		src="{{ url_for('persephone.static', filename='scripts/edit_medium.js') }}"></script>
+		src="{{ g.persephone_config['static_persephone_uri'].format('scripts/edit_medium.js') }}"></script>
 	{% for mode, display in {
 		'delete_summaries': 'Delete summary files',
 		'delete_original': 'Delete original file',

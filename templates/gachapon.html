@@ -18,8 +18,5 @@
 	</div>
 	<script 
 		type="module" 
-		src="{{ url_for(
-			'persephone.static',
-			filename='scripts/gachapon.js',
-		) }}"></script>
+		src="{{ g.persephone_config['static_persephone_uri'].format('scripts/gachapon.js') }}"></script>
 {% endblock %}

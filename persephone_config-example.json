@@ -49,6 +49,8 @@
 			"pass": ""
 		}
 	},
+	"static_persephone_uri": "",
+	"static_custom_uri": "",
 	"signed_in_only": false,
 	"default_theme": "theme_ghost",
 	"initial_theme_color": "#000000",

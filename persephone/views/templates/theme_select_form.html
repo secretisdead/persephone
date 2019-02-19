@@ -15,7 +15,6 @@
 </form>
 <script 
 	type="text/javascript" 
-	src="{{ url_for(
-		'persephone.static',
-		filename='scripts/theme_select.js',
+	src="{{ g.persephone_config['static_persephone_uri'].format(
+		'scripts/theme_select.js',
 	) }}"></script>

@@ -10,7 +10,7 @@
 	{% include 'tags_this_page.html' %}
 	<script 
 		type="module" 
-		src="{{ url_for('persephone.static', filename='scripts/search_media.js') }}"></script>
+		src="{{ g.persephone_config['static_persephone_uri'].format('scripts/search_media.js') }}"></script>
 	<div id="media_search">
 		{% if not results %}
 			<h2>No results</h2>
@@ -21,7 +21,7 @@
 			{% include 'media_management.html' %}
 			<script 
 				type="module" 
-				src="{{ url_for('persephone.static', filename='scripts/search_media_results.js') }}"></script>
+				src="{{ g.persephone_config['static_persephone_uri'].format('scripts/search_media_results.js') }}"></script>
 		{% endif %}
 	</div>
 {% endblock %}
