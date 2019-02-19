@@ -162,6 +162,19 @@ def initialize():
 	except:
 		abort(500, 'Problem initializing Accounts')
 
+	if (
+			g.persephone_config['signed_in_only']
+			and not g.accounts.current_user
+			and request.endpoint not in [
+				'accounts_signed_out.sign_in_services',
+				'accounts_signed_out.sign_in',
+				'accounts_signed_out.authentication_landing',
+				'accounts_signed_out.redeem_invite',
+				'accounts_signed_out.register',
+			]
+		):
+		abort(401)
+
 	# bans
 	try:
 		initialize_bans(
