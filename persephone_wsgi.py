@@ -2,7 +2,7 @@ import sys
 import os
 import json
 
-sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.getcwd())
 
 from flask import Flask, url_for, g, request, abort, redirect, escape, Markup
 from flask import render_template, make_response, after_this_request
@@ -67,7 +67,7 @@ app.register_blueprint(media_supplemental, url_prefix='/media')
 app.register_blueprint(media_api, url_prefix='/api/media')
 
 def get_config(config_file, config_name):
-	config_path = os.path.join(os.path.dirname(__file__), config_file)
+	config_path = os.path.join(g.persephone_directory, config_file)
 	try:
 		f = open(config_path, 'r')
 	except FileNotFoundError:
@@ -102,6 +102,9 @@ def get_engine(db_config):
 
 @app.before_request
 def initialize():
+	# this should be the root wsgi directory, not the persephone repository directory
+	g.persephone_directory = os.getcwd()
+
 	# shortener
 	g.shortener_config = get_config('config/shortener_config.json', 'shortener')
 
@@ -269,7 +272,7 @@ def initialize():
 
 	def get_file_modified_time(path_components):
 		return os.path.getmtime(
-			os.path.join(os.path.dirname(__file__), *path_components)
+			os.path.join(g.persephone_directory, *path_components)
 		)
 
 	def populate_media_comment_counts(media):
