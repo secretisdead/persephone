@@ -2,7 +2,7 @@ import sys
 import os
 import json
 
-sys.path.append(os.getcwd())
+sys.path.append(os.path.dirname(__file__))
 
 from flask import Flask, url_for, g, request, abort, redirect, escape, Markup
 from flask import render_template, make_response, after_this_request
@@ -103,7 +103,7 @@ def get_engine(db_config):
 @app.before_request
 def initialize():
 	# this should be the root wsgi directory, not the persephone repository directory
-	g.persephone_directory = os.getcwd()
+	g.persephone_directory = os.path.dirname(__file__)
 
 	# shortener
 	g.shortener_config = get_config('config/shortener_config.json', 'shortener')
@@ -553,5 +553,6 @@ def profile_redirect(**kwargs):
 app.view_functions['accounts_signed_out.profile'] = profile_redirect
 
 if __name__ == '__main__':
+	#TODO ensure that we're running from the root wsgi directory, not the persephone repository directory
 	# start the flask dev server when not being provided by a production server
 	app.run(debug=True, host='0.0.0.0', port=5000)
