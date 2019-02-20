@@ -59,6 +59,12 @@
 	"site_title": "persephone",
 	"custom_groups": [],
 	"custom_scopes": [],
+	"optional_packages": {
+		"stickers": true,
+		"comments": true,
+		"patreon": true,
+		"tegaki": false
+	},
 	"public_contributors": [],
 	"google_verification": "",
 	"google_analytics": ""

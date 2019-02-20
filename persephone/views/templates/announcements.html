@@ -14,7 +14,10 @@
 			).replace('page=PAGE', 'page={}'),
 			current_page=page,
 		) }}
-		{% if 'suppress:comments' not in announcement_medium.tags %}
+		{% if (
+				g.persephone_config['optional_packages']['comments']
+				and 'suppress:comments' not in announcement_medium.tags
+			) %}
 			{% if 'disable:comments' not in announcement_medium.tags %}
 				{% from 'comments.jinja' import comment_form %}
 				{{ comment_form(announcement_medium.id, redirect_uri=request.url) }}

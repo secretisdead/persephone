@@ -15,8 +15,12 @@
 		{% if not results %}
 			<h2>No results</h2>
 		{% else %}
-			{% set _ = g.persephone['populate_media_comment_counts'](results) %}
-			{% set _ = g.persephone['populate_media_sticker_counts'](results) %}
+			{% if g.persephone_config['optional_packages']['comments'] %}
+				{% set _ = g.persephone['populate_media_comment_counts'](results) %}
+			{% endif %}
+			{% if g.persephone_config['optional_packages']['stickers'] %}
+				{% set _ = g.persephone['populate_media_sticker_counts'](results) %}
+			{% endif %}
 			{% include 'search_media_results.html' %}
 			{% include 'media_management.html' %}
 			<script 

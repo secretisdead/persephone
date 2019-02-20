@@ -39,27 +39,31 @@
 			<input id="sessions" name="sessions" type="checkbox" checked>
 			<label for="sessions" data-type="checkbox">Sessions</label>
 			<br>
-			<input 
-				id="collected_stickers" 
-				name="collected_stickers" 
-				type="checkbox" 
-				checked>
-			<label for="collected_stickers" data-type="checkbox">
-				Collected Stickers
-			</label>
-			<br>
-			<input 
-				id="sticker_placements" 
-				name="sticker_placements" 
-				type="checkbox" 
-				checked>
-			<label for="sticker_placements" data-type="checkbox">
-				Sticker placements
-			</label>
-			<br>
-			<input id="comments" name="comments" type="checkbox" checked>
-			<label for="comments" data-type="checkbox">Comments</label>
-			<br>
+			{% if g.persephone_config['optional_packages']['stickers'] %}
+				<input 
+					id="collected_stickers" 
+					name="collected_stickers" 
+					type="checkbox" 
+					checked>
+				<label for="collected_stickers" data-type="checkbox">
+					Collected Stickers
+				</label>
+				<br>
+				<input 
+					id="sticker_placements" 
+					name="sticker_placements" 
+					type="checkbox" 
+					checked>
+				<label for="sticker_placements" data-type="checkbox">
+					Sticker placements
+				</label>
+				<br>
+			{% endif %}
+			{% if g.persephone_config['optional_packages']['comments'] %}
+				<input id="comments" name="comments" type="checkbox" checked>
+				<label for="comments" data-type="checkbox">Comments</label>
+				<br>
+			{% endif %}
 			<input id="likes" name="likes" type="checkbox" checked>
 			<label for="likes" data-type="checkbox">Media likes</label>
 			<br>

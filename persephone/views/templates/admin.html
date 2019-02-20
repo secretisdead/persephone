@@ -11,34 +11,38 @@
 			</a>
 		</nav>
 		<br>
-		<nav class="dashboard" id="admin_stickers">
-			<a 
-				href="{{ url_for('stickers_admin.stickers_list') }}" 
-				title="Administrate stickers list">
-				Stickers
-			</a>
-			<a href="{{ url_for('stickers_admin.collected_stickers_list') }}" 
-				title="Administration collected stickers list">
-				Collected stickers
-			</a>
-			<a 
-				href="{{ url_for('stickers_admin.sticker_placements_list') }}" 
-				title="Administration sticker placements list">
-				Sticker placements
-			</a>
-		</nav>
-		<br>
-		<nav class="dashboard" id="admin_patreon">
-			<a 
-				href="{{ url_for('patreon_admin.clients_list') }}" 
-				title="Administration patreon clients list">
-				Patreon clients
-			</a>
-			<a 
-				href="{{ url_for('patreon_admin.members_list') }}" 
-				title="Administration patreon members list">
-				Patreon members
-			</a>
-		</nav>
+		{% if g.persephone_config['optional_packages']['stickers'] %}
+			<nav class="dashboard" id="admin_stickers">
+				<a 
+					href="{{ url_for('stickers_admin.stickers_list') }}" 
+					title="Administrate stickers list">
+					Stickers
+				</a>
+				<a href="{{ url_for('stickers_admin.collected_stickers_list') }}" 
+					title="Administration collected stickers list">
+					Collected stickers
+				</a>
+				<a 
+					href="{{ url_for('stickers_admin.sticker_placements_list') }}" 
+					title="Administration sticker placements list">
+					Sticker placements
+				</a>
+			</nav>
+			<br>
+		{% endif %}
+		{% if g.persephone_config['optional_packages']['patreon'] %}
+			<nav class="dashboard" id="admin_patreon">
+				<a 
+					href="{{ url_for('patreon_admin.clients_list') }}" 
+					title="Administration patreon clients list">
+					Patreon clients
+				</a>
+				<a 
+					href="{{ url_for('patreon_admin.members_list') }}" 
+					title="Administration patreon members list">
+					Patreon members
+				</a>
+			</nav>
+		{% endif %}
 	</div>
 {% endblock %}

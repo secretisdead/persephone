@@ -23,7 +23,10 @@
 	{% include 'media_slideshow_navigation.html' %}
 	{% include 'medium_sets.html' %}
 	{% include 'medium_semantic_tag_block.html' %}
-	{% if 'suppress:comments' not in medium.tags %}
+	{% if (
+			g.persephone_config['optional_packages']['comments']
+			and 'suppress:comments' not in medium.tags
+		) %}
 		{% if 'disable:comments' not in medium.tags %}
 			{% from 'comments.jinja' import comment_form %}
 			{{ comment_form(medium.id, redirect_uri=request.url) }}
@@ -33,7 +36,10 @@
 		{% from 'comments.jinja' import comments_table %}
 		{{ comments_table(comments) }}
 	{% endif %}
-	{% if 'supress:stickers' not in medium.tags %}
+	{% if (
+			g.persephone_config['optional_packages']['comments']
+			and 'supress:stickers' not in medium.tags
+		) %}
 		{% include 'stickers.html' %}
 	{% endif %}
 	<script 

@@ -17,7 +17,9 @@
 		{% if g.accounts.current_user.has_permission(group_names='contributor') %}
 			<a href="{{ url_for('persephone.contributor') }}">Contributor</a>
 		{% endif %}
-		<a href="{{ url_for('stickers_signed_in.gachapon') }}">Gachapon</a>
+		{% if g.persephone_config['optional_packages']['stickers'] %}
+			<a href="{{ url_for('stickers_signed_in.gachapon') }}">Gachapon</a>
+		{% endif %}
 		{% include 'home_links.html' %}
 	</nav>
 {% endblock %}

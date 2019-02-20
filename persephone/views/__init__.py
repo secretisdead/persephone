@@ -99,18 +99,22 @@ def logs_list():
 			filter={'ids': ids},
 		),
 		'ban': g.bans.search_bans(filter={'ids': ids}),
-		'comment': g.comments.search_comments(filter={'ids': ids}),
-		'sticker': g.stickers.search_stickers(filter={'ids': ids}),
-		'collected_sticker': g.stickers.search_collected_stickers(
-			filter={'ids': ids},
-		),
-		'sticker_placement': g.stickers.search_sticker_placements(
-			filter={'ids': ids},
-		),
-		'patreon_client': g.patreon.search_clients(filter={'ids': ids}),
 		'medium': g.media.search_media(filter={'ids': ids}),
 		'medium_like': g.media.search_likes(filter={'ids': ids}),
 	}
+	if g.persephone_config['optional_packages']['comments']:
+		collections['comment'] = g.comments.search_comments(filter={'ids': ids})
+	if g.persephone_config['optional_packages']['stickers']:
+		collections['sticker'] = g.stickers.search_stickers(filter={'ids': ids})
+		collections['collected_sticker'] = g.stickers.search_collected_stickers(
+			filter={'ids': ids},
+		)
+		collections['sticker_placement'] = g.stickers.search_sticker_placements(
+			filter={'ids': ids},
+		)
+	if g.persephone_config['optional_packages']['patreon']:
+		collections['patreon_client'] = g.patreon.search_clients(filter={'ids': ids})
+
 	for log in results.values():
 		for category, collection in collections.items():
 			if log.subject_id in collection:
@@ -226,39 +230,43 @@ def takeout():
 					'touch_time': session.touch_time,
 					'close_time': session.close_time,
 				})
-		if 'collected_stickers' in request.form:
-			data['collected_stickers'] = []
-			collected_stickers = g.stickers.search_collected_stickers(
-				filter={'user_ids': g.accounts.current_user.id_bytes},
-			)
-			for collected_sticker in collected_stickers.values():
-				if not collected_sticker.sticker:
-					continue
-				data['collected_stickers'].append({
-					'id': collected_sticker.sticker.id,
-					'receive_time': collected_sticker.receive_time,
-					'name': collected_sticker.sticker.name,
-					'display': collected_sticker.sticker.display,
-				})
-		if 'sticker_placements' in request.form:
-			placements = g.stickers.search_sticker_placements(
-				filter={'user_ids': g.accounts.current_user.id_bytes},
-			)
-			data['sticker_placements'] = []
-			for placement in placements.values():
-				if not collected_sticker.sticker:
-					continue
-				data['sticker_placements'].append({
-					'id': placement.id,
-					'placement_time': placement.placement_time,
-					'sticker_id': placement.sticker.id,
-					'subject_id': placement.subject_id,
-					'position_x': placement.position_x,
-					'position_y': placement.position_y,
-					#'rotation': placement.rotation,
-					#'scale': placement.scale,
-				})
-		if 'comments' in request.form:
+		if g.persephone_config['optional_packages']['stickers']:
+			if 'collected_stickers' in request.form:
+				data['collected_stickers'] = []
+				collected_stickers = g.stickers.search_collected_stickers(
+					filter={'user_ids': g.accounts.current_user.id_bytes},
+				)
+				for collected_sticker in collected_stickers.values():
+					if not collected_sticker.sticker:
+						continue
+					data['collected_stickers'].append({
+						'id': collected_sticker.sticker.id,
+						'receive_time': collected_sticker.receive_time,
+						'name': collected_sticker.sticker.name,
+						'display': collected_sticker.sticker.display,
+					})
+			if 'sticker_placements' in request.form:
+				placements = g.stickers.search_sticker_placements(
+					filter={'user_ids': g.accounts.current_user.id_bytes},
+				)
+				data['sticker_placements'] = []
+				for placement in placements.values():
+					if not collected_sticker.sticker:
+						continue
+					data['sticker_placements'].append({
+						'id': placement.id,
+						'placement_time': placement.placement_time,
+						'sticker_id': placement.sticker.id,
+						'subject_id': placement.subject_id,
+						'position_x': placement.position_x,
+						'position_y': placement.position_y,
+						#'rotation': placement.rotation,
+						#'scale': placement.scale,
+					})
+		if (
+				g.persephone_config['optional_packages']['comments']
+				and 'comments' in request.form
+			):
 			data['comments'] = []
 			comments = g.comments.search_comments(
 				filter={'user_ids': g.accounts.current_user.id_bytes},
@@ -679,66 +687,68 @@ def get_badges(user):
 			'title': flavor + ' (' + description + ')',
 		})
 
-	# comments badges
-	created_comments_total = g.comments.count_comments(
-		filter={'user_ids': user.id_bytes}
-	)
-	if created_comments_total:
-		flavor = 'Chatty'
-		description = 'Made a comment'
-		badges.append({
-			'name': 'conversationalist_1',
-			'display': 'Conversationalist 1',
-			'title': flavor + ' (' + description + ')',
-		})
-	if 10 <= created_comments_total:
-		flavor = 'Really chatty'
-		description = 'Made 10 comments'
-		badges.append({
-			'name': 'conversationalist_2',
-			'display': 'Conversationalist 2',
-			'title': flavor + ' (' + description + ')',
-		})
+	if g.persephone_config['optional_packages']['comments']:
+		# comments badges
+		created_comments_total = g.comments.count_comments(
+			filter={'user_ids': user.id_bytes}
+		)
+		if created_comments_total:
+			flavor = 'Chatty'
+			description = 'Made a comment'
+			badges.append({
+				'name': 'conversationalist_1',
+				'display': 'Conversationalist 1',
+				'title': flavor + ' (' + description + ')',
+			})
+		if 10 <= created_comments_total:
+			flavor = 'Really chatty'
+			description = 'Made 10 comments'
+			badges.append({
+				'name': 'conversationalist_2',
+				'display': 'Conversationalist 2',
+				'title': flavor + ' (' + description + ')',
+			})
 
-	# stickers badges
-	collected_stickers_total = g.stickers.count_collected_stickers(
-		filter={'user_ids': user.id_bytes}
-	)
-	if collected_stickers_total:
-		flavor = 'Something to collect'
-		description = 'Collected a sticker'
-		badges.append({
-			'name': 'sticker_collector_1',
-			'display': 'Sticker collector 1',
-			'title': flavor + ' (' + description + ')',
-		})
-	if 28 <= collected_stickers_total:
-		flavor = 'A real collector'
-		description = 'Collected 28 stickers'
-		badges.append({
-			'name': 'sticker_collector_2',
-			'display': 'Sticker collector 2',
-			'title': flavor + ' (' + description + ')',
-		})
-	sticker_placements_total = g.stickers.count_sticker_placements(
-		filter={'user_ids': user.id_bytes}
-	)
-	if sticker_placements_total:
-		flavor = 'Put a sticker up'
-		description = 'Placed a sticker'
-		badges.append({
-			'name': 'sticker_maniac_1',
-			'display': 'Sticker maniac 1',
-			'title': flavor + ' (' + description + ')',
-		})
-	if 10 <= sticker_placements_total:
-		flavor = 'Put a few stickers up'
-		description = 'Placed 10 sticker'
-		badges.append({
-			'name': 'sticker_maniac_2',
-			'display': 'Sticker maniac 2',
-			'title': flavor + ' (' + description + ')',
-		})
+	if g.persephone_config['optional_packages']['stickers']:
+		# stickers badges
+		collected_stickers_total = g.stickers.count_collected_stickers(
+			filter={'user_ids': user.id_bytes}
+		)
+		if collected_stickers_total:
+			flavor = 'Something to collect'
+			description = 'Collected a sticker'
+			badges.append({
+				'name': 'sticker_collector_1',
+				'display': 'Sticker collector 1',
+				'title': flavor + ' (' + description + ')',
+			})
+		if 28 <= collected_stickers_total:
+			flavor = 'A real collector'
+			description = 'Collected 28 stickers'
+			badges.append({
+				'name': 'sticker_collector_2',
+				'display': 'Sticker collector 2',
+				'title': flavor + ' (' + description + ')',
+			})
+		sticker_placements_total = g.stickers.count_sticker_placements(
+			filter={'user_ids': user.id_bytes}
+		)
+		if sticker_placements_total:
+			flavor = 'Put a sticker up'
+			description = 'Placed a sticker'
+			badges.append({
+				'name': 'sticker_maniac_1',
+				'display': 'Sticker maniac 1',
+				'title': flavor + ' (' + description + ')',
+			})
+		if 10 <= sticker_placements_total:
+			flavor = 'Put a few stickers up'
+			description = 'Placed 10 sticker'
+			badges.append({
+				'name': 'sticker_maniac_2',
+				'display': 'Sticker maniac 2',
+				'title': flavor + ' (' + description + ')',
+			})
 
 	# media badges
 	media_likes_total = g.media.count_likes(
@@ -766,22 +776,23 @@ def get_badges(user):
 	support_start = current_time
 	support_total = 0
 	# patreon
-	if 'patreon' in user.authentications:
-		members = g.patreon.search_members(
-			filter={'user_ids': int(user.authentications['patreon'].value)},
-		)
-		if members:
-			# get oldest support start and largest support total
-			# in case of multiple pledges
-			for member in members.values():
-				if not support_start:
-					support_start = member.pledge_relationship_start_time
-				elif member.pledge_relationship_start_time:
-					support_start = min(
-						support_start,
-						member.pledge_relationship_start_time,
-					)
-				support_total = max(support_total, member.lifetime_support_cents)
+	if g.persephone_config['optional_packages']['patreon']:
+		if 'patreon' in user.authentications:
+			members = g.patreon.search_members(
+				filter={'user_ids': int(user.authentications['patreon'].value)},
+			)
+			if members:
+				# get oldest support start and largest support total
+				# in case of multiple pledges
+				for member in members.values():
+					if not support_start:
+						support_start = member.pledge_relationship_start_time
+					elif member.pledge_relationship_start_time:
+						support_start = min(
+							support_start,
+							member.pledge_relationship_start_time,
+						)
+					support_total = max(support_total, member.lifetime_support_cents)
 
 	if 31536000 < current_time - support_start:
 		flavor = 'Helping to keep the pantry stocked'
@@ -1152,38 +1163,40 @@ def user_profile(user_identifier=None):
 	#TODO tegaki card
 
 	# comment card
-	total_comments = g.comments.count_comments(filter={'user_ids': user.id_bytes})
-	if total_comments:
-		comment_card = {
-			'name': 'comments',
-			'display': total_comments,
-			'title': '{} comments'.format(total_comments),
-		}
-		if (
-				g.accounts.current_user
-				and g.accounts.current_user.has_permission(group_names='manager')
-			):
-			comment_card['uri'] = url_for(
-				'comments_manager.comments_list',
-				user_id=user.id,
-			)
-		cards.append(comment_card)
+	if g.persephone_config['optional_packages']['comments']:
+		total_comments = g.comments.count_comments(filter={'user_ids': user.id_bytes})
+		if total_comments:
+			comment_card = {
+				'name': 'comments',
+				'display': total_comments,
+				'title': '{} comments'.format(total_comments),
+			}
+			if (
+					g.accounts.current_user
+					and g.accounts.current_user.has_permission(group_names='manager')
+				):
+				comment_card['uri'] = url_for(
+					'comments_manager.comments_list',
+					user_id=user.id,
+				)
+			cards.append(comment_card)
 
 	# stickers card
-	total_collected_stickers = g.stickers.count_collected_stickers(
-		filter={'user_ids': user.id_bytes},
-	)
-	if total_collected_stickers:
-		stickers_card = {
-			'name': 'stickers',
-			'display': total_collected_stickers,
-			'title': '{} stickers'.format(total_collected_stickers),
-		}
-		stickers_card['uri'] = url_for(
-			'persephone.user_collected_stickers',
-			user_identifier=user.identifier,
+	if g.persephone_config['optional_packages']['stickers']:
+		total_collected_stickers = g.stickers.count_collected_stickers(
+			filter={'user_ids': user.id_bytes},
 		)
-		cards.append(stickers_card)
+		if total_collected_stickers:
+			stickers_card = {
+				'name': 'stickers',
+				'display': total_collected_stickers,
+				'title': '{} stickers'.format(total_collected_stickers),
+			}
+			stickers_card['uri'] = url_for(
+				'persephone.user_collected_stickers',
+				user_identifier=user.identifier,
+			)
+			cards.append(stickers_card)
 
 	groups = []
 	inactive_groups = []

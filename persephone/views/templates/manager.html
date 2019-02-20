@@ -44,14 +44,16 @@
 			</a>
 		</nav>
 		<br>
-		<nav class="dashboard" id="manager_comments">
-			<a 
-				href="{{ url_for('comments_manager.comments_list') }}" 
-				title="Manage comments">
-				Comments
-			</a>
-		</nav>
-		<br>
+		{% if g.persephone_config['optional_packages']['comments'] %}
+			<nav class="dashboard" id="manager_comments">
+				<a 
+					href="{{ url_for('comments_manager.comments_list') }}" 
+					title="Manage comments">
+					Comments
+				</a>
+			</nav>
+			<br>
+		{% endif %}
 		<nav class="dashboard" id="manager_media">
 			<a 
 				href="{{ url_for('persephone.manage_media') }}" 

@@ -108,6 +108,18 @@ def initialize():
 	# persephone and database config
 	g.persephone_config = get_config('config/persephone_config.json', 'persephone')
 
+	# automatically disable patreon package except on selective endpoints
+	if (
+			'patreon_admin.' != request.endpoint[:14]
+			and request.endpoint not in [
+				'persephone.admin',
+				'persephone.logs_list',
+				'persephone.user_badges',
+				'persephone.user_profile',
+			]
+		):
+		g.persephone_config['optional_packages']['patreon'] = False
+
 	if not g.persephone_config['static_persephone_uri']:
 		g.persephone_config['static_persephone_uri'] = url_for(
 			'persephone.static',
@@ -142,6 +154,11 @@ def initialize():
 	engines = {}
 	configs = {}
 	for package in packages:
+		if (
+				package in g.persephone_config['optional_packages']
+				and not g.persephone_config['optional_packages'][package]
+			):
+			continue
 		configs[package] = get_config(
 			'config/' + package + '_config.json', package
 		)
@@ -190,41 +207,46 @@ def initialize():
 	except:
 		abort(500, 'Problem initializing Bans')
 
-	# comments
-	try:
-		initialize_comments(
-			configs['comments'],
-			g.accounts,
-			g.access_log,
-			engines['comments'],
-			install=True,
-		)
-	except:
-		abort(500, 'Problem initializing Comments')
 
-	# stickers
-	try:
-		initialize_stickers(
-			configs['stickers'],
-			g.accounts,
-			g.access_log,
-			engines['stickers'],
-			install=True,
-		)
-	except:
-		abort(500, 'Problem initializing Stickers')
+	if g.persephone_config['optional_packages']['comments']:
+		# comments
+		try:
+			initialize_comments(
+				configs['comments'],
+				g.accounts,
+				g.access_log,
+				engines['comments'],
+				install=True,
+			)
+		except:
+			abort(500, 'Problem initializing Comments')
 
-	# patreon
-	try:
-		initialize_patreon(
-			configs['patreon'],
-			g.accounts,
-			g.access_log,
-			engines['patreon'],
-			install=True,
-		)
-	except:
-		abort(500, 'Problem initializing Patreon')
+	if g.persephone_config['optional_packages']['stickers']:
+		# stickers
+		try:
+			initialize_stickers(
+				configs['stickers'],
+				g.accounts,
+				g.access_log,
+				engines['stickers'],
+				install=True,
+				connection=connections['stickers'],
+			)
+		except:
+			abort(500, 'Problem initializing Stickers')
+
+	if g.persephone_config['optional_packages']['patreon']:
+		# patreon
+		try:
+			initialize_patreon(
+				configs['patreon'],
+				g.accounts,
+				g.access_log,
+				engines['patreon'],
+				install=True,
+			)
+		except:
+			abort(500, 'Problem initializing Patreon')
 
 	# media
 	try:
@@ -252,81 +274,85 @@ def initialize():
 	#g.media.add_callback('remove_medium', media_remove_medium)
 
 	# add some helper functions to be accessed through g.persephone
-	def filter_comments(comments):
-		commenter_user_ids = []
-		for comment in comments.values():
-			comment.body = escape(comment.body)
-			if comment.user and comment.user_id not in commenter_user_ids:
-				commenter_user_ids.append(comment.user.id)
-		collected_stickers = g.stickers.search_collected_stickers(
-			filter={'user_ids': commenter_user_ids},
-		)
-		user_ids_to_collected_stickers = {}
-		for collected_sticker in collected_stickers.values():
-			if collected_sticker.user_id not in user_ids_to_collected_stickers:
-				user_ids_to_collected_stickers[collected_sticker.user_id] = []
-			user_ids_to_collected_stickers[collected_sticker.user_id].append(
-				collected_sticker
-			)
-		for comment in comments.values():
-			if comment.user and comment.user_id in user_ids_to_collected_stickers:
-				for collected_sticker in user_ids_to_collected_stickers[comment.user.id]:
-					if not collected_sticker.sticker.name:
-						continue
-					comment.body = comment.body.replace(
-						':' + collected_sticker.sticker.name + ':',
-						Markup(
-							render_template(
-								'sticker.html',
-								sticker=collected_sticker.sticker,
-							)
-						),
-					)
-
 	def get_file_modified_time(path_components):
 		return os.path.getmtime(
 			os.path.join(g.persephone_directory, *path_components)
 		)
 
-	def populate_media_comment_counts(media):
-		comment_counts = g.comments.get_subject_comment_counts(media.keys())
-		for medium in media.values():
-			if medium.id in comment_counts:
-				medium.comment_count = comment_counts[medium.id]
-
-	def populate_media_sticker_counts(media):
-		sticker_counts = g.stickers.get_subject_sticker_placement_counts(
-			media.keys()
-		)
-		for medium in media.values():
-			if medium.id in sticker_counts:
-				medium.sticker_count = sticker_counts[medium.id]
-
-	def populate_current_user_stickerbook():
-		if g.accounts.current_user:
-			collected_stickers = g.stickers.search_collected_stickers(
-				filter={'user_ids': g.accounts.current_user.id_bytes},
-			)
-			stickers = IDCollection()
-			for collected_sticker in collected_stickers.values():
-				stickers.add(collected_sticker.sticker)
-			g.accounts.current_user.stickerbook = g.stickers.stickers_by_category(
-				stickers
-			)
-			empty_categories = []
-			for category, stickers in g.accounts.current_user.stickerbook.items():
-				if not stickers:
-					empty_categories.append(category)
-			for category in empty_categories:
-				del g.accounts.current_user.stickerbook[category]
-
 	g.persephone = {
 		'get_file_modified_time': get_file_modified_time,
-		'filter_comments': filter_comments,
-		'populate_media_comment_counts': populate_media_comment_counts,
-		'populate_media_sticker_counts': populate_media_sticker_counts,
-		'populate_current_user_stickerbook': populate_current_user_stickerbook,
 	}
+
+	if g.persephone_config['optional_packages']['comments']:
+		def filter_comments(comments):
+			commenter_user_ids = []
+			for comment in comments.values():
+				comment.body = escape(comment.body)
+				if comment.user and comment.user_id not in commenter_user_ids:
+					commenter_user_ids.append(comment.user.id)
+			collected_stickers = g.stickers.search_collected_stickers(
+				filter={'user_ids': commenter_user_ids},
+			)
+			user_ids_to_collected_stickers = {}
+			for collected_sticker in collected_stickers.values():
+				if collected_sticker.user_id not in user_ids_to_collected_stickers:
+					user_ids_to_collected_stickers[collected_sticker.user_id] = []
+				user_ids_to_collected_stickers[collected_sticker.user_id].append(
+					collected_sticker
+				)
+			for comment in comments.values():
+				if comment.user and comment.user_id in user_ids_to_collected_stickers:
+					for collected_sticker in user_ids_to_collected_stickers[comment.user.id]:
+						if not collected_sticker.sticker.name:
+							continue
+						comment.body = comment.body.replace(
+							':' + collected_sticker.sticker.name + ':',
+							Markup(
+								render_template(
+									'sticker.html',
+									sticker=collected_sticker.sticker,
+								)
+							),
+						)
+
+		def populate_media_comment_counts(media):
+			comment_counts = g.comments.get_subject_comment_counts(media.keys())
+			for medium in media.values():
+				if medium.id in comment_counts:
+					medium.comment_count = comment_counts[medium.id]
+
+		g.persephone['filter_comments'] = filter_comments
+		g.persephone['populate_media_comment_counts'] = populate_media_comment_counts
+
+	if g.persephone_config['optional_packages']['stickers']:
+		def populate_media_sticker_counts(media):
+			sticker_counts = g.stickers.get_subject_sticker_placement_counts(
+				media.keys()
+			)
+			for medium in media.values():
+				if medium.id in sticker_counts:
+					medium.sticker_count = sticker_counts[medium.id]
+
+		def populate_current_user_stickerbook():
+			if g.accounts.current_user:
+				collected_stickers = g.stickers.search_collected_stickers(
+					filter={'user_ids': g.accounts.current_user.id_bytes},
+				)
+				stickers = IDCollection()
+				for collected_sticker in collected_stickers.values():
+					stickers.add(collected_sticker.sticker)
+				g.accounts.current_user.stickerbook = g.stickers.stickers_by_category(
+					stickers
+				)
+				empty_categories = []
+				for category, stickers in g.accounts.current_user.stickerbook.items():
+					if not stickers:
+						empty_categories.append(category)
+				for category in empty_categories:
+					del g.accounts.current_user.stickerbook[category]
+
+		g.persephone['populate_media_sticker_counts'] = populate_media_sticker_counts
+		g.persephone['populate_current_user_stickerbook'] = populate_current_user_stickerbook
 
 	if (
 			g.persephone_config['signed_in_only']
