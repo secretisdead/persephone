@@ -43,14 +43,24 @@
 				{% block title %}{% endblock %}
 				{% if self.title() %} - {% endif %}{{ g.persephone_config['site_title'] }}
 			</title>
+			{% if g.persephone_config['site_favicon_png_uri'] %}
+				{% set favicon_png_uri = g.persephone_config['site_favicon_png_uri'] %}
+			{% else %}
+				{% set favicon_png_uri = g.persephone_config['static_custom_uri'].format('favicon.png') %}
+			{% endif %}
 			<link 
 				rel="shortcut icon" 
 				type="image/png" 
-				href="{{ g.persephone_config['static_custom_uri'].format('favicon.png') }}"/>
+				href="{{ favicon_png_uri }}"/>
+			{% if g.persephone_config['site_favicon_ico_uri'] %}
+				{% set favicon_ico_uri = g.persephone_config['site_favicon_ico_uri'] %}
+			{% else %}
+				{% set favicon_ico_uri = g.persephone_config['static_custom_uri'].format('favicon.ico') %}
+			{% endif %}
 			<link 
 				rel="shortcut icon" 
 				type="image/x-icon" 
-				href="{{ g.persephone_config['static_custom_uri'].format('favicon.ico') }}"/>
+				href="{{ favicon_ico_uri }}"/>
 			<style 
 				type="text/css">
 				@import '{{ g.persephone_config['static_persephone_uri'].format(

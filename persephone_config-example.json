@@ -55,6 +55,8 @@
 	"default_theme": "theme_ghost",
 	"initial_theme_color": "#000000",
 	"site_image_uri": "",
+	"site_favicon_ico_uri": "",
+	"site_favicon_png_uri": "",
 	"site_name": "persephone",
 	"site_title": "persephone",
 	"custom_groups": [],
