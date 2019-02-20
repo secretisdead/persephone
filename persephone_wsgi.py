@@ -148,10 +148,13 @@ def initialize():
 		'media': None,
 	}
 	common_engine = None
+	common_connection = None
 	if g.persephone_config['db']['common']['type']:
 		common_engine = get_engine(g.persephone_config['db']['common'])
+		common_connection = common_engine.connect()
 
 	engines = {}
+	connections = {}
 	configs = {}
 	for package in packages:
 		if (
@@ -166,8 +169,10 @@ def initialize():
 			if not common_engine:
 				abort(500, 'Common db specified without being configured')
 			engines[package] = common_engine
+			connections[package] = common_connection
 		else:
 			engines[package] = get_engine(g.persephone_config['db'][package])
+			connections[package] = None
 	configs['users']['credentials'] = get_config(
 		'config/credentials.json',
 		'credentials',
@@ -180,6 +185,7 @@ def initialize():
 			db_prefix=configs['access_log']['db_prefix'],
 			install=True,
 			remote_origin=request.remote_addr,
+			connection=connections['access_log'],
 		)
 	except:
 		abort(500, 'Problem initializing AccessLog')
@@ -191,6 +197,7 @@ def initialize():
 			g.access_log,
 			engines['users'],
 			install=True,
+			connection=connections['users'],
 		)
 	except:
 		abort(500, 'Problem initializing Accounts')
@@ -203,6 +210,7 @@ def initialize():
 			g.access_log,
 			engines['bans'],
 			install=True,
+			connection=connections['bans'],
 		)
 	except:
 		abort(500, 'Problem initializing Bans')
@@ -217,6 +225,7 @@ def initialize():
 				g.access_log,
 				engines['comments'],
 				install=True,
+				connection=connections['comments'],
 			)
 		except:
 			abort(500, 'Problem initializing Comments')
@@ -244,6 +253,7 @@ def initialize():
 				g.access_log,
 				engines['patreon'],
 				install=True,
+				connection=connections['patreon'],
 			)
 		except:
 			abort(500, 'Problem initializing Patreon')
@@ -256,6 +266,7 @@ def initialize():
 			g.access_log,
 			engines['media'],
 			install=True,
+			connection=connections['media'],
 		)
 	except:
 		abort(500, 'Problem initializing Media')
