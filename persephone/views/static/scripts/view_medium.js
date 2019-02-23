@@ -18,8 +18,8 @@ let video_ready_interval = null;
 
 // fit media vertically
 if (localStorage.getItem('media_preference_fit_media_vertically')) {
+	let medium = document.querySelector('.medium');
 	let fit_vertically = function(medium_element) {
-		let medium = document.querySelector('.medium');
 		let available_height = window.innerHeight;
 		// relying on #content having padding of 1rem on top and bottom which this script shouldn't really have to know about oops
 		let rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -29,31 +29,51 @@ if (localStorage.getItem('media_preference_fit_media_vertically')) {
 		if (topmenu) {
 			available_height -= topmenu.clientHeight;
 		}
-		if (medium.clientHeight > available_height) {
-			medium_element.style.maxHeight = 'calc(' + available_height + 'px - 2rem)';
+		// subtracting sticker drawer height which this script also shouldn't have to know about
+		let sticker_drawer = document.querySelector('#sticker_drawer');
+		if (sticker_drawer) {
+			console.log('sticker drawer existed');
+			console.log(sticker_drawer);
+			console.log('old available height: ' + available_height);
+			available_height -= (32 + (2.5 * rem));
+			console.log('new available height: ' + available_height);
+		}
+		if (medium.parentNode.clientHeight > available_height) {
+			let non_medium_elements_height = medium.parentNode.clientHeight - medium_element.clientHeight;
+			medium_element.style.maxHeight = 'calc(' + available_height + 'px - ' + non_medium_elements_height + 'px)';
 			medium_element.style.width = 'auto';
 		}
 	};
-	let medium_element = document.querySelector('.medium img');
-	if (!medium_element) {
-		medium_element = document.querySelector('.medium video');
-	}
-	if (medium_element) {
-		if ('IMG' == medium_element.tagName) {
-			if (medium_element.complete) {
-				fit_vertically(medium_element);
+	switch (medium.dataset.category) {
+		case 'image':
+			let image = medium.querySelector('.summary a img');
+			if (!image) {
+				break;
 			}
-			else {
-				medium_element.addEventListener('load', e => {
-					fit_vertically(medium_element);
-				});
+			if (image.complete) {
+				fit_vertically(image);
 			}
-		}
-		else {
-			document.addEventListener('DOMContentLoaded', e => {
-				fit_vertically(medium_element);
-			});
-		}
+			image.onload = () => {
+				fit_vertically(image);
+			};
+			break;
+		case 'video':
+			let video = medium.querySelector('.summary video');
+			if (!video) {
+				break;
+			}
+			if (video.readyState >= 1) {
+				fit_vertically(video);
+				break;
+			}
+			video_ready_interval = setInterval(() => {
+				if (video.readyState >= 1) {
+					fit_vertically(video);
+					clearInterval(video_ready_interval);
+				}
+			}, 1000);
+			break;
+		//TODO audio with image cover
 	}
 }
 
