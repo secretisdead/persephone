@@ -63,8 +63,18 @@
 				href="{{ favicon_ico_uri }}"/>
 			<style 
 				type="text/css">
+				{% set modified_time = g.persephone['get_file_modified_time'](
+					[
+						'persephone',
+						'views',
+						'static',
+						'links',
+						'secretgraphics',
+						'theme.css',
+					]
+				)|int|string %}
 				@import '{{ g.persephone_config['static_persephone_uri'].format(
-					'links/secretgraphics/theme.css',
+					'links/secretgraphics/theme.css?v=' + modified_time,
 				) }}';
 			</style>
 			{% for file in [
