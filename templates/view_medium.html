@@ -6,21 +6,23 @@
 	{% else %}
 		{% set title = 'Untitled' %}
 	{% endif %}
-	<h2>{{ title }}</h2>
-	{% include 'medium_summary.html' %}
-	{% include 'view_medium_management_info.html' %}
-	{% include 'medium_info.html' %}
-	{% include 'medium_blurb.html' %}
-	{% include 'view_medium_tags.html' %}
-	{% if management_mode %}
-		{% include 'view_medium_tags_editor.html' %}
-		<script 
-			type="module" 
-			src="{{ g.persephone_config['static_persephone_uri'].format(
-				'scripts/view_medium_tags_editor.js',
-			) }}"></script>
-	{% endif %}
-	{% include 'media_slideshow_navigation.html' %}
+	<div class="view_medium_wrapper">
+		<h2>{{ title }}</h2>
+		{% include 'medium_summary.html' %}
+		{% include 'view_medium_management_info.html' %}
+		{% include 'medium_info.html' %}
+		{% include 'medium_blurb.html' %}
+		{% include 'view_medium_tags.html' %}
+		{% if management_mode %}
+			{% include 'view_medium_tags_editor.html' %}
+			<script 
+				type="module" 
+				src="{{ g.persephone_config['static_persephone_uri'].format(
+					'scripts/view_medium_tags_editor.js',
+				) }}"></script>
+		{% endif %}
+		{% include 'media_slideshow_navigation.html' %}
+	</div>
 	{% include 'medium_sets.html' %}
 	{% include 'medium_semantic_tag_block.html' %}
 	{% if (

@@ -365,6 +365,7 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 .media_view_endpoint body,
 .media_view_endpoint #content,
 .media_view_endpoint #content>div,
+.media_view_endpoint .view_medium_wrapper,
 .media_view_endpoint .medium,
 .media_view_endpoint .summary,
 .media_view_endpoint .medium video,
