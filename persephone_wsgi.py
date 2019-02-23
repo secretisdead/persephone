@@ -295,36 +295,41 @@ def initialize():
 	}
 
 	if g.persephone_config['optional_packages']['comments']:
-		def filter_comments(comments):
-			commenter_user_ids = []
-			for comment in comments.values():
-				comment.body = escape(comment.body)
-				if comment.user and comment.user_id not in commenter_user_ids:
-					commenter_user_ids.append(comment.user.id)
-			collected_stickers = g.stickers.search_collected_stickers(
-				filter={'user_ids': commenter_user_ids},
-			)
-			user_ids_to_collected_stickers = {}
-			for collected_sticker in collected_stickers.values():
-				if collected_sticker.user_id not in user_ids_to_collected_stickers:
-					user_ids_to_collected_stickers[collected_sticker.user_id] = []
-				user_ids_to_collected_stickers[collected_sticker.user_id].append(
-					collected_sticker
+		if not g.persephone_config['optional_packages']['stickers']:
+			def filter_comments(comments):
+				#TODO alternate filter comments if stickers are disabled
+				pass
+		else:
+			def filter_comments(comments):
+				commenter_user_ids = []
+				for comment in comments.values():
+					comment.body = escape(comment.body)
+					if comment.user and comment.user_id not in commenter_user_ids:
+						commenter_user_ids.append(comment.user.id)
+				collected_stickers = g.stickers.search_collected_stickers(
+					filter={'user_ids': commenter_user_ids},
 				)
-			for comment in comments.values():
-				if comment.user and comment.user_id in user_ids_to_collected_stickers:
-					for collected_sticker in user_ids_to_collected_stickers[comment.user.id]:
-						if not collected_sticker.sticker.name:
-							continue
-						comment.body = comment.body.replace(
-							':' + collected_sticker.sticker.name + ':',
-							Markup(
-								render_template(
-									'sticker.html',
-									sticker=collected_sticker.sticker,
-								)
-							),
-						)
+				user_ids_to_collected_stickers = {}
+				for collected_sticker in collected_stickers.values():
+					if collected_sticker.user_id not in user_ids_to_collected_stickers:
+						user_ids_to_collected_stickers[collected_sticker.user_id] = []
+					user_ids_to_collected_stickers[collected_sticker.user_id].append(
+						collected_sticker
+					)
+				for comment in comments.values():
+					if comment.user and comment.user_id in user_ids_to_collected_stickers:
+						for collected_sticker in user_ids_to_collected_stickers[comment.user.id]:
+							if not collected_sticker.sticker.name:
+								continue
+							comment.body = comment.body.replace(
+								':' + collected_sticker.sticker.name + ':',
+								Markup(
+									render_template(
+										'sticker.html',
+										sticker=collected_sticker.sticker,
+									)
+								),
+							)
 
 		def populate_media_comment_counts(media):
 			comment_counts = g.comments.get_subject_comment_counts(media.keys())
