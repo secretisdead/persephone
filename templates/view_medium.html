@@ -37,7 +37,7 @@
 		{{ comments_table(comments) }}
 	{% endif %}
 	{% if (
-			g.persephone_config['optional_packages']['comments']
+			g.persephone_config['optional_packages']['stickers']
 			and 'supress:stickers' not in medium.tags
 		) %}
 		{% include 'stickers.html' %}
