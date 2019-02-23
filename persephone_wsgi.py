@@ -271,15 +271,19 @@ def initialize():
 	except:
 		abort(500, 'Problem initializing Media')
 
+	repopulate_groups = False
 	if 'contributor' not in g.accounts.available_groups:
+		repopulate_groups = True
 		g.accounts.create_group('contributor')
 	for custom_group in g.persephone_config['custom_groups']:
 		if custom_group not in g.accounts.available_groups:
+			repopulate_groups = True
 			g.accounts.create_group(custom_group)
 	for custom_scopes in g.persephone_config['custom_scopes']:
 		if custom_scope not in g.accounts.available_scopes:
 			g.accounts.create_scope(custom_scope)
-	g.accounts.populate_groups()
+	if repopulate_groups:
+		g.accounts.populate_groups()
 
 	#TODO remove stickers and comments from removed media
 	#g.media.add_callback('remove_medium', media_remove_medium)
