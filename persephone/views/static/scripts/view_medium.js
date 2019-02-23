@@ -14,6 +14,8 @@ if (unlike_button && localStorage.getItem('media_preference_show_unlike_button')
 	unlike_button.classList.add('shown');
 }
 
+let video_ready_interval = null;
+
 // fit media vertically
 if (localStorage.getItem('media_preference_fit_media_vertically')) {
 	let fit_vertically = function(medium_element) {
@@ -79,31 +81,63 @@ if (playable_medium) {
 		}
 	});
 }
-
-// limit tags container and tags editor max-widths to medium width
-let container = document.querySelector('.medium').parentNode;
-// non-fuzzy timestamp will usually widen the container so hide it first
-let info = document.querySelector('.medium_info');
-if (info) {
-	info.style.display = 'none';
+// constrain some view page elements to the width of the medium
+let selectors_to_constrain = [
+	'.medium_management',
+	'.medium_info',
+	'.medium_blurb',
+	'.medium_tags',
+	'.tags_editor',
+	'#adjacent_media',
+	'.medium_set',
+	'.comments_form',
+	'.comments',
+];
+let constrain_elements = function() {
+	for (let i = 0; i < selectors_to_constrain.length; i++) {
+		let elements = document.querySelectorAll(selectors_to_constrain[i]);
+		for (let j = 0; j < elements.length; j++) {
+			let element = elements[j];
+			element.style.maxWidth = medium.parentNode.clientWidth + 'px';
+			element.style.opacity = '0';
+			element.style.display = '';
+			element.style.transition = 'opacity 100ms';
+			setTimeout(() => {
+				element.style.opacity = '1';
+			}, 10);
+		}
+	}
 }
-let medium_tags = document.querySelector('.medium_tags');
-// tags will also sometimes widen the container so hide them first too
-if (medium_tags) {
-	medium_tags.style.display = 'none';
+for (let i = 0; i < selectors_to_constrain.length; i++) {
+	let elements = document.querySelectorAll(selectors_to_constrain[i]);
+	for (let j = 0; j < elements.length; j++) {
+		elements[j].style.display = 'none';
+	}
 }
-setTimeout(() => {
-	let container_width = container.clientWidth;
-	if (info) {
-		info.style.display = '';
-	}
-	if (medium_tags) {
-		medium_tags.style.display = '';
-		medium_tags.style.maxWidth = (container_width) + 'px';
-	}
-	let preview_wrapper = document.querySelector('.tags_preview_wrapper');
-	if (preview_wrapper) {
-		//TODO this script shouldn't have to know about tag preview wrapper padding
-		preview_wrapper.style.maxWidth = (container_width - 1) + 'px';
-	}
-}, 10);
+let medium = document.querySelector('.medium');
+switch (medium.dataset.category) {
+	case 'image':
+		let image = medium.querySelector('.summary a img');
+		if (!image || image.complete) {
+			constrain_elements();
+		}
+		image.onload = constrain_elements;
+		break;
+	case 'video':
+		let video = medium.querySelector('.summary video');
+		if (!video || video.readyState >= 1) {
+			constrain_elements();
+			break;
+		}
+		video_ready_interval = setInterval(() => {
+			if (video.readyState >= 1) {
+				constrain_elements();
+				clearInterval(video_ready_interval);
+			}
+		}, 1000);
+		break;
+	//TODO audio with image cover
+	default:
+		constrain_elements();
+		break;
+}

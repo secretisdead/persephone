@@ -453,6 +453,7 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 	border-bottom-right-radius: 0.5em;
 	border-left: 1px solid var(--card_border);
 	border-right: 1px solid var(--card_border);
+	box-sizing: border-box;
 }
 .medium_management {
 	text-align: right;
@@ -632,6 +633,7 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 	background-color: var(--card_background);
 	border: 1px solid var(--card_border);
 	border-radius: 0.5rem;
+	box-sizing: border-box;
 }
 .medium_set .thumbnail {
 	width: 64px;
