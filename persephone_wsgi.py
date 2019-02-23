@@ -102,6 +102,8 @@ def get_engine(db_config):
 
 @app.before_request
 def initialize():
+	g.initialized = False
+
 	# this should be the root wsgi directory, not the persephone repository directory
 	g.persephone_directory = os.path.dirname(__file__)
 
@@ -406,6 +408,8 @@ def initialize():
 				terms(agreement_form=True)
 			)
 
+	g.initialized = True
+
 # sign in services handle 401
 @app.errorhandler(401)
 def not_authorized(e):
@@ -425,6 +429,8 @@ def banned(e):
 
 # custom templates for other status errors
 def error_page(code, message):
+	if not g.initialized:
+		return message, code
 	return render_template('status_error.html', code=code, message=message), code
 
 @app.errorhandler(400)
