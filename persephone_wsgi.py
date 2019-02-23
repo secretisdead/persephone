@@ -178,12 +178,16 @@ def initialize():
 		'credentials',
 	)
 
+	install = True
+	if os.path.exists(os.path.join(g.persephone_directory, '.installed')):
+		install = False
+
 	# access log
 	try:
 		g.access_log = AccessLog(
 			engines['access_log'],
 			db_prefix=configs['access_log']['db_prefix'],
-			install=True,
+			install=install,
 			remote_origin=request.remote_addr,
 			connection=connections['access_log'],
 		)
@@ -196,7 +200,7 @@ def initialize():
 			configs['users'],
 			g.access_log,
 			engines['users'],
-			install=True,
+			install=install,
 			connection=connections['users'],
 		)
 	except:
@@ -209,12 +213,11 @@ def initialize():
 			g.accounts,
 			g.access_log,
 			engines['bans'],
-			install=True,
+			install=install,
 			connection=connections['bans'],
 		)
 	except:
 		abort(500, 'Problem initializing Bans')
-
 
 	if g.persephone_config['optional_packages']['comments']:
 		# comments
@@ -224,7 +227,7 @@ def initialize():
 				g.accounts,
 				g.access_log,
 				engines['comments'],
-				install=True,
+				install=install,
 				connection=connections['comments'],
 			)
 		except:
@@ -238,7 +241,7 @@ def initialize():
 				g.accounts,
 				g.access_log,
 				engines['stickers'],
-				install=True,
+				install=install,
 				connection=connections['stickers'],
 			)
 		except:
@@ -252,7 +255,7 @@ def initialize():
 				g.accounts,
 				g.access_log,
 				engines['patreon'],
-				install=True,
+				install=install,
 				connection=connections['patreon'],
 			)
 		except:
@@ -265,11 +268,18 @@ def initialize():
 			g.accounts,
 			g.access_log,
 			engines['media'],
-			install=True,
+			install=install,
 			connection=connections['media'],
 		)
 	except:
 		abort(500, 'Problem initializing Media')
+
+	if install:
+		with open(
+				os.path.join(g.persephone_directory, '.installed'),
+				'w',
+			) as handle:
+			handle.write('')
 
 	repopulate_groups = False
 	if 'contributor' not in g.accounts.available_groups:
