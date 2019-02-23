@@ -198,6 +198,28 @@
 	--card_border: #ffffff;
 	--card_inner_border: #0a420c;
 }
+/*Cats*/
+:root.theme_cats {
+	--background: #c080a0;
+	--foreground: #ffffff;
+	--link: #ffffff;
+
+	--header_background: #602040;
+	--header_foreground: #ffffff;
+	--header_link: #ffffff;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #c080a0;
+	--topmenu_border: #ffffff;
+	--topmenu_inner_border: #c080a0;
+
+	--card_background: #ffffff;
+	--card_foreground: #202020;
+	--card_link: #2080ff;
+	--card_border: #ffffff;
+	--card_inner_border: #c080a0;
+}
 
 /*futaba red*/
 /*buri blue*/
