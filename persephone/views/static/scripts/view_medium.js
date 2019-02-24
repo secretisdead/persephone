@@ -14,69 +14,6 @@ if (unlike_button && localStorage.getItem('media_preference_show_unlike_button')
 	unlike_button.classList.add('shown');
 }
 
-let video_ready_interval = null;
-
-// fit media vertically
-if (localStorage.getItem('media_preference_fit_media_vertically')) {
-	let medium = document.querySelector('.medium');
-	let fit_vertically = function(medium_element) {
-		let available_height = window.innerHeight;
-		// relying on #content having padding of 1rem on top and bottom which this script shouldn't really have to know about oops
-		let rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-		available_height -= (2 * rem);
-		// subtracting topmenu height which this script also shouldn't have to know about
-		let topmenu = document.querySelector('#topmenu');
-		if (topmenu) {
-			available_height -= topmenu.clientHeight;
-		}
-		// subtracting sticker drawer height which this script also shouldn't have to know about
-		let sticker_drawer = document.querySelector('#sticker_drawer');
-		if (sticker_drawer) {
-			console.log('sticker drawer existed');
-			console.log(sticker_drawer);
-			console.log('old available height: ' + available_height);
-			available_height -= (32 + (2.5 * rem));
-			console.log('new available height: ' + available_height);
-		}
-		if (medium.parentNode.clientHeight > available_height) {
-			let non_medium_elements_height = medium.parentNode.clientHeight - medium_element.clientHeight;
-			medium_element.style.maxHeight = 'calc(' + available_height + 'px - ' + non_medium_elements_height + 'px)';
-			medium_element.style.width = 'auto';
-		}
-	};
-	switch (medium.dataset.category) {
-		case 'image':
-			let image = medium.querySelector('.summary a img');
-			if (!image) {
-				break;
-			}
-			if (image.complete) {
-				fit_vertically(image);
-			}
-			image.onload = () => {
-				fit_vertically(image);
-			};
-			break;
-		case 'video':
-			let video = medium.querySelector('.summary video');
-			if (!video) {
-				break;
-			}
-			if (video.readyState >= 1) {
-				fit_vertically(video);
-				break;
-			}
-			video_ready_interval = setInterval(() => {
-				if (video.readyState >= 1) {
-					fit_vertically(video);
-					clearInterval(video_ready_interval);
-				}
-			}, 1000);
-			break;
-		//TODO audio with image cover
-	}
-}
-
 // hotkey for playable media
 let playable_medium = document.querySelector('.medium video');
 if (!playable_medium) {
@@ -101,6 +38,29 @@ if (playable_medium) {
 		}
 	});
 }
+
+// functions to run when media is done loading
+function medium_loaded(element) {
+	constrain_elements();
+	if (element && localStorage.getItem('media_preference_fit_media_vertically')) {
+		fit_vertically(element);
+	}
+}
+function image_medium_loaded(medium) {
+	let image = medium.querySelector('.summary a img');
+	if (!image) {
+		medium_loaded();
+		return;
+	}
+	if (image.complete) {
+		medium_loaded(image);
+		return;
+	}
+	image.onload = () => {
+		medium_loaded(image)
+	};
+}
+let medium = document.querySelector('.medium');
 // constrain some view page elements to the width of the medium
 let selectors_to_constrain = [
 	'.medium_management',
@@ -113,18 +73,13 @@ let selectors_to_constrain = [
 	'.comments_form',
 	'.comments',
 ];
-let constrain_elements = function() {
+function constrain_elements() {
 	for (let i = 0; i < selectors_to_constrain.length; i++) {
 		let elements = document.querySelectorAll(selectors_to_constrain[i]);
 		for (let j = 0; j < elements.length; j++) {
 			let element = elements[j];
 			element.style.maxWidth = medium.parentNode.clientWidth + 'px';
-			element.style.opacity = '0';
 			element.style.display = '';
-			element.style.transition = 'opacity 100ms';
-			setTimeout(() => {
-				element.style.opacity = '1';
-			}, 10);
 		}
 	}
 }
@@ -134,30 +89,51 @@ for (let i = 0; i < selectors_to_constrain.length; i++) {
 		elements[j].style.display = 'none';
 	}
 }
-let medium = document.querySelector('.medium');
+// fit media vertically
+function fit_vertically(element) {
+	let available_height = window.innerHeight;
+	// relying on #content having padding of 1rem on top and bottom which this script shouldn't really have to know about oops
+	let rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+	available_height -= (2 * rem);
+	// subtracting topmenu height which this script also shouldn't have to know about
+	let topmenu = document.querySelector('#topmenu');
+	if (topmenu) {
+		available_height -= topmenu.clientHeight;
+	}
+	// subtracting sticker drawer height which this script also shouldn't have to know about
+	let sticker_drawer = document.querySelector('#sticker_drawer');
+	if (sticker_drawer) {
+		available_height -= (32 + (2.5 * rem));
+	}
+	if (medium.parentNode.clientHeight > available_height) {
+		let container_height = medium.parentNode.clientHeight;
+		let non_medium_elements_height = container_height - element.clientHeight;
+		element.style.maxHeight = 'calc(' + available_height + 'px - ' + non_medium_elements_height + 'px)';
+		element.style.width = 'auto';
+	}
+};
+let video_ready_interval = null;
 switch (medium.dataset.category) {
 	case 'image':
-		let image = medium.querySelector('.summary a img');
-		if (!image || image.complete) {
-			constrain_elements();
-		}
-		image.onload = constrain_elements;
+		image_medium_loaded(medium);
 		break;
 	case 'video':
 		let video = medium.querySelector('.summary video');
-		if (!video || video.readyState >= 1) {
-			constrain_elements();
+		if (!video) {
+			medium_loaded();
+		}
+		if (video.readyState >= 2) {
+			medium_loaded(video);
 			break;
 		}
 		video_ready_interval = setInterval(() => {
-			if (video.readyState >= 1) {
-				constrain_elements();
+			if (video.readyState >= 2) {
+				medium_loaded(video);
 				clearInterval(video_ready_interval);
 			}
 		}, 1000);
 		break;
-	//TODO audio with image cover
 	default:
-		constrain_elements();
+		image_medium_loaded(medium);
 		break;
 }
