@@ -466,7 +466,7 @@ def manage_media_rss():
 @persephone.route('/manager/tags', methods=['GET', 'POST'])
 @require_permissions(group_names='manager')
 def manage_tags():
-	return tags_list()
+	return tags_list('persephone.search_public_media')
 
 @persephone.route('/manager/likes')
 @require_permissions(group_names='manager')
