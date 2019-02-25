@@ -1,15 +1,50 @@
 <nav id="topmenu">
-	<a id="top_home" href="{{ url_for('persephone.home') }}">Home</a>
-	<a id="top_search" href="{{ url_for('persephone.search_public_media') }}">Search</a>
-	<a id="top_random" href="{{ url_for('persephone.random_public_media') }}">Random</a>
+	<a 
+		id="top_home" 
+		href="{{ url_for('persephone.home') }}" 
+		title="Home">
+		Home
+	</a>
+	<a 
+		id="top_search" 
+		href="{{ url_for('persephone.search_public_media') }}" 
+		title="Search">
+		Search
+	</a>
+	<a 
+		id="top_random" 
+		href="{{ url_for('persephone.random_public_media') }}" 
+		title="Random">
+		Random
+	</a>
 	{% if g.persephone_config['optional_packages']['tegaki'] %}
-		<a id="top_tegaki" href="{{ url_for('persephone.tegaki') }}">Tegaki</a>
+		<a 
+			id="top_tegaki" 
+			href="{{ url_for('persephone.tegaki') }}" 
+			title="Tegaki">
+			Tegaki
+		</a>
 	{% endif %}
 	{% if g.accounts and g.accounts.current_user %}
 		{% if g.accounts.current_user.has_permission(group_names='contributor') %}
-			<a id="top_upload" href="{{ url_for('persephone.upload') }}">Upload</a>
+			<a 
+				id="top_upload" 
+				href="{{ url_for('persephone.upload') }}" 
+				title="Upload">
+				Upload
+			</a>
 		{% endif %}
-		<a id="top_settings" href="{{ url_for('accounts_signed_in.settings') }}">Settings</a>
-		<a id="top_sign_out" href="{{ url_for('accounts_signed_in.sign_out') }}">Sign Out</a>
+		<a 
+			id="top_settings" 
+			href="{{ url_for('accounts_signed_in.settings') }}" 
+			title="Settings">
+			Settings
+		</a>
+		<a 
+			id="top_sign_out" 
+			href="{{ url_for('accounts_signed_in.sign_out') }}" 
+			title="Sign out">
+			Sign out
+		</a>
 	{% endif %}
 </nav>
