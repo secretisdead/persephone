@@ -38,17 +38,17 @@
 		{% from 'comments.jinja' import comments_table %}
 		{{ comments_table(comments) }}
 	{% endif %}
+	<script 
+		type="module" 
+		src="{{ g.persephone_config['static_persephone_uri'].format(
+			'scripts/view_medium.js',
+		) }}"></script>
 	{% if (
 			g.persephone_config['optional_packages']['stickers']
 			and 'supress:stickers' not in medium.tags
 		) %}
 		{% include 'stickers.html' %}
 	{% endif %}
-	<script 
-		type="module" 
-		src="{{ g.persephone_config['static_persephone_uri'].format(
-			'scripts/view_medium.js',
-		) }}"></script>
 {% endblock %}
 {% block meta %}
 	{{ super() }}

@@ -34,7 +34,6 @@ export function place_sticker(sticker, target) {
 }
 
 function create_sticker_target(element, target_id, original_width, original_height) {
-	element.classList.add('sticker_target');
 	element.dataset.id = target_id;
 	element.dataset.width = original_width;
 	element.dataset.height = original_height;
@@ -47,20 +46,36 @@ function create_sticker_target(element, target_id, original_width, original_heig
 	element.appendChild(element.sticker_container);
 }
 
+function summary_to_sticker_target(summary) {
+	let width = parseInt(summary.parentNode.dataset.data1);
+	if (!width) {
+		width = summary.clientWidth;
+	}
+	let height = parseInt(summary.parentNode.dataset.data2);
+	if (!height) {
+		height = summary.clientHeight;
+	}
+	create_sticker_target(summary, summary.parentNode.dataset.id, width, height);
+	summary.dispatchEvent(new CustomEvent('place_stickers'));
+	summary.ready_to_place_stickers = true;
+}
+
 export function create_sticker_targets() {
 	// media to sticker targets
 	let media_summaries = document.querySelectorAll('.medium .summary');
 	for (let i = 0; i < media_summaries.length; i++) {
 		let summary = media_summaries[i];
-		let width = parseInt(summary.parentNode.dataset.data1);
-		if (!width) {
-			width = summary.clientWidth;
+		summary.classList.add('sticker_target');
+		summary.ready_to_place_stickers = false;
+		if (!summary.parentNode.delay_creating_sticker_target) {
+			summary_to_sticker_target(summary);
 		}
-		let height = parseInt(summary.parentNode.dataset.data2);
-		if (!height) {
-			height = summary.clientHeight;
+		else {
+			summary.parentNode.addEventListener('create_sticker_target', e => {
+				let summary = e.currentTarget.querySelector('.summary');
+				summary_to_sticker_target(summary);
+			});
 		}
-		create_sticker_target(summary, summary.parentNode.dataset.id, width, height);
 	}
 
 	//TODO tegaki to sticker targets

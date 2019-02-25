@@ -38,7 +38,14 @@ if (!media_preference_hide_stickers) {
 					load_sticker_drawer();
 				}
 			});
-			place_target_stickers(target, sticker_placements_uri, stickers_placement_duration_ms);
+			if (target.ready_to_place_stickers) {
+				place_target_stickers(target, sticker_placements_uri, stickers_placement_duration_ms);
+			}
+			else {
+				target.addEventListener('place_stickers', e => {
+					place_target_stickers(e.currentTarget, sticker_placements_uri, stickers_placement_duration_ms);
+				});
+			}
 		}
 	}
 }

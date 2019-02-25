@@ -42,9 +42,13 @@ if (playable_medium) {
 // functions to run when media is done loading
 function medium_loaded(element) {
 	constrain_elements();
-	if (element && localStorage.getItem('media_preference_fit_media_vertically')) {
-		fit_vertically(element);
+	if (element) {
+		if (localStorage.getItem('media_preference_fit_media_vertically')) {
+			fit_vertically(element);
+		}
 	}
+	medium.dispatchEvent(new CustomEvent('create_sticker_target'));
+	medium.delay_creating_sticker_target = false;
 }
 function image_medium_loaded(medium) {
 	let image = medium.querySelector('.summary a img');
@@ -61,6 +65,7 @@ function image_medium_loaded(medium) {
 	};
 }
 let medium = document.querySelector('.medium');
+medium.delay_creating_sticker_target = true;
 // constrain some view page elements to the width of the medium
 let selectors_to_constrain = [
 	'.medium_management',
