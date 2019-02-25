@@ -28,12 +28,13 @@
 		type="checkbox">
 	<label for="media_preference_show_unlike_button">Show unlike button</label>
 	<br>
-	<br>
-	<input 
-		id="media_preference_hide_stickers" 
-		name="media_preference_hide_stickers" 
-		type="checkbox">
-	<label for="media_preference_hide_stickers">Hide stickers</label>
-	<br>
+	{% if g.persephone_config['optional_packages']['stickers'] %}
+		<input 
+			id="media_preference_hide_stickers" 
+			name="media_preference_hide_stickers" 
+			type="checkbox">
+		<label for="media_preference_hide_stickers">Hide stickers</label>
+		<br>
+	{% endif %}
 	<input type="submit" value="Save changes">
 </form>
