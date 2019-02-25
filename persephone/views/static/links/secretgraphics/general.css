@@ -375,6 +375,19 @@ nav a:last-child {
 	margin: 0.8rem;
 }
 
+/*tegaki*/
+.tegaki_update {
+	text-align: left;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	border: 1px solid var(--card_border);
+	background-color: var(--card_background);
+	color: var(--card_foreground);
+}
+.tegaki_update a {
+	color: var(--card_link);
+}
+
 /*legal*/
 .legal-privacy p,
 .legal-takedown p,

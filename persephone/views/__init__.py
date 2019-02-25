@@ -354,7 +354,7 @@ def announcements(page=0):
 # tegaki
 @persephone.route('/tegaki')
 def tegaki():
-	return 'tegaki is being updated'
+	return render_template('tegaki.html')
 
 # media archive
 @persephone.route('/premium/<campaign>')
