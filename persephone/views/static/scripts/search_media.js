@@ -210,6 +210,12 @@ let save_and_close_media_preferences = function() {
 		localStorage.setItem(input.id, input.value);
 	}
 	apply_blacklisted_tags();
+	if (media_preferences.querySelector('#media_preference_jumbo_thumbnails').checked) {
+		document.documentElement.classList.add('jumbo_thumbnails');
+	}
+	else {
+		document.documentElement.classList.remove('jumbo_thumbnails');
+	}
 	document.body.removeChild(media_preferences);
 	document.body.removeChild(media_preferences_dim);
 };

@@ -15,3 +15,8 @@ let thumbnails = document.querySelectorAll('.thumbnail');
 for (let i = 0; i < thumbnails.length; i++) {
 	add_thumbnail_preview(thumbnails[i]);
 }
+
+// jumbo thumbnails
+if (localStorage.getItem('media_preference_jumbo_thumbnails')) {
+	document.documentElement.classList.add('jumbo_thumbnails');
+}

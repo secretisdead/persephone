@@ -1180,3 +1180,18 @@
 		display: none;
 	}
 }
+
+/*jumbo thumbnails*/
+:root.scripts_enabled.jumbo_thumbnails {
+	--per_search_results_row: 4;
+}
+@media only screen and (max-width: 1024px) {
+	:root.scripts_enabled.jumbo_thumbnails {
+		--per_search_results_row: 2;
+	}
+}
+@media only screen and (max-width: 600px) {
+	:root.scripts_enabled.jumbo_thumbnails {
+		--per_search_results_row: 1;
+	}
+}
