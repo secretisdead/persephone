@@ -20,7 +20,6 @@
 		{% set thumbnail_link_uri = url_for(
 			thumbnail_link_endpoint,
 			medium_id=medium.id,
-			tags=tags_query,
 			**kwargs,
 		) %}
 	{% endif %}
