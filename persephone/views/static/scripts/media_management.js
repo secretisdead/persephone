@@ -17,7 +17,7 @@ class Manage {
 			toggle_management: 'e',
 			add_tags: 't',
 			searchability: 'v',
-			generate_set: 'g',
+			generate_set: 's',
 			select_all: '=',
 			select_none: '-',
 			remove: 'Delete',

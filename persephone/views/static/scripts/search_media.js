@@ -51,7 +51,7 @@ if (search_input) {
 		) {
 			return;
 		}
-		if ('s' == e.key) {
+		if ('`' == e.key) {
 			setTimeout(() => {
 				tags_field.input.focus();
 			}, 1);
