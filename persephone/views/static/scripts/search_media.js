@@ -103,23 +103,6 @@ if (search_input) {
 	});
 
 }
-// listener for random slideshow hotkey
-let media_search_random = document.querySelector('#media_search_random');
-if (media_search_random) {
-	window.addEventListener('keydown', e => {
-		if (
-			'INPUT' == document.activeElement.tagName
-			|| 'TEXTAREA' == document.activeElement.tagName
-			|| e.ctrlKey
-			|| e.altKey
-		) {
-			return;
-		}
-		if ('r' == e.key) {
-			window.location = media_search_random.href;
-		}
-	});
-}
 
 // preferences
 let media_navigation = document.querySelector('.media_navigation');
