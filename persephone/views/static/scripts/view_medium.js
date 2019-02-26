@@ -39,6 +39,23 @@ if (playable_medium) {
 	});
 }
 
+// hotkey for like
+let like = document.querySelector('[class^="like_medium"]:not(.cooldown)');
+if (like) {
+	window.addEventListener('keydown', e => {
+		if (
+			'INPUT' == document.activeElement.tagName
+			|| e.ctrlKey
+			|| e.altKey
+		) {
+			return;
+		}
+		if ('f' == e.key) {
+			window.location = like.href;
+		}
+	});
+}
+
 // functions to run when media is done loading
 function medium_loaded(element) {
 	constrain_elements();
