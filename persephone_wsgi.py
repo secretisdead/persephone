@@ -175,10 +175,18 @@ def initialize():
 		else:
 			engines[package] = get_engine(g.persephone_config['db'][package])
 			connections[package] = None
-	configs['users']['credentials'] = get_config(
-		'config/credentials.json',
-		'credentials',
-	)
+	third_party_authentication_enabled = False
+	for service, enabled in configs['users']['authentication_services'].items():
+		if service in ['local', 'cert', 'mail', 'steam']:
+			continue
+		if enabled:
+			third_party_authentication_enabled = True
+			break
+	if third_party_authentication_enabled:
+		configs['users']['credentials'] = get_config(
+			'config/credentials.json',
+			'credentials',
+		)
 
 	install = True
 	if os.path.exists(os.path.join(g.persephone_directory, '.installed')):
