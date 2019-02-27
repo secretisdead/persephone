@@ -28,6 +28,7 @@ let storable_upload_inputs = [
 	'author_tag',
 	'filename_tag',
 ];
+let stored_media_upload_preferences = localStorage.getItem('media_upload_preferences');
 // checkbox preferences
 let checkboxes = form.querySelectorAll('input[type=checkbox]');
 for (let i = 0; i < checkboxes.length; i++) {
@@ -35,10 +36,15 @@ for (let i = 0; i < checkboxes.length; i++) {
 	if (-1 == storable_upload_inputs.indexOf(checkbox.id)) {
 		continue;
 	}
-	checkbox.checked = false;
-	let checkbox_preference = localStorage.getItem('media_upload_' + checkbox.id);
-	if (checkbox_preference) {
-		checkbox.checked = true;
+	if (stored_media_upload_preferences) {
+		checkbox.checked = false;
+		let checkbox_preference = localStorage.getItem('media_upload_' + checkbox.id);
+		if (checkbox_preference) {
+			checkbox.checked = true;
+		}
+	}
+	else if (checkbox.checked) {
+		localStorage.setItem('media_upload_' + checkbox.id, 1);
 	}
 	checkbox.addEventListener('change', e => {
 		if (e.currentTarget.checked) {
@@ -56,6 +62,10 @@ for (let i = 0; i < selects.length; i++) {
 	if (-1 == storable_upload_inputs.indexOf(select.id)) {
 		continue;
 	}
+	if (!stored_media_upload_preferences) {
+		let select_value = select.options[select.selectedIndex].value;
+		localStorage.setItem('media_upload_' + select.id, select_value);
+	}
 	let select_preference = localStorage.getItem('media_upload_' + select.id);
 	if (select_preference) {
 		select.value = select_preference;
@@ -65,7 +75,9 @@ for (let i = 0; i < selects.length; i++) {
 		localStorage.setItem('media_upload_' + e.currentTarget.id, select_value);
 	});
 }
-
+if (!stored_media_upload_preferences) {
+	localStorage.setItem('media_upload_preferences', 1);
+}
 //TODO tag editor for additional tags field
 
 
