@@ -80,8 +80,6 @@ if (!stored_media_upload_preferences) {
 }
 //TODO tag editor for additional tags field
 
-
-
 // upload
 let file_upload = form.querySelector('#file_upload');
 let file_uri = form.querySelector('#file_uri');
@@ -268,6 +266,3 @@ file_uri.addEventListener('keydown', e => {
 	add_preview(filename[filename.length - 1], new FormData(form));
 	file_uri.value = '';
 });
-
-//TODO ajax response failure update card with response reason and class
-//TODO ajax response success update card with rendered thumbnail and class
