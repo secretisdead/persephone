@@ -155,12 +155,17 @@ def initialize():
 		common_engine = get_engine(g.persephone_config['db']['common'])
 		common_connection = common_engine.connect()
 
+	install = True
+	if os.path.exists(os.path.join(g.persephone_directory, '.installed')):
+		install = False
+
 	engines = {}
 	connections = {}
 	configs = {}
 	for package in packages:
 		if (
-				package in g.persephone_config['optional_packages']
+				not install
+				and package in g.persephone_config['optional_packages']
 				and not g.persephone_config['optional_packages'][package]
 			):
 			continue
@@ -187,10 +192,6 @@ def initialize():
 			'config/credentials.json',
 			'credentials',
 		)
-
-	install = True
-	if os.path.exists(os.path.join(g.persephone_directory, '.installed')):
-		install = False
 
 	# access log
 	try:
@@ -229,7 +230,7 @@ def initialize():
 	except:
 		abort(500, 'Problem initializing Bans')
 
-	if g.persephone_config['optional_packages']['comments']:
+	if install or g.persephone_config['optional_packages']['comments']:
 		# comments
 		try:
 			initialize_comments(
@@ -243,7 +244,7 @@ def initialize():
 		except:
 			abort(500, 'Problem initializing Comments')
 
-	if g.persephone_config['optional_packages']['stickers']:
+	if install or g.persephone_config['optional_packages']['stickers']:
 		# stickers
 		try:
 			initialize_stickers(
@@ -257,7 +258,7 @@ def initialize():
 		except:
 			abort(500, 'Problem initializing Stickers')
 
-	if g.persephone_config['optional_packages']['patreon']:
+	if install or g.persephone_config['optional_packages']['patreon']:
 		# patreon
 		try:
 			initialize_patreon(
