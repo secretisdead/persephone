@@ -1003,7 +1003,7 @@
 }
 /*make room for sticker drawer*/
 .scripts_enabled.media_view_endpoint #content,
-.scripts_enabled.persephone-announcements #content {
+.scripts_enabled[data-endpoint="persephone.announcements"] #content {
 	padding-bottom: calc(32px + 0.5rem + 1.75rem + 0.25rem + 1rem);
 }
 .scripts_enabled.holding_sticker #content #sticker_drawer.loaded {
