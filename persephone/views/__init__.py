@@ -911,7 +911,7 @@ def user_liked_media_list(user_identifier, like_id=None):
 			return redirect(request.args['redirect_uri'], code=303)
 		return redirect(
 			url_for(
-				'user_liked_media_list',
+				'persephone.user_liked_media_list',
 				user_identifier=user.identifier,
 			),
 			code=303,
