@@ -1152,7 +1152,10 @@ def user_profile(user_identifier=None):
 		}
 		if (
 				g.accounts.current_user
-				and g.accounts.current_user.has_permission(group_names='manager')
+				and (
+					g.accounts.current_user.id == user.id
+					or g.accounts.current_user.has_permission(group_names='manager')
+				)
 			):
 			likes_card['uri'] = url_for(
 				'persephone.user_liked_media',
