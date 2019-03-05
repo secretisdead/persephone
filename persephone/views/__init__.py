@@ -552,6 +552,44 @@ def require_profile_user(identifier):
 		abort(404, 'User not found')
 	return user
 
+def count_instance_comments(user, override_filters={}):
+	if not g.persephone_config['public_contributors']:
+		return g.comments.count_comments(filter={'user_ids': user.id_bytes})
+	comments = g.comments.search_comments(filter={'user_ids': user.id_bytes})
+	media_ids = []
+	for comment in comments.values():
+		if comment.subject_id not in media_ids:
+			media_ids.append(comment.subject_id)
+	media_filters = override_filters.copy()
+	media_filters['ids'] = media_ids
+	media = g.media.search_media(filter=media_filters)
+	total_comments = 0
+	for comment in comments.values():
+		if comment.subject_id in media.keys():
+			total_comments += 1
+	return total_comments
+
+def count_instance_sticker_placements(user, override_filters={}):
+	if not g.persephone_config['public_contributors']:
+		return g.stickers.count_sticker_placements(
+			filter={'user_ids': user.id_bytes},
+		)
+	placements = g.stickers.search_sticker_placements(
+		filter={'user_ids': user.id_bytes},
+	)
+	media_ids = []
+	for placement in placements.values():
+		if placement.subject_id not in media_ids:
+			media_ids.append(placement.subject_id)
+	media_filters = override_filters.copy()
+	media_filters['ids'] = media_ids
+	media = g.media.search_media(filter=media_filters)
+	total_placements = 0
+	for placement in placements.values():
+		if placement.subject_id in media.keys():
+			total_placements += 1
+	return total_placements
+
 #TODO move get badges to supplemental script?
 #TODO some way to do custom badges without having to come in here and edit things directly?
 #TODO maybe later i guess
@@ -687,10 +725,13 @@ def get_badges(user):
 			'title': flavor + ' (' + description + ')',
 		})
 
+	override_filters, management_mode, omit_future = build_search_override()
+
 	if g.persephone_config['optional_packages']['comments']:
 		# comments badges
-		created_comments_total = g.comments.count_comments(
-			filter={'user_ids': user.id_bytes}
+		created_comments_total = count_instance_comments(
+			user,
+			override_filters=override_filters,
 		)
 		if created_comments_total:
 			flavor = 'Chatty'
@@ -712,7 +753,7 @@ def get_badges(user):
 	if g.persephone_config['optional_packages']['stickers']:
 		# stickers badges
 		collected_stickers_total = g.stickers.count_collected_stickers(
-			filter={'user_ids': user.id_bytes}
+			filter={'user_ids': user.id_bytes},
 		)
 		if collected_stickers_total:
 			flavor = 'Something to collect'
@@ -730,8 +771,9 @@ def get_badges(user):
 				'display': 'Sticker collector 2',
 				'title': flavor + ' (' + description + ')',
 			})
-		sticker_placements_total = g.stickers.count_sticker_placements(
-			filter={'user_ids': user.id_bytes}
+		sticker_placements_total = count_instance_sticker_placements(
+			user,
+			override_filters=override_filters,
 		)
 		if sticker_placements_total:
 			flavor = 'Put a sticker up'
@@ -751,9 +793,12 @@ def get_badges(user):
 			})
 
 	# media badges
-	media_likes_total = g.media.count_likes(
-		filter={'user_ids': user.id_bytes}
-	)
+	media_likes_filter = {'user_ids': user.id_bytes}
+	if g.persephone_config['public_contributors']:
+		media_likes_filter['owner_ids'] = []
+		for owner_id in g.persephone_config['public_contributors']:
+			media_likes_filter['owner_ids'].append(owner_id)
+	media_likes_total = g.media.count_likes(filter=override_filters)
 	if media_likes_total:
 		flavor = 'Full of love'
 		description = 'Liked a medium'
@@ -918,6 +963,10 @@ def user_liked_media_list(user_identifier, like_id=None):
 		)
 
 	filter = {'user_ids': user.id_bytes}
+	if g.persephone_config['public_contributors']:
+		filter['owner_ids'] = []
+		for owner_id in g.persephone_config['public_contributors']:
+			filter['owner_ids'].append(owner_id)
 	pagination = {
 		'sort': 'creation_time',
 		'order': 'desc',
@@ -956,7 +1005,7 @@ def user_liked_media(user_identifier, medium_id=None):
 	user = require_profile_user(user_identifier)
 	require_self_or_manager(user)
 
-	override_filters, management_mode, omit_future = build_search_override(user)
+	override_filters, management_mode, omit_future = build_search_override()
 	override_filters['liked_by_user'] = user.id_bytes
 	override_filters['default_sort'] = 'likes'
 	override_tags={}
@@ -996,13 +1045,36 @@ def user_collected_stickers(user_identifier):
 		elif sticker.id not in potential_stickers:
 			stickers.remove(sticker)
 	stickers_by_category = g.stickers.stickers_by_category(stickers)
-	unique_sticker_placement_counts = g.stickers.get_user_unique_sticker_placement_counts(
-		user.id_bytes
-	)
+	if not g.persephone_config['public_contributors']:
+		unique_sticker_placement_counts = g.stickers.get_user_unique_sticker_placement_counts(
+			user.id_bytes
+		)
+	else:
+		all_placements = g.stickers.search_sticker_placements(
+			filter={'user_ids': user.id_bytes},
+		)
+		media_ids = []
+		for placement in all_placements.values():
+			if placement.subject_id_bytes not in media_ids:
+				media_ids.append(placement.subject_id_bytes)
+		override_filters, management_mode, omit_future = build_search_override()
+		media = g.media.search_media(filter=override_filters)
+		placements = []
+		for placement in all_placements.values():
+			if placement.subject_id in media.keys():
+				placements.append(placement)
+		placement_counts = {}
+		for placement in placements:
+			if placement.sticker_id not in placement_counts:
+				placement_counts[placement.sticker_id] = []
+			if placement.subject_id not in placement_counts[placement.sticker_id]:
+				placement_counts[placement.sticker_id].append(placement.subject_id)
+		for sticker_id, media_ids in placement_counts.items():
+			placement_counts[sticker_id] = len(media_ids)
 	for category, stickers in stickers_by_category.items():
 		for sticker in stickers:
-			if sticker.id in unique_sticker_placement_counts:
-				sticker.unique_placements_count = unique_sticker_placement_counts[sticker.id]
+			if sticker.id in placement_counts:
+				sticker.unique_placements_count = placement_counts[sticker.id]
 	return render_template(
 		'user_stickerbook.html',
 		user=user,
@@ -1046,7 +1118,7 @@ def user_sticker_placements(user_identifier, sticker_id, medium_id=None):
 		if sticker_placement.subject_id_bytes not in medium_ids:
 			medium_ids.append(sticker_placement.subject_id_bytes)
 
-	override_filters, management_mode, omit_future = build_search_override(user)
+	override_filters, management_mode, omit_future = build_search_override()
 	override_filters['ids'] = medium_ids
 
 	return search_media(
@@ -1118,32 +1190,40 @@ def user_profile(user_identifier=None):
 
 	# media card
 	if user.has_permission(group_names='contributor'):
-		override_filters, management_mode, omit_future = build_search_override(user)
 		if (
-				not g.persephone_config['public_contributors']
-				or user.id in g.persephone_config['public_contributors']
+				g.persephone_config['public_contributors']
+				and user.id not in g.persephone_config['public_contributors']
 			):
-			override_filters['owner_ids'] = user.id_bytes
+			total_media = 0
 		else:
-			# force no results
-			override_filters['smaller_than'] = 0
-		if omit_future:
-			override_filters['created_before'] = int(time.time())
-		total_media = g.media.count_media(filter=override_filters)
+			media_filters, management_mode, omit_future = build_search_override(user)
+			media_filters['owner_ids'] = user.id_bytes
+			if omit_future:
+				media_filters['created_before'] = int(time.time())
+			total_media = g.media.count_media(filter=media_filters)
 		if total_media:
 			cards.append({
 				'name': 'media',
 				'display': total_media,
 				'title': '{} media'.format(total_media),
-				'uri': url_for('persephone.search_user_media', user_identifier=user.identifier),
+				'uri': url_for(
+					'persephone.search_user_media',
+					user_identifier=user.identifier,
+				),
 			})
 
 	# liked media card (unique user likes only)
-	total_likes = g.media.engine_session.query(
-			g.media.likes.c.medium_id
-		).filter(
-			g.media.likes.c.user_id == user.id_bytes
-		).group_by(g.media.likes.c.medium_id).count()
+	likes_filter = {'user_ids': user.id_bytes}
+	owner_ids = []
+	if (
+			g.persephone_config['public_contributors']
+			and (
+				not g.accounts.current_user
+				or not g.accounts.current_user.has_permission(group_names='manager')
+			)
+		):
+		owner_ids = g.persephone_config['public_contributors']
+	total_likes = g.media.count_unique_likes(user.id_bytes, owner_ids=owner_ids)
 	if total_likes:
 		likes_card = {
 			'name': 'likes',
@@ -1167,7 +1247,11 @@ def user_profile(user_identifier=None):
 
 	# comment card
 	if g.persephone_config['optional_packages']['comments']:
-		total_comments = g.comments.count_comments(filter={'user_ids': user.id_bytes})
+		comments_filters, management_mode, omit_future = build_search_override()
+		total_comments = count_instance_comments(
+			user,
+			override_filters=comments_filters,
+		)
 		if total_comments:
 			comment_card = {
 				'name': 'comments',
