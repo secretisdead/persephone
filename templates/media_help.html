@@ -7,6 +7,7 @@
 	{% include 'media_help_basic.html' %}
 	{% include 'media_help_pagination.html' %}
 	{% include 'media_help_advanced.html' %}
+	{% include 'media_help_likes.html' %}
 	{% if g.media.accounts.current_user %}
 		{% if (
 			g.media.accounts.current_user.has_permission(group_names='manager')
