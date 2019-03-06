@@ -793,12 +793,13 @@ def get_badges(user):
 			})
 
 	# media badges
-	media_likes_filter = {'user_ids': user.id_bytes}
+	media_likes_filter = override_filters.copy()
+	media_likes_filter['user_ids'] = user.id_bytes
 	if g.persephone_config['public_contributors']:
 		media_likes_filter['owner_ids'] = []
 		for owner_id in g.persephone_config['public_contributors']:
 			media_likes_filter['owner_ids'].append(owner_id)
-	media_likes_total = g.media.count_likes(filter=override_filters)
+	media_likes_total = g.media.count_likes(filter=media_likes_filter)
 	if media_likes_total:
 		flavor = 'Full of love'
 		description = 'Liked a medium'
