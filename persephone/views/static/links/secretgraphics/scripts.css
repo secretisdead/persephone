@@ -931,6 +931,9 @@
 	transform: scale(1.5);
 }
 
+.scripts_enabled.hide_stickers .sticker_container .sticker {
+	display: none;
+}
 
 /*sticker category buttons*/
 /*TODO stickerbook category switcher*/

@@ -56,6 +56,21 @@ if (like) {
 	});
 }
 
+// hotkey for temp toggle stickers
+window.addEventListener('keydown', e => {
+	if (
+		'INPUT' == document.activeElement.tagName
+		|| e.ctrlKey
+		|| e.altKey
+	) {
+		return;
+	}
+	if ('h' == e.key) {
+		e.preventDefault();
+		document.documentElement.classList.toggle('hide_stickers');
+	}
+});
+
 // functions to run when media is done loading
 function medium_loaded(element) {
 	constrain_elements();
