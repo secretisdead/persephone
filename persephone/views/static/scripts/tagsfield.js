@@ -73,7 +73,7 @@ export class TagsField {
 		) {
 			return;
 		}
-		let needle = this.input.value.trim();
+		let needle = this.input.value.trim().replace(/\\/g, '\\\\');
 		let negation = false;
 		if ('-' == needle[0]) {
 			negation = true;
