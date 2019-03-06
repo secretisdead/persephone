@@ -1046,7 +1046,7 @@ def user_collected_stickers(user_identifier):
 			stickers.remove(sticker)
 	stickers_by_category = g.stickers.stickers_by_category(stickers)
 	if not g.persephone_config['public_contributors']:
-		unique_sticker_placement_counts = g.stickers.get_user_unique_sticker_placement_counts(
+		placement_counts = g.stickers.get_user_unique_sticker_placement_counts(
 			user.id_bytes
 		)
 	else:
