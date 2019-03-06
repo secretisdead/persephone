@@ -138,7 +138,7 @@ export class TagsField {
 	create_tag_element(tag, title, link_uri) {
 		let el = document.createElement('span');
 		el.classList.add('tag');
-		el.dataset.tag = tag.replace('"', '&quot;');
+		el.dataset.tag = tag.replace(/"/g, '&quot;');
 		if ('undefined' != typeof title) {
 			el.title = title;
 		}
@@ -204,13 +204,13 @@ export class TagsField {
 	}
 	remove_tags(tags_list) {
 		for (let i = 0; i < tags_list.length; i++) {
-			let tag = tags_list[i].replace('&quot;', '"');
+			let tag = tags_list[i].replace(/&quot;/g, '"');
 			let tag_index = this.tags_list.indexOf(tag)
 			if (-1 == tag_index) {
 				continue;
 			}
-			this.tags_list.splice(tag_index, 1)
-			let tag_el = this.preview.querySelector('.tag[data-tag="' + tag.replace('"', '&quot;').replace('\\', '\\\\') + '"]');
+			this.tags_list.splice(tag_index, 1);
+			let tag_el = this.preview.querySelector('.tag[data-tag="' + tag.replace(/"/g, '&quot;').replace(/\\/g, '\\\\') + '"]');
 			tag_el.parentNode.removeChild(tag_el);
 			// dispatch remove event
 			this.input.dispatchEvent(
