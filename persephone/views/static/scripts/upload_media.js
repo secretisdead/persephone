@@ -138,6 +138,7 @@ function add_preview(filename, fd) {
 			if (200 == xhr.status) {
 				// add thumbnail in placeholder
 				xhr.preview.placeholder.innerHTML = xhr.response.thumbnail;
+				xhr.preview.placeholder.querySelector('a').target = '_blank';
 				// wait for complete animation
 				//TODO better timing to detect what stage of the animation the css is currently in?
 				result_class = 'success';
@@ -147,6 +148,7 @@ function add_preview(filename, fd) {
 				// create view link around placeholder
 				let link = document.createElement('a');
 				link.href = xhr.response.view_uri;
+				link.target = '_blank';
 				xhr.preview.appendChild(link);
 				link.appendChild(xhr.preview.placeholder);
 				result_class = 'failure';
