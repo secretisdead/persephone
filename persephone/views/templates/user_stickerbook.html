@@ -28,7 +28,7 @@
 				{% for sticker in stickers %}
 					{% if sticker.collected %}
 						{% if not admin_or_self %}
-							{{ sticker_image(sticker) }}
+							<span>{{ sticker_image(sticker) }}</span>
 						{% else %}
 							{% if not sticker.unique_placements_count %}
 								<span>{{ sticker_image(sticker) }}</span>
