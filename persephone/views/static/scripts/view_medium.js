@@ -89,6 +89,12 @@ function image_medium_loaded(medium) {
 		return;
 	}
 	if (image.complete) {
+		if (-1 != navigator.userAgent.toLowerCase().indexOf('firefox')) {
+			setTimeout(() => {
+				medium_loaded(image);
+			}, 100);
+			return;
+		}
 		medium_loaded(image);
 		return;
 	}
