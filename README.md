@@ -1,10 +1,12 @@
 # persephone
 
+![persephone logo](persephone/views/static/persephone_128.png)
+
 A media archive (with other cool stuff).
 
 ---
 
-I'm still testing this so wait a bit unless you want to play around with it right away.
+It's probably pretty stable at this point, but if you're going to run a copy consider joining [the persephone dev Discord server](https://discord.gg/AkFcTbY), to get a faster response to any problems you're having and to read the documentation that I haven't completely finished and committed yet.
 
 ---
 
@@ -48,7 +50,7 @@ There are already a lot of decent and ambitious blogging, micro-blogging, and so
 
 ### Very large instances in general
 
-I'm not a professional programmer and I don't really have any idea how well this will scale with extremely heavy traffic. The number of active users on instances belonging to me and my friends has been between 5,000 to 10,000. If you're very popular and you're using this let me know how it holds up.
+I'm not a professional programmer and I don't really have any idea how well this will scale with extremely heavy traffic. The most active users on instances belonging to me and my friends has fluctuated between 1,000 to 10,000. If you're very popular and you're using this let me know how it holds up.
 
 ### Heavy moderation
 
@@ -64,12 +66,14 @@ It's a personal site with fun extras for users with accounts, and it's fun if an
 - Make sure you have Python 3.5+ installed.
 - Download the install script for [Linux/Mac](persephone_install.sh) or [Windows](persephone_install.cmd) and run it.
 - Follow the installation prompts.
+- Edit the config files to customize your instance.
+- Database stuff will try to install the first time the site is accessed, so you can change what database is being pointed at in the config (and all the db prefixes of each package in their configs) before anything is created.
 
 ---
 
 ## Dependencies
 
-Here's some good stuff I didn't write that went into making this.
+Here's some good stuff other people wrote that went into making this.
 
 - [Flask](https://github.com/pallets/flask)
 - [SQLAlchemy](https://github.com/sqlalchemy/sqlalchemy)
