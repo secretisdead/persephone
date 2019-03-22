@@ -22,7 +22,7 @@ echo checking for python...
 if ! test -x "$(command -v ${python})"
 then
 	echo  python not found
-	echo  please ensure you have python 3.6+ installed
+	echo  please ensure you have python 3.5+ installed
 	exit 1
 fi
 
