@@ -220,6 +220,28 @@
 	--card_border: #ffffff;
 	--card_inner_border: #c080a0;
 }
+/*Apricot*/
+:root.theme_apricot {
+	--background: #ffbc99;
+	--foreground: #ffffff;
+	--link: #ffffff;
+
+	--header_background: #fed9c5;
+	--header_foreground: #9e9e9e;
+	--header_link: #00c0ff;
+	--header_border: #ffffff;
+
+	--topmenu_background: #ffffff;
+	--topmenu_foreground: #ffbc99;
+	--topmenu_border: #ffffff;
+	--topmenu_inner_border: #ffbc99;
+
+	--card_background: #ffffff;
+	--card_foreground: #000000;
+	--card_link: #ffbc99;
+	--card_border: #ffffff;
+	--card_inner_border: #ffbc99;
+}
 
 /*futaba red*/
 /*buri blue*/
