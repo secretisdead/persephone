@@ -8,12 +8,6 @@ for (let i = 0; i < thumbnails.length; i++) {
 	add_thumbnail_preview(thumbnails[i]);
 }
 
-// show unlike button
-let unlike_button = document.querySelector('.unlike_medium');
-if (unlike_button && localStorage.getItem('media_preference_show_unlike_button')) {
-	unlike_button.classList.add('shown');
-}
-
 // hotkey for playable media
 let playable_medium = document.querySelector('.medium video');
 if (!playable_medium) {
@@ -39,9 +33,114 @@ if (playable_medium) {
 	});
 }
 
-// hotkey for like
-let like = document.querySelector('[class^="like_medium"]:not(.cooldown)');
-if (like) {
+// likes
+let show_unlike_button = localStorage.getItem('media_preference_show_unlike_button');
+let remove_old_like_info = function(info) {
+	// remove old like count
+	let like_count = info.querySelector('.like_count');
+	if (like_count) {
+		info.removeChild(like_count);
+	}
+	// remove old like button
+	let like_button = info.querySelector('[class^="like_medium"]');
+	info.removeChild(like_button);
+	// remove old unlike button
+	let unlike = info.querySelector('.unlike_medium');
+	if (unlike) {
+		info.removeChild(unlike);
+	}
+};
+let add_new_like_info = function(info, rendered) {
+	let temp = document.createElement('div');
+	temp.innerHTML = rendered;
+	let new_like_count = temp.querySelector('.like_count');
+	let new_like_button = temp.querySelector('[class^="like_medium"]');
+	let new_unlike_button = temp.querySelector('.unlike_medium');
+	if (new_unlike_button) {
+		add_unlike_listener(new_unlike_button);
+		info.insertBefore(new_unlike_button, info.firstChild);
+		if (show_unlike_button) {
+			new_unlike_button.classList.add('shown');
+		}
+	}
+	info.insertBefore(new_like_button, info.firstChild);
+	if (new_like_count) {
+		info.insertBefore(new_like_count, info.firstChild);
+	}
+	add_like_listener(new_like_button);
+};
+let add_like_listener = function(like_button) {
+	console.log('adding like listener');
+	like_button.addEventListener('click', e => {
+		e.preventDefault();
+		let like_button = e.currentTarget;
+		if (!like_button.href || like_button.classList.contains('waiting')) {
+			return;
+		}
+		like_button.classList.add('waiting');
+		let xhr = new XMLHttpRequest();
+		xhr.like_button = like_button;
+		xhr.onreadystatechange = () => {
+			if (xhr.readyState == XMLHttpRequest.DONE) {
+				xhr.like_button.classList.remove('waiting');
+				if (200 == xhr.status) {
+					let info = xhr.like_button.parentNode;
+					remove_old_like_info(info);
+					add_new_like_info(info, xhr.response.rendered);
+				}
+				else {
+					alert('Problem adding like to this medium');
+				}
+			}
+		};
+		let action = like_button.dataset.actionLike;
+		xhr.open('POST', action + (-1 != action.indexOf('?') ? '&' : '?') + '_' + new Date().getTime(), true);
+		xhr.withCredentials = true;
+		xhr.responseType = 'json';
+		xhr.send();
+	});
+};
+let add_unlike_listener = function(unlike_button) {
+	console.log('adding unlike listener');
+	unlike_button.addEventListener('click', e => {
+		e.preventDefault();
+		let unlike_button = e.currentTarget;
+		if (!unlike_button.href || unlike_button.classList.contains('waiting')) {
+			return;
+		}
+		unlike_button.classList.add('waiting');
+		let xhr = new XMLHttpRequest();
+		xhr.unlike_button = unlike_button;
+		xhr.onreadystatechange = () => {
+			if (xhr.readyState == XMLHttpRequest.DONE) {
+				xhr.unlike_button.classList.remove('waiting');
+				if (200 == xhr.status) {
+					let info = xhr.unlike_button.parentNode;
+					remove_old_like_info(info);
+					add_new_like_info(info, xhr.response.rendered);
+				}
+				else {
+					alert('Problem adding like to this medium');
+				}
+			}
+		};
+		let action = unlike_button.dataset.actionUnlike;
+		xhr.open('DELETE', action + (-1 != action.indexOf('?') ? '&' : '?') + '_' + new Date().getTime(), true);
+		xhr.withCredentials = true;
+		xhr.responseType = 'json';
+		xhr.send();
+	});
+};
+let unlike_button = document.querySelector('.unlike_medium');
+if (unlike_button) {
+	if (show_unlike_button) {
+		unlike_button.classList.add('shown');
+	}
+	add_unlike_listener(unlike_button);
+}
+let like_button = document.querySelector('[class^="like_medium"]:not(.cooldown)');
+if (like_button) {
+	// hotkey for like
 	window.addEventListener('keydown', e => {
 		if (
 			'INPUT' == document.activeElement.tagName
@@ -51,9 +150,10 @@ if (like) {
 			return;
 		}
 		if ('f' == e.key) {
-			window.location = like.href;
+			document.querySelector('[class^="like_medium"]').click();
 		}
 	});
+	add_like_listener(like_button);
 }
 
 // hotkey for temp toggle stickers
