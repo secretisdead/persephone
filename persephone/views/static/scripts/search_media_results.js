@@ -20,3 +20,8 @@ for (let i = 0; i < thumbnails.length; i++) {
 if (localStorage.getItem('media_preference_jumbo_thumbnails')) {
 	document.documentElement.classList.add('jumbo_thumbnails');
 }
+
+// uncropped thumbnails
+if (localStorage.getItem('media_preference_uncropped_thumbnails')) {
+	document.documentElement.classList.add('uncropped_thumbnails');
+}

@@ -1198,3 +1198,9 @@
 		--per_search_results_row: 1;
 	}
 }
+/*uncropped thumbnails*/
+.scripts_enabled.uncropped_thumbnails .thumbnail .summary video,
+.scripts_enabled.uncropped_thumbnails .thumbnail .summary picture,
+.scripts_enabled.uncropped_thumbnails .thumbnail .summary picture img {
+	object-fit: contain;
+}

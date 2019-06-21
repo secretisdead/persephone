@@ -199,6 +199,12 @@ let save_and_close_media_preferences = function() {
 	else {
 		document.documentElement.classList.remove('jumbo_thumbnails');
 	}
+	if (media_preferences.querySelector('#media_preference_uncropped_thumbnails').checked) {
+		document.documentElement.classList.add('uncropped_thumbnails');
+	}
+	else {
+		document.documentElement.classList.remove('uncropped_thumbnails');
+	}
 	document.body.removeChild(media_preferences);
 	document.body.removeChild(media_preferences_dim);
 };
