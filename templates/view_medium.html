@@ -40,8 +40,17 @@
 	{% endif %}
 	<script 
 		type="module" 
+		{% set modified_time = g.persephone['get_file_modified_time'](
+			[
+				'persephone',
+				'views',
+				'static',
+				'scripts',
+				'view_medium.js',
+			]
+		)|int|string %}
 		src="{{ g.persephone_config['static_persephone_uri'].format(
-			'scripts/view_medium.js',
+			'scripts/view_medium.js?v=' + modified_time,
 		) }}"></script>
 	{% if (
 			g.persephone_config['optional_packages']['stickers']
