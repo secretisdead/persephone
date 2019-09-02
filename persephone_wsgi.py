@@ -2,7 +2,11 @@ import sys
 import os
 import json
 
-sys.path.append(os.path.dirname(__file__))
+persephone_dir = os.environ['PERSEPHONE_DIR']
+if not persephone_dir:
+	persephone_dir = os.path.dirname(__file__)
+
+sys.path.append(persephone_dir)
 
 from flask import Flask, url_for, g, request, abort, redirect, escape, Markup
 from flask import render_template, make_response, after_this_request
@@ -105,7 +109,7 @@ def initialize():
 	g.initialized = False
 
 	# this should be the root wsgi directory, not the persephone repository directory
-	g.persephone_directory = os.path.dirname(__file__)
+	g.persephone_directory = persephone_dir
 
 	# persephone and database config
 	g.persephone_config = get_config('config/persephone_config.json', 'persephone')
