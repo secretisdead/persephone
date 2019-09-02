@@ -56,7 +56,7 @@ then
 	exit 1
 fi
 
-read -p "enter the directory to install persephone to: " persephone
+read -p "enter the directory to install persephone to (absolute path, with no trailing slash e.g. /home/secret/persephone): " persephone
 
 read -p "install persephone to \"${persephone}\" (y/[n])? " confirm
 if test "$confirm" != "y"
