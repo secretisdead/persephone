@@ -2,8 +2,9 @@ import sys
 import os
 import json
 
-persephone_dir = os.environ['PERSEPHONE_DIR']
-if not persephone_dir:
+if 'PERSEPHONE_DIR' in os.environ:
+	persephone_dir = os.environ['PERSEPHONE_DIR']
+else:
 	persephone_dir = os.path.dirname(__file__)
 
 sys.path.append(persephone_dir)
