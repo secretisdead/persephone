@@ -9,6 +9,24 @@ Some common ones are
 - /repos/legal/legal/templates/legal_rules.html if you want different site rules than persephone default
 - /repos/persephone/persephone/views/templates/premium_info-example.html (to /templates/premium_info.html) if you plan on using premium groups and want to have information available about how to get them
 
+*You'll likely have to restart the webserver to pick up new templates after changing them.*
+
+This will be different depending on what your server software is.
+
+For example restarting an Apache2 server which is using mod_wsgi on Debian 10 can be done with systemctl
+
+```console
+$ sudo systemctl restart apache2
+```
+Some hosting providers will be using Phusion Passenger, which can be informed that a server restart is needed by touching a particular file.
+
+```console
+$ cd /your/persephone/install/dir
+$ sudo touch ./tmp/restart.txt
+```
+
+Consult the documentation for your server software if you're unsure of the recommended way to restart it.
+
 Remember that overriding templates will prevent updates from affecting those pages, so check for changes to any templates you override when you update so that you can make those changes to your overriden templates if necessary
 
 You can replace the default favicon.ico and favicon.png in static/
