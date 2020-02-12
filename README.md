@@ -6,7 +6,19 @@ A media archive (with other cool stuff).
 
 ---
 
+## Install
+
+Directions on installing for various platforms can be found [here](INSTALL.md)
+
 It's probably pretty stable at this point, but if you're going to run a copy consider joining [the persephone dev Discord server](https://discord.gg/AkFcTbY), to get a faster response to any problems you're having and to read the documentation that I haven't completely finished and committed yet.
+
+## Config
+
+Detailed descriptions of the configuration options can be found [here](CONFIG.md)
+
+## Customization
+
+Information about customizing your instance can be found [here](CUSTOMIZATION.md)
 
 ---
 
@@ -57,19 +69,6 @@ I'm not a professional programmer and I don't really have any idea how well this
 There is a basic ban system, and finding and deactivating users is easy, but I don't know how much trouble a large unruly userbase would be with just the tools that I've written into it so far.
 
 It's a personal site with fun extras for users with accounts, and it's fun if anyone can participate, but I would rather close registration than deal with moderating people all day. So I will probably not devote too much time to improving or writing new moderation tools.
-
----
-
-## Install
-
-- Make sure you have Git installed.
-- Make sure you have Python 3.5+ installed.
-- Download the install script for [Linux/Mac](persephone_install.sh) or [Windows](persephone_install.cmd) and run it.
-- Follow the installation prompts.
-- Edit the config files to customize your instance.
-- Database stuff will try to install the first time the site is accessed, so you can change what database is being pointed at in the config (and all the db prefixes of each package in their configs) before anything is created.
-
-I recently did a pretty comprehensive write-up for an install from scratch on Debian 9 [here](https://gist.github.com/secretisdead/ddfe1d0d338fa38dc58b84e38da3c096).
 
 ---
 
