@@ -27,14 +27,15 @@
 	{% if medium.cover %}
 		{% set thumb_medium = medium.cover %}
 	{% endif %}
+	{% set thumbnail_edge = g.media.config['summary_values']['thumbnail'] %}
 	<div 
 		class="thumbnail" 
 		title="{% if medium.tags %}#{% endif %}{{ ' #'.join(medium.tags) }}" 
 		data-id="{{ medium.id }}" 
 		{% if thumb_medium.uris['reencoded']['clip'] %}
 			data-preview="{{ thumb_medium.uris['reencoded']['clip'] }}" 
-		{% elif thumb_medium.uris['reencoded'][256] %}
-			data-preview="{{ thumb_medium.uris['reencoded'][256] }}" 
+		{% elif thumb_medium.uris['reencoded'][thumbnail_edge] %}
+			data-preview="{{ thumb_medium.uris['reencoded'][thumbnail_edge] }}" 
 		{% endif %}
 		data-category="{{ medium.category }}" 
 		data-searchability="{{ medium.searchability|string|lower }}" 
@@ -46,14 +47,14 @@
 		data-data4="{{ medium.data4 }}" 
 		data-data5="{{ medium.data5 }}" 
 		data-data6="{{ medium.data6 }}"{% include 'medium_rgb.html' %}>
-		{% if thumb_medium.uris['static'][256] and thumb_medium.uris['fallback'][256] %}
+		{% if thumb_medium.uris['static'][thumbnail_edge] and thumb_medium.uris['fallback'][thumbnail_edge] %}
 			{% from 'media.jinja' import image_thumbnail_focus %}
 			<div class="summary"{{ image_thumbnail_focus(thumb_medium) }}>
 				<a href="{{ thumbnail_link_uri }}">
 					<picture>
-						<source srcset="{{ thumb_medium.uris['static'][256] }}" type="image/webp">
-						<source srcset="{{ thumb_medium.uris['fallback'][256] }}" type="image/png">
-						<img src="{{ thumb_medium.uris['fallback'][256] }}" alt="">
+						<source srcset="{{ thumb_medium.uris['static'][thumbnail_edge] }}" type="image/webp">
+						<source srcset="{{ thumb_medium.uris['fallback'][thumbnail_edge] }}" type="image/png">
+						<img src="{{ thumb_medium.uris['fallback'][thumbnail_edge] }}" alt="">
 					</picture>
 				</a>
 			</div>
