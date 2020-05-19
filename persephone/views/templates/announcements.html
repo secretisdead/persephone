@@ -21,12 +21,18 @@
 			{% if 'disable:comments' not in announcement_medium.tags %}
 				{% from 'comments.jinja' import comment_form %}
 				{{ comment_form(announcement_medium.id, redirect_uri=request.url) }}
-				{% include 'stickers.html' %}
 			{% endif %}
 			{% set comments = g.comments.search_comments(filter={'subject_ids': announcement_medium.id}) %}
 			{% set _ = g.persephone['filter_comments'](comments) %}
 			{% from 'comments.jinja' import comments_table %}
 			{{ comments_table(comments) }}
+		{% endif %}
+		{% if (
+			g.persephone_config['optional_packages']['stickers']
+			and 'supress:stickers' not in announcement_medium.tags
+			and 'disable:stickers' not in announcement_medium.tags
+		) %}
+			{% include 'stickers.html' %}
 		{% endif %}
 	{% endif %}
 {% endblock %}
