@@ -306,6 +306,7 @@ div[data-mime="application/x-shockwave-flash"] .summary::after {
 	bottom: 0.5rem;
 	right: 0;
 	text-align: right;
+	pointer-events: none;
 }
 .thumbnail .group_tile {
 	display: inline-block;
