@@ -195,6 +195,9 @@ document.querySelector('#media_preference_restore_default_blacklisted_tags').add
 	localStorage.removeItem('media_preference_blacklisted_tags');
 	apply_blacklisted_tags();
 	load_preferences();
+	if (!localStorage.getItem('media_preference_blacklisted_tags')) {
+		document.querySelector('#media_preference_blacklisted_tags').value = '';
+	}
 	e.target.blur();
 });
 let save_and_close_media_preferences = function() {
