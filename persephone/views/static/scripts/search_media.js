@@ -137,9 +137,9 @@ let load_preferences = function() {
 load_preferences();
 let refresh_blacklist = function() {
 	let default_blacklisted_tags = document.querySelector('meta[name="default_blacklisted_tags"]');
-	// no defaults, remove restore default button
-	if (!default_blacklisted_tags || '' == default_blacklisted_tags) {
-		let restore = document.querySelector('#media_preference_restore_default_blacklisted_tags');
+	let restore = document.querySelector('#media_preference_restore_default_blacklisted_tags');
+	// if restore button exists with no defaults, remove restore default button
+	if (restore && (!default_blacklisted_tags || '' == default_blacklisted_tags)) {
 		let restore_br = document.querySelector('#media_preference_restore_default_blacklisted_tags + br');
 		restore.parentNode.removeChild(restore);
 		restore_br.parentNode.removeChild(restore_br);
