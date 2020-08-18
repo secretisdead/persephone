@@ -136,6 +136,14 @@ let load_preferences = function() {
 };
 load_preferences();
 let refresh_blacklist = function() {
+	let default_blacklisted_tags = document.querySelector('meta[name="default_blacklisted_tags"]');
+	// no defaults, remove restore default button
+	if (!default_blacklisted_tags || '' == default_blacklisted_tags) {
+		let restore = document.querySelector('#media_preference_restore_default_blacklisted_tags');
+		let restore_br = document.querySelector('#media_preference_restore_default_blacklisted_tags + br');
+		restore.parentNode.removeChild(restore);
+		restore_br.parentNode.removeChild(restore_br);
+	}
 	let previewable_blacklist = localStorage.getItem('media_preference_previewable_blacklist');
 	document.documentElement.classList.remove('previewable_blacklist');
 	if (previewable_blacklist) {
@@ -151,7 +159,7 @@ let media_preferences_dim = document.createElement('div');
 media_preferences_dim.classList.add('media_preferences_dim');
 let apply_blacklisted_tags = function() {
 	let blacklisted_tags = localStorage.getItem('media_preference_blacklisted_tags');
-	let default_blacklisted_tags = document.querySelector('meta[name="default_blacklisted_tags"]')
+	let default_blacklisted_tags = document.querySelector('meta[name="default_blacklisted_tags"]');
 	if ('string' == typeof blacklisted_tags) {
 		blacklisted_tags = blacklisted_tags.split('#');
 	}
