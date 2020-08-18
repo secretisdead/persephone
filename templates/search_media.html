@@ -8,6 +8,9 @@
 	{% include 'search_media_navigation.html' %}
 	{% include 'media_preferences_form.html' %}
 	{% include 'tags_this_page.html' %}
+	{% if g.persephone_config['default_blacklisted_tags'] %}
+		<meta name="default_blacklisted_tags" content="{{ g.persephone_config['default_blacklisted_tags'] }}">
+	{% endif %}
 	<script 
 		type="module" 
 		src="{{ g.persephone_config['static_persephone_uri'].format('scripts/search_media.js') }}"></script>

@@ -162,6 +162,16 @@
 	border-left-color: var(--form_border);
 	height: 128px;
 }
+.scripts_enabled #media_preferences button {
+	width: 100%;
+	display: block;
+	border: 1px solid var(--form_border);
+	border-bottom: none;
+	border-top-color: var(--input_border);
+	cursor: pointer;
+	font-weight: bold;
+	padding: 0.5em 0;
+}
 
 /*TODO slideshow delay*/
 
@@ -172,17 +182,15 @@
 .scripts_enabled .blacklist.thumbnail::before {
 	background-color: #000000;
 }
-.scripts_enabled .blacklist .summary video,
-.scripts_enabled .blacklist .summary picture,
-.scripts_enabled .blacklist .summary picture img {
-	filter: brightness(0.3) saturate(0.5);
+.scripts_enabled .blacklist .summary * {
+	opacity: 0;
+	cursor: not-allowed;
 }
-.scripts_enabled .blacklist:hover .summary video,
-.scripts_enabled .blacklist:hover .summary picture,
-.scripts_enabled .blacklist:hover .summary picture img {
-	filter: brightness(1) saturate(1);
+.scripts_enabled .blacklist .like_count,
+.scripts_enabled .blacklist .group_tiles {
+	visibility: hidden;
 }
-.scripts_enabled .blacklist:not(:hover) .summary::before {
+.scripts_enabled .blacklist .summary::before {
 	display: block;
 	content: "";
 	position: absolute;
@@ -195,14 +203,32 @@
 	top: 14%;
 	left: 14%;
 	z-index: 10;
-	filter: brightness(0.5);
+	pointer-events: none;
 }
-.scripts_enabled .blacklist:not(:hover) .summary::after {
+.scripts_enabled .blacklist .summary::after {
 	width: 1.5rem;
 	height: 1.5rem;
 	left: 0.25rem;
 	top: auto;
 	bottom: 0.25rem;
+	pointer-events: none;
+}
+
+/*hide blacklisted entirely*/
+.scripts_enabled.hide_blacklisted .blacklist {
+	display: none;
+}
+
+/*hover to preview blacklist*/
+.scripts_enabled.previewable_blacklist .blacklist:hover .summary * {
+	opacity: 1;
+}
+.scripts_enabled.previewable_blacklist .blacklist:hover .like_count,
+.scripts_enabled.previewable_blacklist .blacklist:hover .group_tiles {
+	visibility: visible;
+}
+.scripts_enabled.previewable_blacklist .blacklist:hover .summary::before {
+	display: none;
 }
 
 /*tags this page*/

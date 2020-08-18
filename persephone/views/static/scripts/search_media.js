@@ -135,14 +135,32 @@ let load_preferences = function() {
 	}
 };
 load_preferences();
+let refresh_blacklist = function() {
+	let previewable_blacklist = localStorage.getItem('media_preference_previewable_blacklist');
+	document.documentElement.classList.remove('previewable_blacklist');
+	if (previewable_blacklist) {
+		document.documentElement.classList.add('previewable_blacklist');
+	}
+	let hide_blacklisted = localStorage.getItem('media_preference_hide_blacklisted');
+	document.documentElement.classList.remove('hide_blacklisted');
+	if (hide_blacklisted) {
+		document.documentElement.classList.add('hide_blacklisted');
+	}
+};
 let media_preferences_dim = document.createElement('div');
 media_preferences_dim.classList.add('media_preferences_dim');
 let apply_blacklisted_tags = function() {
 	let blacklisted_tags = localStorage.getItem('media_preference_blacklisted_tags');
-	if (blacklisted_tags) {
+	let default_blacklisted_tags = document.querySelector('meta[name="default_blacklisted_tags"]')
+	if ('string' == typeof blacklisted_tags) {
 		blacklisted_tags = blacklisted_tags.split('#');
 	}
+	else if (default_blacklisted_tags) {
+		localStorage.setItem('media_preference_blacklisted_tags', default_blacklisted_tags.content);
+		blacklisted_tags = default_blacklisted_tags.content.split('#');
+	}
 	else {
+		localStorage.setItem('media_preference_blacklisted_tags', '');
 		blacklisted_tags = [];
 	}
 	let thumbnails = document.querySelectorAll('.thumbnail');
@@ -164,11 +182,20 @@ let apply_blacklisted_tags = function() {
 };
 document.addEventListener('DOMContentLoaded', e => {
 	apply_blacklisted_tags();
+	refresh_blacklist();
+	load_preferences();
 });
 media_preferences_button.addEventListener('click', e => {
 	document.body.appendChild(media_preferences_dim);
 	document.body.appendChild(media_preferences);
 	media_preferences.style.top = 'calc(50% - ' + (media_preferences.clientHeight / 2) + 'px)';
+});
+document.querySelector('#media_preference_restore_default_blacklisted_tags').addEventListener('click', e => {
+	e.preventDefault();
+	localStorage.removeItem('media_preference_blacklisted_tags');
+	apply_blacklisted_tags();
+	load_preferences();
+	e.target.blur();
 });
 let save_and_close_media_preferences = function() {
 	let preferences_inputs = media_preferences.querySelectorAll('input:not([type="submit"])');
@@ -193,6 +220,7 @@ let save_and_close_media_preferences = function() {
 		localStorage.setItem(input.id, input.value);
 	}
 	apply_blacklisted_tags();
+	refresh_blacklist();
 	if (media_preferences.querySelector('#media_preference_jumbo_thumbnails').checked) {
 		document.documentElement.classList.add('jumbo_thumbnails');
 	}

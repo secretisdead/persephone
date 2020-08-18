@@ -27,6 +27,7 @@ You can also configure some or all of the packages to use a common db by specify
 | public_contributors | Add user id strings to this array to restrict which users will be displayed in the public search and on user media pages. If this is an empty array then no restrictions are added and the searches behave normally. This is mainly for if you have a single large instance with multiple contributors but different instances that only show particular users on each |
 | google_verification | If you have a google verification code you can put it here to verify your ownership of the site to google |
 | google_analytics | If you use google analytics you can put your site id code here to enable it |
+| default_blacklisted_tags | Tags which should be blacklisted by default for new users (separated by #) |
 
 ## access_log_config.json
 
