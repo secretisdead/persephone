@@ -121,7 +121,8 @@ if (target_input) {
 			}
 		};
 		let method = target_form.method.toUpperCase();
-		let action = target_form.action;
+		let action = target_form.action.replace('https:', '').replace('http:', '');
+		alert(action);
 		xhr.open(method, action + (-1 != action.indexOf('?') ? '&' : '?') + '_' + new Date().getTime(), true);
 		xhr.withCredentials = true;
 		xhr.send(fd);
