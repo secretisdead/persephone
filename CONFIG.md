@@ -109,6 +109,8 @@ all the other services should call the client_id and client_secret Client ID and
 | default_thumbnail_edge | Deprecated? Should be the same as [summary_values][thumbnail] regardless) |
 | default_view_edge | (Deprecated? Should be the same as [summary_values][view] regardless) |
 | canonical_search_tags | Add entries to this dictionary in the form of "tag to alias from": "tag to alias to" to allow searches for the key to return media tagged with the value (the tags to alias from won't show up anywhere in the media archive unless they're actually used on media, and won't autosuggest in search or tag edit fields) |
+| automatic_tag_suggestions_generation | Generate the tag suggestions file after every tag change. When disabled you'll have to go to `Manager > Tags > Generate tag suggestions` to re-generate the file manually after adding tags which previously hadn't been used on any media |
+| display_total_storage | Display total storage used on search results page next to total results |
 | clutter_tag_prefixes | Any tags starting with these values won't be included in search suggestions or show up in the tags this page block |
 
 ## patreon_config.json
