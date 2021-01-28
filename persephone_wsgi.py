@@ -409,6 +409,13 @@ def initialize():
 				'accounts_signed_out.authentication_landing',
 				'accounts_signed_out.redeem_invite',
 				'accounts_signed_out.register',
+				'legal.terms',
+				'legal.accept_terms',
+				'legal.post_accept_terms',
+				'legal.rules',
+				'legal.privacy',
+				'legal.revoke_cookie_consent',
+				'legal.takedown',
 				'static',
 				'persephone.static',
 			]
