@@ -305,6 +305,9 @@ nav a:last-child {
 .announcement .medium .summary.view video {
 	max-width: 100%;
 }
+.announcement .medium {
+	text-align: center;
+}
 .announcement .medium .summary.view.nofile {
 	display: none;
 }
