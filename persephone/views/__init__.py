@@ -323,12 +323,10 @@ def get_announcement_medium(page=0):
 	if not media.values():
 		return None
 	medium = media.values()[0]
-	if not medium or 'text' != medium.category:
+	if not medium:
 		return None
 	medium.owner = g.accounts.get_user(medium.owner_id)
 	g.media.populate_medium_contents(medium)
-	if not medium.contents:
-		return None
 	return medium
 
 @persephone.route('/announcements')

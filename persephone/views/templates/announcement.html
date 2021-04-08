@@ -10,5 +10,12 @@
 		by {{ user_display(announcement_medium.owner) }}
 	</p>
 	{{ user_avatar(announcement_medium.owner) }}
-	<div>{{ announcement_medium.contents|safe }}</div>
+	{% if announcement_medium.contents %}
+		<div>
+			{{ announcement_medium.contents|safe }}
+		</div>
+	{% else %}
+		{% set medium = announcement_medium %}
+		{% include 'medium_summary.html' %}
+	{% endif %}
 </div>

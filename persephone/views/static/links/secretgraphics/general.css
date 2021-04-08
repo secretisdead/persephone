@@ -293,8 +293,20 @@ nav a:last-child {
 	white-space: pre-wrap;
 	padding: 0 1rem;
 }
-.announcement div:last-child {
+.announcement .avatar + div:not(.medium) {
 	border-top: 1px solid var(--card_inner_border);
+}
+.announcement .medium,
+.announcement .medium .summary.view,
+.announcement .medium .summary.view a,
+.announcement .medium .summary.view a picture,
+.announcement .medium .summary.view a picture img,
+.announcement .medium .summary.view audio,
+.announcement .medium .summary.view video {
+	max-width: 100%;
+}
+.announcement .medium .summary.view.nofile {
+	display: none;
 }
 .announcement a {
 	color: var(--card_link);
