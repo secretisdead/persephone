@@ -13,6 +13,7 @@ from flask import Flask, url_for, g, request, abort, redirect, escape, Markup
 from flask import render_template, make_response, after_this_request
 from werkzeug.exceptions import Forbidden
 from sqlalchemy import create_engine
+from email.utils import formatdate
 
 from persephone.views import persephone
 from shortener import shortener
@@ -560,12 +561,18 @@ def check_global_ban(response):
 		return response
 
 def response_add_cache_headers(response):
-	if hasattr(g, 'no_store'):
-		response.cache_control.public = False
-		response.cache_control.max_age = None
+	if (
+			hasattr(g, 'no_store')
+			or (
+				'no_store_all' in g.persephone_config 
+				and g.persephone_config['no_store_all']
+			)
+		):
+		response.cache_control.max_age = 0
 		response.cache_control.no_store = True
 		if 'Expires' in response.headers:
 			del response.headers['Expires']
+		response.headers['Expires'] = formatdate(timeval=None, localtime=False, usegmt=True);
 	return response
 
 def response_add_meta_graph(response):
