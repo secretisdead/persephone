@@ -566,6 +566,10 @@ def response_add_cache_headers(response):
 			or (
 				'no_store_all' in g.persephone_config 
 				and g.persephone_config['no_store_all']
+				# allow caching of static endpoints
+				#TODO this is a little hacky
+				and 'media_static.' != request.endpoint[:13]
+				and '/static/' not in request.path
 			)
 		):
 		response.cache_control.max_age = 0
