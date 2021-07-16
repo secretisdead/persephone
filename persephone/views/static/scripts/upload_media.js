@@ -255,10 +255,9 @@ file_upload.addEventListener('change', e => {
 });
 
 // uri
-file_uri.addEventListener('keydown', e => {
+let uri_submit = function() {
 	if (
-		'Enter' != e.key
-		|| 0 == file_uri.value.length
+		0 == file_uri.value.length
 		|| -1 == file_uri.value.indexOf('/')
 		|| -1 == file_uri.value.indexOf('http')
 	) {
@@ -267,4 +266,13 @@ file_uri.addEventListener('keydown', e => {
 	let filename = file_uri.value.split('/');
 	add_preview(filename[filename.length - 1], new FormData(form));
 	file_uri.value = '';
+};
+file_uri.addEventListener('keydown', e => {
+	if ('Enter' != e.key) {
+		return;
+	}
+	uri_submit();
+});
+form.addEventListener('submit', e => {
+	uri_submit();
 });
