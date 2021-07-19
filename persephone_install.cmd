@@ -68,11 +68,11 @@ if /i "%confirm%" neq "y" goto end
 
 cd "%persephone%"
 
-echo checking for venv and creating virtual environment...
-%python% -m venv environment
+echo checking for virtualenv and creating virtual environment...
+%python% -m virtualenv environment
 if not exist "%persephone%\environment" (
-	echo  venv not found or problem creating virtual environment
-	echo  please ensure you have venv for python3 installed
+	echo  virtualenv not found or problem creating virtual environment
+	echo  please ensure you have virtualenv for python3 installed
 	goto end
 )
 

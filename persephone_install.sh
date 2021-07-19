@@ -75,17 +75,17 @@ fi
 
 cd "${persephone}"
 
-echo checking for venv...
-${python} -c "import venv"
+echo checking for virtualenv...
+${python} -c "import virtualenv"
 if ! test $?
 then
-	echo  venv not found
-	echo  please ensure you have venv for python3 installed
+	echo  virtualenv not found
+	echo  please ensure you have virtualenv for python3 installed
 	exit 1
 fi
 
 echo creating virtual environment...
-if ! ${python} -m venv environment
+if ! ${python} -m virtualenv environment
 then
 	echo  problem creating virtual environment
 	exit 1
