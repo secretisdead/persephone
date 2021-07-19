@@ -79,17 +79,16 @@ if not exist "%persephone%\environment" (
 echo activating virtual environment...
 call "%persephone%\environment\Scripts\activate.bat"
 
-rem latest versions should be fine, if there end up being problems later i'll make it more specific
 echo installing required python packages...
-%python% -m pip install flask
-%python% -m pip install sqlalchemy
-%python% -m pip install python-dateutil
-%python% -m pip install werkzeug
-%python% -m pip install Pillow
-%python% -m pip install python3-openid
-%python% -m pip install passlib
-%python% -m pip install python-magic
-%python% -m pip install python-libmagic
+%python% -m pip install flask==2.0.1
+%python% -m pip install sqlalchemy==1.3.5
+%python% -m pip install python-dateutil==2.8.1
+%python% -m pip install werkzeug==2.0.1
+%python% -m pip install Pillow==8.3.1
+%python% -m pip install python3-openid==3.2.0
+%python% -m pip install passlib==1.7.4
+%python% -m pip install python-magic==0.4.24
+%python% -m pip install python-libmagic==0.4.0
 %python% -m pip install python-magic-bin==0.4.14
 
 echo deactivating virtual environment...
