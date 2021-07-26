@@ -95,11 +95,11 @@ echo activating virtual environment...
 source "${persephone}/environment/bin/activate"
 
 echo installing required python packages...
-${python} -m pip install flask==2.0.1
+${python} -m pip install flask==1.1.4
 ${python} -m pip install sqlalchemy==1.3.5
 ${python} -m pip install python-dateutil==2.8.1
-${python} -m pip install werkzeug==2.0.1
-${python} -m pip install Pillow==8.3.1
+${python} -m pip install werkzeug==1.0.1
+${python} -m pip install Pillow==7.2.0
 ${python} -m pip install python3-openid==3.2.0
 ${python} -m pip install passlib==1.7.4
 ${python} -m pip install python-magic==0.4.24
