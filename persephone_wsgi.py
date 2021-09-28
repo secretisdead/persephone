@@ -43,6 +43,7 @@ from mediafrontend.views import media_static, media_supplemental
 from mediafrontend.views import media_api
 from parse_id import parse_id
 from idcollection import IDCollection
+from users import UserStatus
 
 app = Flask(
 	__name__,
@@ -422,6 +423,15 @@ def initialize():
 			]
 		):
 		abort(401)
+
+	if (
+			g.accounts.current_user
+			and g.accounts.current_user.status in [
+				UserStatus.DEACTIVATED_BY_STAFF,
+				UserStatus.DEACTIVATED_BY_SELF
+			]
+		):
+		abort(403, 'Your account is deactivated')
 
 	if not terms_agreed() and 'accounts_signed_out.sign_in_services' == request.endpoint:
 		@after_this_request
