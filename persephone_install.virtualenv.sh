@@ -85,7 +85,7 @@ then
 fi
 
 echo creating virtual environment...
-if ! ${python} -m virtualenv environment
+if ! ${python} -m virtualenv -p "${python}" environment
 then
 	echo  problem creating virtual environment
 	exit 1
