@@ -10,3 +10,5 @@
 I recently did a pretty comprehensive write-up for an install from scratch on Debian 9 [here](https://gist.github.com/secretisdead/ddfe1d0d338fa38dc58b84e38da3c096).
 
 Another write-up for an install from scratch on Debian 10 [here](https://gist.github.com/secretisdead/f21b88ddbd5d15ff3fe9f786a40ae972)
+
+A short document with the differences between Debian 10 and Debian 11 [here](https://gist.github.com/secretisdead/f30c84c9dedc6152d688a1e948eb58ed)
