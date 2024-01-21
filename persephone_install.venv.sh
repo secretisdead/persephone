@@ -56,7 +56,7 @@ then
 	exit 1
 fi
 
-read -p "enter the directory to install persephone to (absolute path, with no trailing slash e.g. /home/secret/persephone): " persephone
+read -p "enter the directory to install persephone to (absolute path, with no trailing slash e.g. /var/www/YOUR_PERSEPHONE_DIR): " persephone
 
 read -p "install persephone to \"${persephone}\" (y/[n])? " confirm
 if test "$confirm" != "y"
@@ -64,13 +64,12 @@ then
 	exit 1
 fi
 
+echo creating persephone install directory...
+mkdir -p "${persephone}"
 if ! test -d "${persephone}"
 then
-	if ! test mkdir -p "${persephone}"
-	then
-		echo  problem creating specified directory
-		exit 1
-	fi
+	echo  problem creating specified persephone install directory
+	exit 1
 fi
 
 cd "${persephone}"
@@ -95,6 +94,7 @@ echo activating virtual environment...
 source "${persephone}/environment/bin/activate"
 
 echo installing required python packages...
+${python} -m pip install wheel
 ${python} -m pip install flask==1.1.4
 ${python} -m pip install sqlalchemy==1.3.5
 ${python} -m pip install python-dateutil==2.8.1
@@ -103,6 +103,7 @@ ${python} -m pip install Pillow==7.2.0
 ${python} -m pip install python3-openid==3.2.0
 ${python} -m pip install passlib==1.7.4
 ${python} -m pip install python-magic==0.4.24
+${python} -m pip install markupsafe==2.0.1
 if test "$(uname)" == "Darwin"
 then
 	${python} -m pip install python-libmagic
